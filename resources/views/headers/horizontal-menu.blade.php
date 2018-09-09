@@ -70,43 +70,107 @@
 								<i class="m-menu__ver-arrow la la-angle-right"></i>
 							</h3>
 							<ul class="m-menu__inner">
-								<li class="m-menu__item "  m-menu-link-redirect="1" aria-haspopup="true">
-									<a  href="inner.html" class="m-menu__link ">
-										<i class="m-menu__link-icon la flaticon-map"></i>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getTrunkUtilization') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 										<span class="m-menu__link-text">
-											Annual Reports
+											Trunk Utlization Report
 										</span>
 									</a>
 								</li>
-								<li class="m-menu__item "  m-menu-link-redirect="1" aria-haspopup="true">
-									<a  href="inner.html" class="m-menu__link ">
-										<i class="m-menu__link-icon la flaticon-user"></i>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getTrunkUtilizationGraph') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 										<span class="m-menu__link-text">
-											HR Reports
+											Trunk Utlization Graph
 										</span>
 									</a>
 								</li>
-								<li class="m-menu__item "  m-menu-link-redirect="1" aria-haspopup="true">
-									<a  href="inner.html" class="m-menu__link ">
-										<i class="m-menu__link-icon la flaticon-clipboard"></i>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getHourlyServiceLevel') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 										<span class="m-menu__link-text">
-											IPO Reports
+											Hourly Service Level Report
 										</span>
 									</a>
 								</li>
-								<li class="m-menu__item "  m-menu-link-redirect="1" aria-haspopup="true">
-									<a  href="inner.html" class="m-menu__link ">
-										<i class="m-menu__link-icon la flaticon-graphic-1"></i>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getHourlyServiceLevelGraph') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 										<span class="m-menu__link-text">
-											Finance Margins
+											Hourly Service Level Graph
 										</span>
 									</a>
 								</li>
-								<li class="m-menu__item "  m-menu-link-redirect="1" aria-haspopup="true">
-									<a  href="inner.html" class="m-menu__link ">
-										<i class="m-menu__link-icon la flaticon-graphic-2"></i>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getAverageAnsweringSpeed') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 										<span class="m-menu__link-text">
-											Revenue Reports
+											Average Answering Speed Report
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getAverageAnsweringSpeedGraph') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Average Answering Speed Graph
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getAgentAbandon') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Agent Abandon Report
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getAgentAbandonGraph') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Agent Abandon Graph
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getHangup') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Hangup Report
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getHangupGraph') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Hangup Graph Report
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getHourlyCallsAnalysis') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Hourly Calls Analysis
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getCallCenterPerformance') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Call Center Performance
+										</span>
+									</a>
+								</li>
+								<li class="m-menu__item" aria-haspopup="true" >
+									<a href="{{ action('ReportsController@getWorkcodeAnalysis') }}" class="m-menu__link">
+										<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+										<span class="m-menu__link-text">
+											Workcode Analysis
 										</span>
 									</a>
 								</li>

@@ -13,6 +13,8 @@ $(document).ready(function() {
 	const outbound_number = document.getElementById("outbound_number");
 	const outcall_dial = document.getElementById("outcall_dial");
 
+	let didCallAnswered = false;
+
 	toastr.options = {
 	  "closeButton": true,
 	  "debug": false,
@@ -601,7 +603,7 @@ $(document).ready(function() {
 		if(outbound_number.value.length <= 0 || !isNaN(outbound_number.value)) {
 			toastr.error("Invalid or empty number entered.");
 		} else {
-
+			user_agent.invite(outbound_number.value)
 		}
 	}
 
@@ -883,6 +885,8 @@ $(document).ready(function() {
 			get_callid(user_extension);
 			get_queue(remoteNumber);
 
+			didCallAnswered = true;
+
 			document.getElementById("incall_info").classList.remove("invisible");
 			document.getElementById("incall_controls").classList.remove("invisible");
 
@@ -928,5 +932,27 @@ $(document).ready(function() {
 		}
 
 	}
+
+	user_agent.transport.on("transportError", function(data) {
+		swal({
+			titleText: "Add Exception",
+			text: "Please click following link and add exception to certificate authority",
+			type: "info",
+			backdrop: false,
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			allowEnterKey: false,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Click Here'
+		}).then((response) => {
+			if(response.value) {
+				window.open("https://" + server + ":8089/ws", "_blank");
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+	});
 
 });

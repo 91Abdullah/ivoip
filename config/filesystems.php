@@ -55,6 +55,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'recording' => [
+            'driver' => 'local',
+            'root' => '/var/spool/asterisk/monitor/',
+            'visibility' => 'public'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

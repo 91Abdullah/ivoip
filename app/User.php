@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Queue', 'queue_user', 'user_id', 'queue_name');
     }
+
+    public function scopeGetByExtension($query, $name)
+    {
+        return $query->where("extension", $name)->first();
+    }
 }

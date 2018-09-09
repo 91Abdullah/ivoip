@@ -1,5 +1,5 @@
 <!-- BEGIN: Header -->
-<header id="m_header" class="m-grid__item m-header "  minimize-offset="200" minimize-mobile-offset="200" >
+<header style="z-index: 9999;" id="m_header" class="m-grid__item m-header" minimize-offset="200" minimize-mobile-offset="200" >
 	<div class="m-container m-container--fluid m-container--full-height">
 		<div class="m-stack m-stack--ver m-stack--desktop">
 			

@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'bosk_testregular';
+    src: url('fonts/bosk-webfont.woff2') format('woff2'),
+         url('fonts/bosk-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.logo-app {
+	font-family: 'bosk_testregular';
+	font-size: 40px;
+	color: #fff;
+}

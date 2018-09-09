@@ -2,9 +2,9 @@
 <div class="m-stack__item m-brand  m-brand--skin-dark ">
 	<div class="m-stack m-stack--ver m-stack--general">
 		<div class="m-stack__item m-stack__item--middle m-stack__item--center m-brand__logo">
-			<a href="index.html" class="m-brand__logo-wrapper">
-				<img alt="" src="{{ asset('assets/demo/demo3/media/img/logo/logo.png') }}"/>
-			</a>
+			<div class="m-login__logo">
+				<h2 style="color: #5e5288;" class="m_login__title">IVOIP</h2>
+			</div>
 		</div>
 		<div class="m-stack__item m-stack__item--middle m-brand__tools">
 			<!-- BEGIN: Responsive Aside Left Menu Toggler -->

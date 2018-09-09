@@ -12,15 +12,28 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
+
+Route::view('/wallboard', 'wallboard.index');
+Route::get('/getStats', 'WallboardController@get')->name("wallboard.stats");
 
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role'])->group(function () {
+
+	Route::view('/', 'dashboard.index');
+
 	Route::view('dashboard', 'dashboard.index')->name('dashboard');
+
+	Route::view('settings', 'settings.index')->name('settings');
+	Route::post('settings', 'SettingsController@store')->name('settings.store');
+
+	Route::view('recordings', 'recordings.index')->name('recordings');
+	Route::get('recordingsData', 'RecordingsController@getRecordings')->name('recordings.get');
+	Route::get('downloadRecording/{$path}', 'RecordingsController@downloadFile')->name('download.file');
 	
 	Route::resource('roles', 'RoleController');
 	Route::resource('users', 'UserController');
@@ -33,22 +46,57 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');
-		Route::get('trunkUtilization', 'ReportsController@trunkUtilization');
-		Route::get('agentAbandon', 'ReportsController@agentAbandon');
-		Route::get('hangupByAgent', 'ReportsController@hangupByAgent');
-		Route::get('hangupByCustomer', 'ReportsController@hangupByCustomer');
+
+		Route::get('trunkUtilization', 'ReportsController@getTrunkUtilization');
+		Route::get('trunkUtilizationData', 'ReportsController@getTrunkUtilizationData')->name('report.trunk_data');
+
+		Route::get('trunkUtilizationGraph', 'ReportsController@getTrunkUtilizationGraph');
+		Route::get('trunkUtilizationGraphData', 'ReportsController@getTrunkUtilizationGraphData')->name('report.trunk_data_graph');
+
+		Route::get('hourlyServiceLevel', 'ReportsController@getHourlyServiceLevel');
+		Route::get('hourlyServiceLevelData', 'ReportsController@getHourlyServiceLevelData')->name('report.hourly_service_level');
+
+		Route::get('hourlyServiceLevelGraph', 'ReportsController@getHourlyServiceLevelGraph');
+		Route::get('hourlyServiceLevelGraphData', 'ReportsController@getHourlyServiceLevelGraphData')->name('report.hourly_service_level_graph');
+
+		Route::get('averageAnsweringSpeed', 'ReportsController@getAverageAnsweringSpeed');
+		Route::get('averageAnsweringSpeedData', 'ReportsController@getAverageAnsweringSpeedData')->name('report.average_answering_speed');
+
+		Route::get('averageAnsweringSpeedGraph', 'ReportsController@getAverageAnsweringSpeedGraph');
+		Route::get('averageAnsweringSpeedGraphData', 'ReportsController@getAverageAnsweringSpeedGraphData')->name('report.average_answering_speed_graph');
+
+		Route::get('agentAbandon', 'ReportsController@getAgentAbandon');
+		Route::get('agentAbandonData', 'ReportsController@getAgentAbandonData')->name('report.agent_abandon');
+
+		Route::get('agentAbandonGraph', 'ReportsController@getAgentAbandonGraph');
+		Route::get('agentAbandonGraphData', 'ReportsController@getAgentAbandonGraphData')->name('report.agent_abandon_graph');
+
+		Route::get('hangup', 'ReportsController@getHangup');
+		Route::get('hangupData', 'ReportsController@getHangupData')->name('report.hangup');
+
+		Route::get('hangupGraph', 'ReportsController@getHangupGraph');
+		Route::get('hangupGraphData', 'ReportsController@getHangupGraphData')->name('report.hangup_graph');
+
+		Route::get('hourlyCallsAnalysis', 'ReportsController@getHourlyCallsAnalysis');
+		Route::get('hourlyCallsAnalysisData', 'ReportsController@getHourlyCallsAnalysisData')->name('report.hourly_calls_analysis');
+
+		Route::get('callCenterPerformance', 'ReportsController@getCallCenterPerformance');
+		Route::get('callCenterPerformanceData', 'ReportsController@getCallCenterPerformanceData')->name('report.callcenter_performance');
+
+		Route::get('workcodeAnalysis', 'ReportsController@getWorkcodeAnalysis');
+		Route::get('workcodeAnalysisData', 'ReportsController@getWorkcodeAnalysisData')->name('report.workcode_analysis');
 	});
 });
 
-Route::prefix('agent')->middleware(['auth'])->group(function () {
+Route::prefix('agent')->middleware(['auth', 'role'])->group(function () {
 	Route::get('/', 'FrontAgentController@index')->name('front.agent');
 });
 
-Route::prefix('outbound')->middleware(['auth'])->group(function () {
+Route::prefix('outbound')->middleware(['auth', 'role'])->group(function () {
 	Route::get('/', 'FrontOutboundController@index')->name('front.outbound');
 });
 
-Route::prefix('blended')->middleware(['auth'])->group(function () {
+Route::prefix('blended')->middleware(['auth', 'role'])->group(function () {
 	Route::get('/', 'FrontBlendedController@index')->name('front.blended');
 });
 

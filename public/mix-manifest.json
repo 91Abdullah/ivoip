@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/axios.js": "/js/axios.js",
     "/js/agent.js": "/js/agent.js",
     "/js/outbound.js": "/js/outbound.js",
     "/js/blended.js": "/js/blended.js"

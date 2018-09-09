@@ -1,0 +1,81 @@
+Select date_format(`created`, '%H'), count(*) From `queue_log` where `event` = 'ENTERQUEUE' AND date(`created`) = '2018-08-06' Group by date_format(`created`, '%H')
+
+Select date_format(`start`, '%h:00'), count(*) From `cdrs` where date(`start`) = '2018-08-15' Group by date_format(`start`, '%h')
+
+SELECT event, count(*) FROM `queue_log` where `queuename` = '100' and (`event` = 'COMPLETEAGENT' OR `event` = 'COMPLETECALLER' OR `event` = 'RINGCANCELED' OR `event` = 'ABANDON') and date(`created`) = '2018-08-10' group by event
+
+select event, count(*) from `queue_log` where date(`created`) = '2018-08-06' and `queuename`  = '100' and (`event` = 'COMPLETEAGENT' or `event` = 'COMPLETECALLER' or `event` = 'ABANDON' or `event` = 'RINGCANCELED') group by `event`
+
+select * from `queue_log` where queuename = '100' and event in ('ADDMEMBER', 'REMOVEMEMBER') and agent = 'Test Agent'
+
+select * from `queue_log` where queuename = '100' and event in ('COMPLETEAGENT', 'COMPLETECALLER') 
+
+select sum(`data2`) from `queue_log` where queuename = '100' and event in ('COMPLETEAGENT', 'COMPLETECALLER') and created BETWEEN '2018-08-13 17:00:00' and '2018-08-13 17:59:59'
+
+select * from `queue_log` where queuename = '100' and event in ('HOLD', 'UNHOLD') and created BETWEEN '2018-08-13 17:00:00' and '2018-08-13 17:59:59' order by date(`created`)
+
+SELECT * FROM `queue_log` where event = 'CONNECT' and date(`created`) = '2018-08-25' ORDER BY `queue_log`.`created` ASC
+
+UPDATE `queue_log` SET agent = 'Test Agent' where agent like '%PJSIP/%' ORDER BY `created` ASC
+
+SELECT * FROM `queue_log` where data1 in ('Wrapup-Start','Wrapup-End') and agent = 'Test Agent' and date(`created`) = '2018-08-17' ORDER BY `created`  ASC
+
+$dt = new Carbon($request->date["date"]);
+    	$records = QueueLog::where("event", "ENTERQUEUE")->whereDate("created", $dt->format("Y-m-d"))->get()->groupBy(function ($data) {
+    		return Carbon::parse($data->created)->format("H");
+    	});
+
+    	$processed = [];
+
+    	$hours = [];
+
+    	for ($i=1; $i < 24; $i++) { 
+    		$i = sprintf("%02d", $i);
+    		$processed[$i] = 0;
+    	}
+
+    	foreach ($records as $key => $value) {
+    		if($value->get($key) == $processed[$key]) {
+    			$processed[$key] = $value->count();
+    		}
+    	}
+		
+		
+		
+		if($request->ajax()) {
+    		$dt = new Carbon($request->date["date"]);
+	    	$records = QueueLog::where("event", "ENTERQUEUE")->whereDate("created", $dt->format("Y-m-d"))->get()->groupBy(function ($data) {
+	    		return Carbon::parse($data->created)->format("H");
+	    	});
+
+	    	$processed = [];
+
+	    	$hours = [];
+
+	    	for ($i=1; $i < 24; $i++) { 
+	    		$i = sprintf("%02d", $i);
+	    		$processed[$i] = 0;
+	    	}
+
+	    	foreach ($hours as $key => $value) {
+	    		if($records->has($key)) {
+	    			$processed[] = [
+	    				"hour" => $key,
+	    				"count" => $records->get($key)->count()
+	    			];
+	    		} else {
+	    			$processed[] = [
+	    				"hour" => $key,
+	    				"count" => 0
+	    			];
+	    		}
+    		}	
+
+	    	return DataTables::of($processed)->toJson();	
+    	}
+
+    	$html = $htmlBuilder
+        ->addColumn(['data' => 'hour', 'name' => 'hour', 'title' => 'Hours'])
+        ->addColumn(['data' => 'count', 'name' => 'count', 'title' => 'Calls']);
+
+        return view('reports.trunk_utilization', compact('html'));
