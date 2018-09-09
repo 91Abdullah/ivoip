@@ -69,8 +69,8 @@ class ComposerServiceProvider extends ServiceProvider
                 return $item->disposition == "ANSWERED";
             })->avg->billsec;
 
-            $outAnsRate = $outAnswered/$outCount * 100;
-            $outNoAnsRate = ($outCount - $outAnswered)/$outCount * 100;
+            $outAnsRate =  $outCount == 0 ? 0 : $outAnswered/$outCount * 100;
+            $outNoAnsRate = $outCount == 0 ? 0 : ($outCount - $outAnswered)/$outCount * 100;
 
             $view->with(compact('totalCalls', 'answered', 'abandoned', 'answerRate', 'abandonRate', 'avgTalkTime', 'outCount', 'outAnswered', 'outDuration', 'outAvg', 'outAnsRate', 'outNoAnsRate'));
         });
