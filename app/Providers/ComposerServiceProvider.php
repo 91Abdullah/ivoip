@@ -44,8 +44,8 @@ class ComposerServiceProvider extends ServiceProvider
             ->get()
             ->avg->data2; 
 
-            $answerRate = $answered/$totalCalls * 100;
-            $abandonRate = $abandoned/$totalCalls * 100;
+            $answerRate = $answered == 0 ? 0 : $answered/$totalCalls * 100;
+            $abandonRate = $abandoned == 0 ? 0 : $abandoned/$totalCalls * 100;
 
             $role = Role::whereIn("name", ["Outbound", "Blended"])->get();
             $outNums = $role->map(function ($item, $key) {
