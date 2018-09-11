@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Inspiring;
 use PAMI\Message\Event\EventMessage;
 use PAMI\Message\Event\AgentConnectEvent;
+use PAMI\Message\Event\AsyncAGIStartEvent;
 use App\Events\AgentConnectedEvent;
+use App\MyPAGIApplication;
 /*
 |--------------------------------------------------------------------------
 | Console Routes

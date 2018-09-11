@@ -33,19 +33,19 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-import Echo from "laravel-echo"
-window.io = require('socket.io-client');
-// Have this in case you stop running your laravel echo server
-if (typeof io !== 'undefined') {
-  window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    csrfToken: token.content,
-    host: /*window.location.hostname +*/ 'http://localhost:6001',
-    auth: {
-    	headers: {
-    		'Authorization': 'Bearer ' + '6e203cf80c963a7bb48826013110c219'
-    	}
-    }
-  });
-}
+// import Echo from "laravel-echo";
+// window.io = require('socket.io-client');
+// // Have this in case you stop running your laravel echo server
+// if (typeof io !== 'undefined') {
+//   window.Echo = new Echo({
+//     broadcaster: 'socket.io',
+//     csrfToken: token.content,
+//     host: /*window.location.hostname +*/ 'http://localhost:6001',
+//     auth: {
+//     	headers: {
+//     		'Authorization': 'Bearer ' + '6e203cf80c963a7bb48826013110c219'
+//     	}
+//     }
+//   });
+// }
 

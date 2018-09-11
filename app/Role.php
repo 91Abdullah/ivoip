@@ -13,4 +13,9 @@ class Role extends Model
     {
     	return $this->belongsToMany('App\User');
     }
+
+    public function scopeIsSuperAdmin($query)
+    {
+    	return $query->where('name', 'Reporter');
+    }
 }

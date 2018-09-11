@@ -7,6 +7,11 @@ $(document).ready(function() {
 	// Variables
 
 	let callConnected = false;
+	const outcall_dialer = document.getElementById("outcall_dialer");
+	const history_calling = document.getElementsByClassName("history_calling");
+
+	const outbound_number = document.getElementById("outbound_number");
+	const outcall_dial = document.getElementById("outcall_dial");
 
 	// End Variables
 
@@ -31,6 +36,28 @@ $(document).ready(function() {
 	};
 
 	// Helper methods
+
+	function processHistoryCalling(e)
+	{
+		console.log(e);
+		let number = e.target.dataset.number;
+		outbound_number.value = number;
+		outcall_dial.click();
+	}
+
+	function createHistoryElement(data)
+	{
+		const parent = document.getElementById("call_history");
+		const listElem = document.createElement("li");
+		let elem = document.createElement("a");
+		elem.classList.add("history_calling");
+		elem.innerHTML = data;
+		elem.setAttribute("href", "javascript:void(0);");
+		elem.setAttribute("data-number", data);
+		listElem.append(elem);
+		parent.append(listElem);
+		elem.addEventListener("click", processHistoryCalling);
+	}
 
 	function changeDeviceStatus(status)
 	{
@@ -259,6 +286,14 @@ $(document).ready(function() {
 
 	// START EVent Methods
 
+	for (var i = history_calling.length - 1; i >= 0; i--) {
+		history_calling[i].onclick = function(e) {
+			number = e.target.dataset.number;
+			outbound_number.value = number;
+			outcall_dial.click();
+		}
+	}
+
 	document.getElementById("outcall_dial").onclick = function(e) {
 		let number = document.getElementById("outbound_number");
 		if(number.value == 0 || isNaN(number.value)) {
@@ -331,7 +366,7 @@ $(document).ready(function() {
 		                };
 		                console.log(session);
 						session.hold(options);
-						l//ogHold();
+						//logHold();
 					} catch (error) {
 						console.log(error);
 						toastr.error("Unable to put call on hold. Please contact application administrator. Error: " + error);
@@ -380,6 +415,14 @@ $(document).ready(function() {
 					    });
 					});
 					document.getElementById("incall_status_text").innerHTML = "INCALL";
+				}
+			}
+
+			for (var i = history_calling.length - 1; i >= 0; i--) {
+				history_calling[i].onclick = function(e) {
+					number = e.target.dataset.number;
+					outbound_number.value = number;
+					outcall_dial.click();
 				}
 			}
 
@@ -437,6 +480,8 @@ $(document).ready(function() {
 
 				if(callConnected) {
 					showWorkcodes();
+					outbound_number.value = '';
+					createHistoryElement(remoteNumber);
 				}
 
 				callConnected = false;
@@ -646,10 +691,27 @@ $(document).ready(function() {
 		changeDeviceStatus("Offline");
 	});
 
-	// END Even Methods
+	
 
 	document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
 
 	}
+
+	document.getElementById("agent_logout").onclick = function(e) {
+		e.preventDefault();
+		swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, Close it!"
+        }).then(function(e) {
+
+            user_agent.stop();
+            document.getElementById('logout-form').submit();
+        });
+	};	
+
+	// END Even Methods
 
 });

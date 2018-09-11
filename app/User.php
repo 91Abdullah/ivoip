@@ -41,4 +41,32 @@ class User extends Authenticatable
     {
         return $query->where("extension", $name)->first();
     }
+
+    public function isSuperAdmin()
+    {
+        if($this->roles->contains("name", "Reporter"))
+            return true;
+        else return false;
+    }
+
+    public function isAgent()
+    {
+        if($this->roles->contains("name", "Agent"))
+            return true;
+        else return false;
+    }
+
+    public function isBlended()
+    {
+        if($this->roles->contains("name", "Blended"))
+            return true;
+        else return false;
+    }
+
+    public function isOutbound()
+    {
+        if($this->roles->contains("name", "Outbound"))
+            return true;
+        else return false;
+    }
 }

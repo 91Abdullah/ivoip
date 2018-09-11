@@ -22,7 +22,7 @@ Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin')->middleware(['auth', 'role'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () {
 
 	Route::view('/', 'dashboard.index');
 
@@ -88,15 +88,15 @@ Route::prefix('admin')->middleware(['auth', 'role'])->group(function () {
 	});
 });
 
-Route::prefix('agent')->middleware(['auth', 'role'])->group(function () {
+Route::prefix('agent')->middleware(['auth', 'can:is-agent'])->group(function () {
 	Route::get('/', 'FrontAgentController@index')->name('front.agent');
 });
 
-Route::prefix('outbound')->middleware(['auth', 'role'])->group(function () {
+Route::prefix('outbound')->middleware(['auth', 'can:is-outbound'])->group(function () {
 	Route::get('/', 'FrontOutboundController@index')->name('front.outbound');
 });
 
-Route::prefix('blended')->middleware(['auth', 'role'])->group(function () {
+Route::prefix('blended')->middleware(['auth', 'can:is-blended'])->group(function () {
 	Route::get('/', 'FrontBlendedController@index')->name('front.blended');
 });
 

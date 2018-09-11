@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use Auth;
 use App\AgentBreak;
 use App\Workcode;
+use Setting;
 
 class FrontAgentController extends Controller
 {
     public function index()
     {
     	$user = Auth::user();
-    	$server = "10.0.0.217";
+    	$server = Setting::get("host");
     	// $server = "192.168.1.109";
     	$queues = Auth::user()->queues->pluck('name');
     	$workcodes = Workcode::where("type", "Inbound")->pluck('name', 'name');

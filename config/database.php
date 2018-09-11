@@ -52,6 +52,9 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
+            'dump' => [
+                'dump_binary_path' => 'D:\xampp5.6\mysql\bin'
+            ]
         ],
 
         'pgsql' => [

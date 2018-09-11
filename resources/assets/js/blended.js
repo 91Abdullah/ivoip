@@ -9,9 +9,10 @@ $(document).ready(function() {
 	const ready_btn = document.getElementById("ready_btn");
 	const not_ready_btn = document.getElementById("not_ready_btn");
 	const outcall_dialer = document.getElementById("outcall_dialer");
-
+	const history_calling = document.getElementsByClassName("history_calling");
 	const outbound_number = document.getElementById("outbound_number");
 	const outcall_dial = document.getElementById("outcall_dial");
+	const history_call_parent = document.getElementById("history_call_parent");
 
 	let didCallAnswered = false;
 
@@ -34,6 +35,14 @@ $(document).ready(function() {
 	};
 
 	// Helper methods
+
+	function processHistoryCalling(e)
+	{
+		console.log(e);
+		let number = e.target.dataset.number;
+		outbound_number.value = number;
+		outcall_dial.click();
+	}
 
 	function changePhoneStatus(status)
 	{
@@ -407,8 +416,10 @@ $(document).ready(function() {
 	{
 		// Pause agent until workcode is submitted
 
-		for (var i = queues.length - 1; i >= 0; i--) {
-			pause(queues[i], user_extension, "Wrapup-Start");
+		if(currentMode == 'inbound') {
+			for (var i = queues.length - 1; i >= 0; i--) {
+				pause(queues[i], user_extension, "Wrapup-Start");
+			}
 		}
 
 		// End
@@ -431,8 +442,10 @@ $(document).ready(function() {
 			console.log(uniqueID);
 			submitWorkcode(result.value, uniqueID);
 			// console.log(res);
-			for (var i = queues.length - 1; i >= 0; i--) {
-				unpause(queues[i], user_extension, "Wrapup-End");
+			if(currentMode == 'inbound') {
+				for (var i = queues.length - 1; i >= 0; i--) {
+					unpause(queues[i], user_extension, "Wrapup-End");
+				}
 			}
 		});
 	}
@@ -565,6 +578,7 @@ $(document).ready(function() {
 		ready_btn.style.display = "block";
 		not_ready_btn.style.display = "block";
 		outcall_dialer.style.display = "none";
+		history_call_parent.style.display = "none";
 	}
 
 	function showOutboundMode()
@@ -573,6 +587,7 @@ $(document).ready(function() {
 		ready_btn.style.display = "none";
 		not_ready_btn.style.display = "none";
 		outcall_dialer.style.display = "block";
+		history_call_parent.style.display = "block";
 	}
 
 	function checkMode(reason)
@@ -591,19 +606,206 @@ $(document).ready(function() {
 	function createHistoryElement(data)
 	{
 		const parent = document.getElementById("call_history");
+		const listElem = document.createElement("li");
 		let elem = document.createElement("a");
 		elem.classList.add("history_calling");
 		elem.innerHTML = data;
+		elem.setAttribute("href", "javascript:void(0);");
+		elem.setAttribute("data-number", data);
+		listElem.append(elem);
+		parent.append(listElem);
+		elem.addEventListener("click", processHistoryCalling);
 	}
 
 	// Outbound Methods
 
 	function processOutgoing(event)
 	{
-		if(outbound_number.value.length <= 0 || !isNaN(outbound_number.value)) {
+		let number = document.getElementById("outbound_number");
+		let callConnected = false;
+		if(number.value == 0 || isNaN(number.value)) {
 			toastr.error("Invalid or empty number entered.");
 		} else {
-			user_agent.invite(outbound_number.value)
+
+			let options =  {
+                sessionDescriptionHandlerOptions: {
+                    constraints: {
+                        audio: true,
+                        video: false
+                    },
+                }
+            };
+
+			let session = user_agent.invite(number.value, options);
+
+			console.log(session);
+
+			let remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
+
+			const remoteAudio = document.getElementById("remoteAudio");
+			const localAudio = document.getElementById("localAudio");
+			
+			if(remoteNumber.indexOf('@') > -1) {
+				remoteNumber = remoteNumber.split("@")[0];
+			}
+
+			document.getElementById("m_incoming_call_number").innerHTML = remoteNumber;
+
+			timer.start();
+
+			document.getElementById("outcall_dialer").style.display = "none";
+			document.getElementById("incall_info").classList.remove("invisible");
+
+
+			document.getElementById("call_number").innerHTML = remoteNumber;
+			document.getElementById("incall_status_text").innerHTML = "INCALL";
+
+			$("#m_incoming_call").modal('hide');
+
+			document.getElementById('incall_hangup').onclick = function(e) {
+				try {
+					if(!callConnected) {
+						// Its and outgoing call
+						session.cancel();
+						console.log("cancel");
+					} else {
+						session.bye();
+						console.log("bye");
+					}
+				} catch (error) {
+					toastr.error("Unable to disconnect call. Please contact application administrator. Error: " + error);
+				}
+			}
+
+			document.getElementById("incall_controls_hold").onchange = function(e) {
+				if(e.target.checked) {
+					try {
+						let options =  {
+		                    sessionDescriptionHandlerOptions: {
+		                        constraints: {
+		                            audio: true,
+		                            video: false
+		                        },
+		                        // peerConnectionOptions: {
+		                        // 	iceCheckingTimeout: 1000
+		                        // }
+		                    }
+		                };
+		                console.log(session);
+						session.hold(options);
+						//logHold();
+					} catch (error) {
+						console.log(error);
+						toastr.error("Unable to put call on hold. Please contact application administrator. Error: " + error);
+					}
+					document.getElementById("incall_status_text").innerHTML = "HOLD";
+
+				} else {
+					console.log("session unhold hitting");
+					try {
+						let options =  {
+		                    sessionDescriptionHandlerOptions: {
+		                        constraints: {
+		                            audio: true,
+		                            video: false
+		                        },
+		                        // peerConnectionOptions: {
+		                        // 	iceCheckingTimeout: 1000
+		                        // }
+		                    }
+		                };
+						session.unhold(options);
+						//logUnHold();
+					} catch (error) {
+						console.log(error);
+						toastr.error("Unable to put call on unhold. Please contact application administrator. Error: " + error);
+					}
+					
+					document.getElementById("incall_status_text").innerHTML = "INCALL";
+				}
+			}
+
+			document.getElementById("incall_controls_mute").onchange = function(e) {
+				if(e.target.checked) {
+					let pc = session.sessionDescriptionHandler.peerConnection;
+					pc.getLocalStreams().forEach(function (stream) {
+					    stream.getAudioTracks().forEach(function (track) {
+					        track.enabled = false;
+					    });
+					});
+					document.getElementById("incall_status_text").innerHTML = "MUTE";
+				} else {
+					let pc = session.sessionDescriptionHandler.peerConnection;
+					pc.getLocalStreams().forEach(function (stream) {
+					    stream.getAudioTracks().forEach(function (track) {
+					        track.enabled = true;
+					    });
+					});
+					document.getElementById("incall_status_text").innerHTML = "INCALL";
+				}
+			}
+
+			session.on("trackAdded", function() {
+				// We need to check the peer connection to determine which track was added
+				const pc = session.sessionDescriptionHandler.peerConnection;
+
+				try {
+					// Gets remote tracks
+					let remoteStream = new MediaStream();
+					pc.getReceivers().forEach(function(receiver) {
+						remoteStream.addTrack(receiver.track);
+					});
+					remoteAudio.srcObject = remoteStream;
+					remoteAudio.play();
+
+					// Gets local tracks
+					let localStream = new MediaStream();
+					pc.getSenders().forEach(function(sender) {
+						localStream.addTrack(sender.track);
+					});
+					localAudio.srcObject = localStream;
+					localAudio.play();
+				} catch (error) {
+					console.log(error);
+				}
+			});
+
+			session.on("accepted", function(data) {
+				callConnected = true;
+				get_callid(user_extension);
+				document.getElementById("incall_controls").classList.remove("invisible");
+			});
+
+			session.on("bye", function(data) {
+				document.getElementById("incall_info").classList.add("invisible");
+				document.getElementById("incall_controls").classList.add("invisible");
+			});
+
+			session.on("terminated", function(message, cause) {
+
+				timer.stop();
+
+				document.getElementById("outcall_dialer").style.display = "block";
+
+				if(!document.getElementById("incall_info").classList.contains("invisible")) {
+					document.getElementById("incall_info").classList.add("invisible");
+				}
+				if(!document.getElementById("incall_controls").classList.contains("invisible")) {
+					document.getElementById("incall_controls").classList.add("invisible");
+				}
+				$("#m_incoming_call").modal('hide');
+
+				resetInCallControls();
+
+				if(callConnected) {
+					showWorkcodes();
+					createHistoryElement(remoteNumber, "ANSWERED");
+				} else {
+					console.log(message, cause);
+				}
+
+				callConnected = false;
+			});
 		}
 	}
 
@@ -621,7 +823,13 @@ $(document).ready(function() {
 		},
 		authorizationUser: user_extension,
 		password: sip_password,
-		register: true
+		register: true,
+		options: {
+			sessionDescriptionHandlerOptions: {
+				audio: true,
+				video: false
+			}
+		}
 	});
 
 	user_agent.start();
@@ -630,10 +838,10 @@ $(document).ready(function() {
 
 	// Websocket 
 
-	Echo.channel(`agent.connect.` + user_extension)
-		.listen('AgentConnectedEvent', (e) => {
-			console.log(e);
-		});
+	// Echo.channel(`agent.connect.` + user_extension)
+	// 	.listen('AgentConnectedEvent', (e) => {
+	// 		console.log(e);
+	// 	});
 
 	// End Websocket
 
@@ -690,10 +898,13 @@ $(document).ready(function() {
 		}
 	}
 
-	document.getElementsByClassName("notready_btn").onclick = function(e) {
-		reason = e.currentTarget.dataset.reason;
-		console.log(reason);
-	};
+	for (var i = history_calling.length - 1; i >= 0; i--) {
+		history_calling[i].onclick = function(e) {
+			number = e.target.dataset.number;
+			outbound_number.value = number;
+			outcall_dial.click();
+		}
+	}
 
 	document.getElementById("agent_logout").onclick = function(e) {
 		e.preventDefault();
@@ -915,6 +1126,7 @@ $(document).ready(function() {
 
 			resetInCallControls();
 			showWorkcodes();
+			outbound_number.value = '';
 		});
 
 	});

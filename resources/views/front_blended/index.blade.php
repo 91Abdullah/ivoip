@@ -93,7 +93,7 @@
 	</div>
 
 	<div id="outcall_dialer" class="row" style="display: none;">
-		<div class="col-lg-8">
+		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body">
 					<div class="form-group m-form__group">
@@ -110,17 +110,34 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+	</div>
+
+	<div class="row" id="history_call_parent">
+		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div id="call_history" class="m-portlet__body">
-					
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<span class="m-portlet__head-icon">
+								<i class="flaticon-multimedia"></i>
+							</span>
+							<h3 class="m-portlet__head-text">
+								Call History
+							</h3>
+						</div>			
+					</div>
+				</div>
+				<div class="m-portlet__body">
+					<ul id="call_history">
+						
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div id="incall_info" class="row invisible">
-		<div class="col-lg-10 offset-lg-1">
+		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body">
 					<h4 class="text-center" id="call_number">
@@ -143,7 +160,7 @@
 	</div>
 
 	<div id="incall_controls" class="row invisible">
-		<div class="col-lg-10 offset-lg-1">
+		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body m-portlet__body--no-padding">
 					<div class="row m-row--no-padding m-row--col-separator-xl">

@@ -21,33 +21,37 @@ use PAMI\Message\Event\AgentConnectEvent;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use React\EventLoop\Factory;
 use App\Events\AgentConnectedEvent;
-
+use Setting;
 use App\OutboundWorkcode;
 
 class AmiController extends Controller
 {
-	public $options = [
-        // 'host' => '192.168.1.109',
-		'host' => '10.0.0.217',
-		'port' => 5038,
-		'username' => 'manager_application',
-		'secret' => 'abdullah',
-		'connect_timeout' => 100,
-        'read_timeout' => 100,
-        'scheme' => 'tcp://' // try tls://
-	];
-
-	public $technology = "PJSIP";
+    public $technology = "PJSIP";
+    
+	private function options()
+    {
+        return $options = [
+            // 'host' => '192.168.1.109',
+    		'host' => Setting::get('host'),
+    		'port' => (int)Setting::get('port'),
+    		'username' => Setting::get('username'),
+    		'secret' => Setting::get('secret'),
+    		'connect_timeout' => (int)Setting::get('connect_timeout'),
+            'read_timeout' => (int)Setting::get('read_timeout'),
+            'scheme' => 'tcp://' // try tls://
+    	];
+    }
 
     public function queue_login(Request $request)
     {
-    	// return response()->json($this->options);
+        // return dd($this->options()());
+    	// return response()->json($this->options());
     	$queue = $request->queue;
     	$agent_name = $request->agent_name;
     	$agent_interface = $this->technology . "/" . $request->agent_interface;
 
     	try {
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueueAddAction($queue, $agent_interface);
     		$action->setMemberName($agent_name);
 
@@ -69,7 +73,7 @@ class AmiController extends Controller
     	$agent_interface = $this->technology . "/" . $request->agent_interface;
 
     	try {
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueueRemoveAction($queue, $agent_interface);
 
     		$manager->open();
@@ -91,7 +95,7 @@ class AmiController extends Controller
     	$agent_interface = $this->technology . "/" . $request->agent_interface;
 
     	try {
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueuePauseAction($agent_interface, $queue, $reason);
 
     		$manager->open();
@@ -113,7 +117,7 @@ class AmiController extends Controller
     	$agent_interface = $this->technology . "/" . $request->agent_interface;
 
     	try {
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueueUnpauseAction($agent_interface, $queue, $reason);
 
     		$manager->open();
@@ -130,7 +134,7 @@ class AmiController extends Controller
     public function queue_agents(Request $request)
     {
     	try {
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$agent = $this->technology . "/" . $request->agent;
             $action = new QueueStatusAction("100", "PJSIP/1001");
 
@@ -148,7 +152,7 @@ class AmiController extends Controller
     public function get_callid(Request $request)
     {
         try {
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
             $agent = $this->technology . "/" . $request->agent;
             $action = new CoreShowChannelsAction();
 
@@ -182,7 +186,7 @@ class AmiController extends Controller
     public function get_queue(Request $request)
     {
         try {
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
             $connected = $request->connected;
             $action = new CoreShowChannelsAction();
 
@@ -218,7 +222,7 @@ class AmiController extends Controller
     	try {
     		$queue = $request->queue;
     		$agent = $this->technology . '/' . $request->agent_interface;
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueueStatusAction($queue, $agent);
 
     		$manager->open();
@@ -238,7 +242,7 @@ class AmiController extends Controller
     	try {
     		$queue = $request->queue;
     		$agent = $this->technology . '/' . $request->agent_interface;
-    		$manager = new ClientImpl($this->options);
+    		$manager = new ClientImpl($this->options());
     		$action = new QueueStatusAction($queue, $agent);
 
     		$manager->open();
@@ -267,7 +271,7 @@ class AmiController extends Controller
             $agent = $request->agent;
             $message = $request->workcode;
 
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
 
             $action = new QueueLogAction($queue, $event);
             $action->setMemberName($agent);
@@ -305,7 +309,7 @@ class AmiController extends Controller
             $action->setMemberName($agent);
             $action->setUniqueId($uniqueid);
 
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
 
             $manager->open();
             $response = $manager->send($action);
@@ -328,7 +332,7 @@ class AmiController extends Controller
             $action->setMemberName($agent);
             $action->setUniqueId($uniqueid);
 
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
 
             $manager->open();
             $response = $manager->send($action);
@@ -343,7 +347,7 @@ class AmiController extends Controller
     public function websocket_demo(User $user)
     {
         $retries = 3;
-        $client = new ClientImpl($this->options);
+        $client = new ClientImpl($this->options());
         $loop = Factory::create();
         $client->registerEventListener(function (EventMessage $event) {
             $response = $this->prepareResponse($event->getKeys());
@@ -383,7 +387,7 @@ class AmiController extends Controller
     public function test_ami()
     {   
         $retries = 3;
-        $client = new ClientImpl($this->options);
+        $client = new ClientImpl($this->options());
         $loop = Factory::create();
         $client->registerEventListener(function (EventMessage $event) {
             $response = $this->prepareResponse($event->getKeys());
@@ -419,7 +423,7 @@ class AmiController extends Controller
             $action->setMessage($message);
             $action->setUniqueId($uniqueid);
 
-            $manager = new ClientImpl($this->options);
+            $manager = new ClientImpl($this->options());
 
             $manager->open();
             $response = $manager->send($action);

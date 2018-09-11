@@ -611,10 +611,10 @@ $(document).ready(function() {
 //     		console.log(event);
 //     	}
 
-	Echo.channel(`agent.connect.` + user_extension)
-		.listen('AgentConnectedEvent', (e) => {
-			console.log(e);
-		});
+	// Echo.channel(`agent.connect.` + user_extension)
+	// 	.listen('AgentConnectedEvent', (e) => {
+	// 		console.log(e);
+	// 	});
 
 	// End Websocket
 

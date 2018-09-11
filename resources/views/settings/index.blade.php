@@ -34,7 +34,7 @@
 						<div class="form-control-feedback">{{ $errors->first('port') }}</div>
 					@endif
 				</div>
-				<div class="form-group m-form__group {{ $errors->has('port') ? 'has-danger' : '' }}">
+				<div class="form-group m-form__group {{ $errors->has('username') ? 'has-danger' : '' }}">
 					{!! Form::label('username', 'Username') !!}
 					{!! Form::text('username', Setting::get('username'), ['class' => 'form-control m-input']) !!}
 					@if($errors->has('username'))
@@ -46,6 +46,20 @@
 					{!! Form::text('secret', Setting::get('secret'), ['class' => 'form-control m-input']) !!}
 					@if($errors->has('secret'))
 						<div class="form-control-feedback">{{ $errors->first('secret') }}</div>
+					@endif
+				</div>
+				<div class="form-group m-form__group {{ $errors->has('wallboard_username') ? 'has-danger' : '' }}">
+					{!! Form::label('wallboard_username', 'Wallboard Username') !!}
+					{!! Form::text('wallboard_username', Setting::get('wallboard_username'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('wallboard_username'))
+						<div class="form-control-feedback">{{ $errors->first('wallboard_username') }}</div>
+					@endif
+				</div>
+				<div class="form-group m-form__group {{ $errors->has('wallboard_secret') ? 'has-danger' : '' }}">
+					{!! Form::label('wallboard_secret', 'Wallboard Secret') !!}
+					{!! Form::text('wallboard_secret', Setting::get('wallboard_secret'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('wallboard_secret'))
+						<div class="form-control-feedback">{{ $errors->first('wallboard_secret') }}</div>
 					@endif
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('connect_timeout') ? 'has-danger' : '' }}">
