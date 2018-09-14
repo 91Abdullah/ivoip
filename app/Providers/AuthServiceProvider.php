@@ -40,5 +40,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("is-outbound", function ($user) {
             return $user->isOutbound();
         });
+
+        Gate::define("is-supervisor", function ($user) {
+            return $user->isSupervisor();
+        });
     }
 }

@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 
-	let currentMode = 'inbound';
+	let currentMode = 'supervisor';
 	const mode_status = document.getElementById("mode_status");
 	const ready_btn = document.getElementById("ready_btn");
 	const not_ready_btn = document.getElementById("not_ready_btn");
@@ -13,6 +13,13 @@ $(document).ready(function() {
 	const outbound_number = document.getElementById("outbound_number");
 	const outcall_dial = document.getElementById("outcall_dial");
 	const history_call_parent = document.getElementById("history_call_parent");
+	const supervisor_mode = document.getElementById("supervisor_mode");
+	const calls_tab = document.getElementById('m_portlet_tab_1_2');
+	const agents_tab = document.getElementById('m_portlet_tab_1_3');
+	const refresh_agents = document.getElementById('refresh_agents');
+	const refresh_calls = document.getElementById('refresh_calls');
+	let cTable = undefined;
+	let qTable = undefined;
 
 	let didCallAnswered = false;
 
@@ -197,7 +204,7 @@ $(document).ready(function() {
 			_token: token,
 			agent: agent_interface
 		}).then((response) => {
-			uniqueId.push(response.data);
+			callId.push(response.data);
 			toastr.success("Call ID retrieved from server: " + response.data);
 		}).catch((error) => {
 			toastr.error("Error in sending request to server. Please contact application administrator. message: " + error);
@@ -452,7 +459,6 @@ $(document).ready(function() {
 
 	function showOutWorkcodes()
 	{
-
 		swal({
 			type: 'question',
 			title: 'Select Workcode',
@@ -470,16 +476,14 @@ $(document).ready(function() {
 		});
 	}
 
-	async function submitWorkcode(workcode, uniqueid)
+	async function submitOutWorkcode(workcode, uniqueid)
 	{
 		// let workcode = workcode;
 		// let uniqueid = uniqueid;
-		let queue = forQueue;
 		let agent = user_name;
 
-		await axios.post(url_workcode, {
+		await axios.post(url_outworkcode, {
 			agent: agent,
-			queue: queue,
 			uniqueid: uniqueid,
 			workcode: workcode
 		}).then((response) => {
@@ -490,14 +494,16 @@ $(document).ready(function() {
 		});
 	}
 
-	async function submitOutWorkcode(workcode, uniqueid)
+	async function submitWorkcode(workcode, uniqueid)
 	{
 		// let workcode = workcode;
 		// let uniqueid = uniqueid;
+		let queue = forQueue;
 		let agent = user_name;
 
-		await axios.post(url_outworkcode, {
+		await axios.post(url_workcode, {
 			agent: agent,
+			queue: queue,
 			uniqueid: uniqueid,
 			workcode: workcode
 		}).then((response) => {
@@ -572,7 +578,8 @@ $(document).ready(function() {
             input: 'radio',
             inputOptions: {
             	'inbound': 'Inbound',
-            	'outbound': 'Outbound'
+            	'outbound': 'Outbound',
+            	'supervisor': 'Supervisor'
             },
             inputValue: mode,
             confirmButtonText: "Submit",
@@ -592,6 +599,7 @@ $(document).ready(function() {
 			switch(data.value) {
 				case 'inbound':
 					for (var i = queues.length - 1; i >= 0; i--) {
+						login(queues[i], user_name, user_extension);
 						unpause(queues[i], user_extension, "Outbound-End");
 					}
 					showInboundMode();
@@ -604,10 +612,42 @@ $(document).ready(function() {
 					showOutboundMode();
 					currentMode = data.value;
 					break;
+				case 'supervisor':
+					for (var i = queues.length - 1; i >= 0; i--) {
+						logout(queues[i], user_name, user_extension);
+					}
+					showSupervisorMode();
+					break;
 				default:
 					break;
 			}
 		}
+	}
+
+	function hideOutboundMode()
+	{
+		outcall_dialer.style.display = "none";
+		history_call_parent.style.display = "none";
+	}
+
+	function hideInboundMode()
+	{
+		ready_btn.style.display = "none";
+		not_ready_btn.style.display = "none";
+	}
+
+	function hideSupervisorMode()
+	{
+		supervisor_mode.style.display = "none";
+	}
+
+	function showSupervisorMode()
+	{
+		supervisor_mode.style.display = "flex";
+		mode_status.innerHTML = "Supervisor";
+		processSupervisor();
+		hideInboundMode();
+		hideOutboundMode();
 	}
 
 	function showInboundMode()
@@ -617,6 +657,9 @@ $(document).ready(function() {
 		not_ready_btn.style.display = "flex";
 		outcall_dialer.style.display = "none";
 		history_call_parent.style.display = "none";
+		hideSupervisorMode();
+		hideOutboundMode();
+		processInboundMode();
 	}
 
 	function showOutboundMode()
@@ -626,6 +669,222 @@ $(document).ready(function() {
 		not_ready_btn.style.display = "none";
 		outcall_dialer.style.display = "flex";
 		history_call_parent.style.display = "flex";
+		hideSupervisorMode();
+		hideInboundMode();
+		processOutboundMode();
+	}
+
+	function processOutboundMode()
+	{
+
+	}
+
+	function processInboundMode()
+	{
+
+	}
+
+	function processSupervisor()
+	{
+		for (var i = queues.length - 1; i >= 0; i--) {
+			logout(queues[i], user_name, user_extension);
+		}
+		
+		getAgents();
+		getChannels();
+	}
+
+	function getAgents()
+	{
+		if($.fn.dataTable.isDataTable('#table_queues')) {
+			qTable.destroy();
+		}
+
+		qTable = $("#table_queues").DataTable({
+			ajax: url_supervisor_agents,
+			paging: false,
+			searching: false,
+			responsive: true,
+			processing: true,
+			serverSide: true,
+			info: false,
+			columns: [
+				{data: 'queue', name: 'queue'},
+				{data: 'name', name: 'name'},
+				{data: 'stateinterface', name: 'stateinterface'},
+				{data: 'callstaken', name: 'callstaken'},
+				{data: 'lastcall', name: 'lastcall'},
+				{data: 'lastpause', name: 'lastpause'},
+				{data: 'incall', name: 'incall'},
+				{data: 'status', name: 'status'},
+				{data: 'paused', name: 'paused'},
+				{data: 'pausedreason', name: 'pausedreason'},
+				{data: null, name: 'logout', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					console.log(sData, oData);
+			        $(nTd).html("<button data-queue='" + sData.queue + "' data-name='" + sData.name + "' data-interface=" + sData.stateinterface + " class='agents_logout btn btn-danger'>Logout</button>");
+			    }},
+			    {data: null, name: 'notready', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					console.log(sData, oData);
+			        $(nTd).html("<button data-pause='" + sData.paused + "' data-queue='" + sData.queue + "' data-name='" + sData.name + "' data-interface=" + sData.stateinterface + " class='agents_notready btn btn-info'>Not-Ready</button>");
+			    }},
+			],
+			initComplete: dataTableCompleteCallback
+		});
+
+	}
+
+	function getChannels()
+	{
+		if($.fn.dataTable.isDataTable('#table_calls')) {
+			cTable.destroy();
+		}
+
+		cTable = $("#table_calls").DataTable({
+			ajax: url_supervisor_calls,
+			paging: false,
+			searching: false,
+			responsive: true,
+			processing: true,
+			serverSide: true,
+			info: false,
+			columns: [
+				{data: 'channel', name: 'channel'},
+				{data: 'channelstate', name: 'channelstate'},
+				{data: 'channelstatedesc', name: 'channelstatedesc'},
+				{data: 'calleridnum', name: 'calleridnum'},
+				{data: 'calleridname', name: 'calleridname'},
+				{data: 'connectedlinenum', name: 'connectedlinenum'},
+				{data: null, name: 'spy', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					console.log(sData, oData);
+			        $(nTd).html("<button data-app='spy' data-channel='" + sData.channel + "' class='chan_spy btn btn-success'>Spy</button>");
+			    }},
+			    {data: null, name: 'whisper', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					console.log(sData, oData);
+			        $(nTd).html("<button data-app='whisper' data-channel='" + sData.channel + "' class='chan_whisper btn btn-info'>Whisper</button>");
+			    }},
+			    {data: null, name: 'barge', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+					console.log(sData, oData);
+			        $(nTd).html("<button data-app='barge' data-channel='" + sData.channel + "' class='chan_barge btn btn-danger'>Barge</button>");
+			    }},
+				{data: 'connectedlinename', name: 'connectedlinename'},
+				{data: 'exten', name: 'exten'},
+				{data: 'application', name: 'application'},
+				{data: 'applicationdata', name: 'applicationdata'},
+				{data: 'duration', name: 'duration'},
+			],
+			initComplete: dataTableCallsCompleteCallback
+		});
+	}
+
+	function dataTableCompleteCallback(settings, json)
+	{
+		let not_readies = document.getElementsByClassName('agents_notready');
+		let logouts = document.getElementsByClassName('agents_logout');
+
+		for (var i = not_readies.length - 1; i >= 0; i--) {
+			not_readies[i].addEventListener('click', agentsNotReadyCallback);
+		}
+
+		for (var i = logouts.length - 1; i >= 0; i--) {
+			logouts[i].addEventListener('click', agentsLogoutCallback);
+		}
+	}
+
+	function dataTableCallsCompleteCallback(settings, json)
+	{
+		let chan_spies = document.getElementsByClassName('chan_spy');
+		let chan_whispers = document.getElementsByClassName('chan_whisper');
+		let chan_barges = document.getElementsByClassName('chan_barge');
+
+		for (var i = chan_spies.length - 1; i >= 0; i--) {
+			chan_spies[i].addEventListener('click', chanSpyCallback);
+		}
+
+		for (var i = chan_whispers.length - 1; i >= 0; i--) {
+			chan_whispers[i].addEventListener('click', chanSpyCallback);
+		}
+
+		for (var i = chan_barges.length - 1; i >= 0; i--) {
+			chan_barges[i].addEventListener('click', chanSpyCallback);
+		}
+	}
+
+	function chanSpyCallback(event)
+	{
+		let app = event.target.dataset.app;
+		let channel = event.target.dataset.channel;
+		let options = 'q';
+
+		switch(app) {
+			case 'spy':
+				options = 'q';
+				break;
+			case 'whisper':
+				options = 'qw';
+				break;
+			case 'barge':
+				options = 'qB';
+				break;
+			default:
+				break;
+		}
+		console.log(channel, user_extension, options);
+
+		axios.post(url_supervisor_spy, {
+			channel: channel,
+			options: options,
+			extension: user_extension
+		}).then((response) => {
+			console.log(response);
+			toastr.success(response.data);
+		}).catch((error) => {
+			toastr.error(error.response.data);
+		});
+	}
+
+	function agentsNotReadyCallback(event)
+	{
+		let queue = event.target.dataset.queue;
+		let _interface = event.target.dataset.interface.split("/")[1];
+		let name = event.target.dataset.name;
+		let paused = event.target.dataset.pause;
+
+		if(paused == 1 || paused == "1") {
+			toastr.error("Agent is already in not ready state.");
+			return;
+		}
+
+		axios.post(url_pause, {
+			queue: queue,
+			reason: "Supervisor",
+			agent_interface: _interface
+		}).then((response) => {
+			toastr.success("Agent: " + _interface + " has been paused in queue: " + queue);
+		}).catch((error) => {
+			toastr.error("Error in send request to server. Please contact application administrator. message: " + error.message);
+		});
+	}
+
+	function agentsLogoutCallback(event)
+	{
+		let queue = event.target.dataset.queue;
+		let _interface = event.target.dataset.interface.split("/")[1];
+		let name = event.target.dataset.name;
+
+		axios.post(url_logout, {
+			queue: queue,
+			agent_name: name,
+			agent_interface: _interface
+		}).then((response) => {
+			toastr.success("Agent: " + _interface + " has been logged out from queue: " + queue);
+		}).catch((error) => {
+			toastr.error("Error in send request to server. Please contact application administrator. message: " + error.message);
+		});
+	}
+
+	function processError(error)
+	{
+		toastr.error("Error", "Error sending request to server. Message: " + error);
 	}
 
 	function checkMode(reason)
@@ -653,6 +912,24 @@ $(document).ready(function() {
 		listElem.append(elem);
 		parent.append(listElem);
 		elem.addEventListener("click", processHistoryCalling);
+	}
+
+	function processPause(e) {
+		const reason = e.target.dataset.reason;
+		for (var i = queues.length - 1; i >= 0; i--) {
+			let data = {
+				_token: token,
+				agent_interface: user_extension,
+				queue: queues[i]
+			};
+			makeAjaxCall(url_status, data, function(result, status, xhr) {
+				if(result.paused == 1) {
+					toastr.warning("You are already in 'Not Ready' state in all queues!")
+				} else {
+					pause(queues[i], user_extension, reason);
+				}
+			});
+		}
 	}
 
 	// Outbound Methods
@@ -825,11 +1102,11 @@ $(document).ready(function() {
 
 				timer.stop();
 
-				document.getElementById("outcall_dialer").style.display = "flex";
+				document.getElementById("outcall_dialer").style.display = "block";
 
 				document.getElementById("incall_info").style.display = "none";
 				document.getElementById("incall_controls").style.display = "none";
-				
+
 				$("#m_incoming_call").modal('hide');
 
 				resetInCallControls();
@@ -839,6 +1116,7 @@ $(document).ready(function() {
 					ringBack.pause();
 
 				callConnected = false;
+				outbound_number.value = '';
 			});
 		}
 	}
@@ -913,23 +1191,7 @@ $(document).ready(function() {
 	document.getElementById("change_mode").onclick = showModes;
 
 	for (var i = pause_buttons.length - 1; i >= 0; i--) {
-		pause_buttons[i].onclick = function(e) {
-			const reason = e.target.dataset.reason;
-			for (var i = queues.length - 1; i >= 0; i--) {
-				let data = {
-					_token: token,
-					agent_interface: user_extension,
-					queue: queues[i]
-				};
-				makeAjaxCall(url_status, data, function(result, status, xhr) {
-					if(result.paused == 1) {
-						toastr.warning("You are already in 'Not Ready' state in all queues!")
-					} else {
-						pause(queues[i], user_extension, reason);
-					}
-				});
-			}
-		}
+		pause_buttons[i].onclick = processPause;
 	}
 
 	for (var i = history_calling.length - 1; i >= 0; i--) {
@@ -962,13 +1224,12 @@ $(document).ready(function() {
 		user_agent.stop();
 	};
 
+	refresh_agents.onclick = getAgents;
+	refresh_calls.onclick = getChannels;
+
 	user_agent.on("registered", function() {
 		changeDeviceStatus("Registered");
-		console.log(queues);
-		for (var i = queues.length - 1; i >= 0; i--) {
-			login(queues[i], user_name, user_extension);
-			// console.log(queues[i]);
-		}
+		showSupervisorMode();
 	});
 
 	user_agent.on("invite", function(session) {
@@ -1127,7 +1388,7 @@ $(document).ready(function() {
 
 			ring.pause();
 			timer.start();
-
+			
 			get_callid(user_extension);
 			get_queue(remoteNumber);
 
@@ -1145,26 +1406,21 @@ $(document).ready(function() {
 		session.on("bye", function(data) {
 			document.getElementById("incall_info").style.display = "none";
 			document.getElementById("incall_controls").style.display = "none";
-			showWorkcodes();
 		});
 
 		session.on("terminated", function(data) {
 
-			if(!ring.paused)
-				ring.pause();
-
 			timer.stop();
+			if(!ring.paused) {
+				ring.pause();
+			}
 
-			if(!document.getElementById("incall_info").classList.contains("invisible")) {
-				document.getElementById("incall_info").classList.add("invisible");
-			}
-			if(!document.getElementById("incall_controls").classList.contains("invisible")) {
-				document.getElementById("incall_controls").classList.add("invisible");
-			}
+			document.getElementById("incall_info").style.display = "none";
+			document.getElementById("incall_controls").style.display = "none";
 			$("#m_incoming_call").modal('hide');
 
 			resetInCallControls();
-			outbound_number.value = '';
+			showWorkcodes();
 		});
 
 	});

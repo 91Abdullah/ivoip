@@ -27,6 +27,17 @@
 		<link href="{{ asset('assets/demo/demo3/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
 		<link rel="shortcut icon" href="{{ asset('assets/demo/demo3/media/img/logo/favicon.ico') }}" />
+		<style type="text/css">
+			.m-widget1 .m-widget1__item .m-widget1__title {
+				font-size: 19px;
+			}
+			.la {
+				font-size: 20px;
+			}
+			.m-widget1 .m-widget1__item .m-widget1__number {
+				font-size: 22px;
+			}
+		</style>
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->
@@ -60,7 +71,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Calls</h3>
+														<h3 class="m-widget1__title"><i class="la la-phone"></i> Calls</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="calls" class="m-widget1__number m--font-primary">0</span>
@@ -70,7 +81,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Answered</h3>
+														<h3 class="m-widget1__title"><i class="la la-check"></i> Answered</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="answered" class="m-widget1__number m--font-primary">0</span>
@@ -84,7 +95,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Abandoned</h3>
+														<h3 class="m-widget1__title"><i class="la la-close"></i> Abandoned</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="abandoned" class="m-widget1__number m--font-success">0</span>
@@ -94,7 +105,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Avg Talk Time</h3>
+														<h3 class="m-widget1__title"><i class="la la-headphones"></i> Avg Talk Time</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="avg_talk_time" class="m-widget1__number m--font-success">0</span>
@@ -108,7 +119,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Avg Hold Time</h3>
+														<h3 class="m-widget1__title"><i class="la la-clock-o"></i> Avg Hold Time</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="avg_hold_time" class="m-widget1__number m--font-danger">0</span>
@@ -118,7 +129,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Service Level</h3>
+														<h3 class="m-widget1__title"><i class="la la-tachometer"></i> Service Level</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="service_lvl" class="m-widget1__number m--font-danger">0</span>
@@ -134,7 +145,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Logged In</h3>
+														<h3 class="m-widget1__title"><i class="la la-user"></i> Logged In</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="loggedin" class="m-widget1__number m--font-danger">0</span>
@@ -144,7 +155,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Available</h3>
+														<h3 class="m-widget1__title"><i class="la la-user-plus"></i> Available</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="available" class="m-widget1__number m--font-danger">0</span>
@@ -158,7 +169,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Max Wait Time</h3>
+														<h3 class="m-widget1__title"><i class="la la-hourglass-2"></i> Max Wait Time</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="max_wait_time" class="m-widget1__number m--font-danger">0</span>
@@ -168,7 +179,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Current Wait</h3>
+														<h3 class="m-widget1__title"><i class="la la-users"></i> Current Wait</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="current_wait" class="m-widget1__number m--font-danger">0</span>
@@ -182,7 +193,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Answer Rate</h3>
+														<h3 class="m-widget1__title"><i class="la la-check-circle"></i> Answer Rate</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="answer_rate" class="m-widget1__number m--font-danger">0</span>
@@ -192,7 +203,7 @@
 											<div class="m-widget1__item">
 												<div class="row m-row--no-padding align-items-center">
 													<div class="col">
-														<h3 class="m-widget1__title">Abandon Rate</h3>
+														<h3 class="m-widget1__title"><i class="la la-user-times"></i> Abandon Rate</h3>
 													</div>
 													<div class="col m--align-right">
 														<span id="abandon_rate" class="m-widget1__number m--font-danger">0</span>
@@ -240,14 +251,18 @@
 			let chartType = "bar";
 
 			$(document).ready(function(e) {
+				setInterval(sendCall, 2000);
+			});
+
+			function sendCall() {
 				axios.get(url)
 				.then(processResponse)
 				.then(loadChart)
 				.catch(processError);
-			});
+			}
 
 			function processResponse(response) {
-				console.log(response);
+				// console.log(response);
 				data1 = response.data[1];
 				data0 = response.data[0];
 
@@ -264,18 +279,20 @@
 				let answer_rate = document.getElementById("answer_rate");
 				let abandon_rate = document.getElementById("abandon_rate");
 
-				calls.innerHTML = data1.calls;
+				let totalCalls = parseInt(data1.completed) + parseInt(data1.abandoned);
+
+				calls.innerHTML = totalCalls;
 				answered.innerHTML = data1.completed;
 				abandoned.innerHTML = data1.abandoned;
 				avg_hold_time.innerHTML = data1.holdtime;
 				avg_talk_time.innerHTML = data0.talktime;
-				service_lvl.innerHTML = data1.servicelevelperf2;
+				service_lvl.innerHTML = data1.servicelevelperf2 + " %";
 				current_wait.innerHTML = data0.callers;
 				max_wait_time.innerHTML = data0.longestholdtime;
 				loggedin.innerHTML = data0.loggedin;
 				available.innerHTML = data0.available;
-				answer_rate.innerHTML = data1.calls == 0 ? 0 + " %" : data1.completed/data1.calls * 100 + " %";
-				abandon_rate.innerHTML = data1.calls == 0 ? 0 + " %" : data1.abandoned/data1.calls * 100 + " %";
+				answer_rate.innerHTML = totalCalls == 0 ? 0 + " %" : (data1.completed/totalCalls * 100).toFixed(2) + " %";
+				abandon_rate.innerHTML = totalCalls == 0 ? 0 + " %" : (data1.abandoned/totalCalls * 100).toFixed(2) + " %";
 				awr = data1.servicelevelperf2;
 			}
 
@@ -284,7 +301,8 @@
 				toastr.error(error);
 			}
 
-			function loadChart() {
+			function loadChart(response) {
+				// console.log(response);
 				ctxContainer.style.display = "block";
 				if(myChart == undefined) {
 					myChart = new Chart(ctx, {
@@ -293,7 +311,7 @@
 					        labels: ["Service Level"],
 					        datasets: [{
 					            label: '% Service Level',
-					            data: [20],
+					            data: [awr],
 					            backgroundColor: 'rgba(255, 99, 132, 0.2)',
 					            borderColor: 'rgba(255,99,132,1)',
 					            borderWidth: 1
@@ -313,53 +331,29 @@
 									scaleLabel: {
 										display: true,
 										labelString: 'Service Level'
-									}
+									},
+									ticks: {
+					                    beginAtZero:true,
+					                    min: 0,
+					                    max: 100
+					                }
 								}],
 					            yAxes: [{
 					            	display: true,
 					            	stacked: true,
 					                ticks: {
-					                    beginAtZero:true
+					                    beginAtZero:true,
+					                    min: 0,
+					                    max: 100
 					                }
 					            }]
 					        }
 					    }
 					});
-				} else {
-					myChart.destroy();
-					myChart = new Chart(ctx, {
-					    type: 'horizontalBar',
-					    data: {
-					        labels: ["Service Level"],
-					        datasets: [{
-					            label: '% Service Level',
-					            data: [20],
-					            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-					            borderColor: 'rgba(255,99,132,1)',
-					            borderWidth: 1
-					        }]
-					    },
-					    options: {
-					    	responsive: true,
-					        scales: {
-					        	xAxes: [{
-									display: false,
-									stacked: true,
-									scaleLabel: {
-										display: true,
-										labelString: 'Service Level'
-									}
-								}],
-					            yAxes: [{
-					            	display: false, // hides the vertical scale
-        							stacked: true, // stacks the bars on the y axi
-					                ticks: {
-					                    beginAtZero:true
-					                }
-					            }]
-					        }
-					    }
-					});
+				} else if(myChart.data.datasets[0].data[0] !== awr) {
+					// myChart.destroy();
+					myChart.data.datasets[0].data[0] = awr;
+					myChart.update();
 				}
 			}
 

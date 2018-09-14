@@ -1,7 +1,8 @@
 {
-    "/js/app.js": "/js/app.js",
     "/js/axios.js": "/js/axios.js",
+    "/js/app.js": "/js/app.js",
     "/js/agent.js": "/js/agent.js",
     "/js/outbound.js": "/js/outbound.js",
-    "/js/blended.js": "/js/blended.js"
+    "/js/blended.js": "/js/blended.js",
+    "/js/supervisor.js": "/js/supervisor.js"
 }

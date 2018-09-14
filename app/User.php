@@ -69,4 +69,11 @@ class User extends Authenticatable
             return true;
         else return false;
     }
+
+    public function isSupervisor()
+    {
+        if($this->roles->contains("name", "Supervisor"))
+            return true;
+        else return false;
+    }
 }

@@ -38,6 +38,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('roles', 'RoleController');
 	Route::resource('users', 'UserController');
 	Route::resource('agents', 'AgentController');
+	Route::resource('supervisors', 'SupervisorController');
 	Route::resource('outbound', 'OutboundAgentController');
 	Route::resource('blended', 'BlendedAgentController');
 	Route::resource('queues', 'QueueController');
@@ -100,6 +101,11 @@ Route::prefix('blended')->middleware(['auth', 'can:is-blended'])->group(function
 	Route::get('/', 'FrontBlendedController@index')->name('front.blended');
 });
 
+Route::prefix('supervisor')->middleware(['auth', 'can:is-supervisor'])->group(function () {
+	Route::get('/', 'FrontSupervisorController@index')->name('front.supervisor');
+});
+
+
 Route::prefix('manager')->middleware(['auth'])->group(function () {
 	Route::post('/login', 'AmiController@queue_login')->name('agent.login');
 	Route::post('/logout', 'AmiController@queue_logout')->name('agent.logout');
@@ -112,6 +118,11 @@ Route::prefix('manager')->middleware(['auth'])->group(function () {
 	Route::post('/outworkcode', 'AmiController@out_workcode')->name('agent.outworkcode');
 	Route::post('/hold', 'AmiController@agent_hold')->name('agent.hold');
 	Route::post('/unhold', 'AmiController@agent_unhold')->name('agent.unhold');
+
+	// Route::post('/supervisor_agents', 'AmiController@supervisor_agents')->name('supervisor.agents');
+	Route::get('/supervisor_agents', 'AmiController@supervisor_agents')->name('supervisor.agents');
+	Route::get('/supervisor_calls', 'AmiController@supervisor_calls')->name('supervisor.calls');
+	Route::post('/supervisor_spy', 'AmiController@supervisor_spy')->name('supervisor.spy');
 
 	Route::post('/getcallid', 'AmiController@get_callid')->name('get.callid');
 	Route::post('/getqueue', 'AmiController@get_queue')->name('get.queue');

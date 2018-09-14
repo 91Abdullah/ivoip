@@ -311,7 +311,7 @@ $(document).ready(function() {
 
 			let session = user_agent.invite(number.value, options);
 
-			console.log(session);
+			ringBack.play();
 
 			let remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
 
@@ -327,7 +327,7 @@ $(document).ready(function() {
 			timer.start();
 
 			document.getElementById("outcall_dialer").style.display = "none";
-			document.getElementById("incall_info").classList.remove("invisible");
+			document.getElementById("incall_info").style.display = "flex";
 
 
 			document.getElementById("call_number").innerHTML = remoteNumber;
@@ -452,37 +452,35 @@ $(document).ready(function() {
 			});
 
 			session.on("accepted", function(data) {
+				ringBack.pause();
 				callConnected = true;
 				get_callid(user_extension);
-				document.getElementById("incall_controls").classList.remove("invisible");
+				document.getElementById("incall_controls").style.display = "flex";
 			});
 
 			session.on("bye", function(data) {
-				document.getElementById("incall_info").classList.add("invisible");
-				document.getElementById("incall_controls").classList.add("invisible");
+				document.getElementById("incall_info").style.display = "none";
+				document.getElementById("incall_controls").style.display = "none";
+				showWorkcodes();
+
 			});
 
 			session.on("terminated", function(data) {
+				if(!ringBack.paused)
+					ringBack.pause();
 
 				timer.stop();
 
-				document.getElementById("outcall_dialer").style.display = "block";
+				document.getElementById("outcall_dialer").style.display = "flex";
 
-				if(!document.getElementById("incall_info").classList.contains("invisible")) {
-					document.getElementById("incall_info").classList.add("invisible");
-				}
-				if(!document.getElementById("incall_controls").classList.contains("invisible")) {
-					document.getElementById("incall_controls").classList.add("invisible");
-				}
+				document.getElementById("incall_info").style.display = "none";
+				document.getElementById("incall_controls").style.display = "none";
 				$("#m_incoming_call").modal('hide');
 
 				resetInCallControls();
 
-				if(callConnected) {
-					showWorkcodes();
-					outbound_number.value = '';
-					createHistoryElement(remoteNumber);
-				}
+				outbound_number.value = '';
+				createHistoryElement(remoteNumber);
 
 				callConnected = false;
 			});
@@ -654,8 +652,8 @@ $(document).ready(function() {
 			timer.start();
 
 			document.getElementById("outcall_dialer").style.display = "none";
-			document.getElementById("incall_info").classList.remove("invisible");
-			document.getElementById("incall_controls").classList.remove("invisible");
+			document.getElementById("incall_info").style.display = "flex";
+			document.getElementById("incall_controls").style.display = "flex";
 
 			document.getElementById("call_number").innerHTML = remoteNumber;
 			document.getElementById("incall_status_text").innerHTML = "INCALL";
@@ -664,22 +662,19 @@ $(document).ready(function() {
 		});
 
 		session.on("bye", function(data) {
-			document.getElementById("incall_info").classList.add("invisible");
-			document.getElementById("incall_controls").classList.add("invisible");
+			document.getElementById("incall_info").style.display = "none";
+			document.getElementById("incall_controls").style.display = "none";
 		});
 
 		session.on("terminated", function(data) {
 
 			timer.stop();
 
-			document.getElementById("outcall_dialer").style.display = "block";
+			document.getElementById("outcall_dialer").style.display = "flex";
 
-			if(!document.getElementById("incall_info").classList.contains("invisible")) {
-				document.getElementById("incall_info").classList.add("invisible");
-			}
-			if(!document.getElementById("incall_controls").classList.contains("invisible")) {
-				document.getElementById("incall_controls").classList.add("invisible");
-			}
+			document.getElementById("incall_info").style.display = "none";
+			document.getElementById("incall_controls").style.display = "none";
+
 			$("#m_incoming_call").modal('hide');
 
 			resetInCallControls();
@@ -691,7 +686,28 @@ $(document).ready(function() {
 		changeDeviceStatus("Offline");
 	});
 
-	
+	user_agent.transport.on("transportError", function(data) {
+		console.log(data);
+		swal({
+			titleText: "Add Exception",
+			text: "Please click following link and add exception to certificate authority",
+			type: "info",
+			backdrop: false,
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			allowEnterKey: false,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Click Here'
+		}).then((response) => {
+			if(response.value) {
+				window.open("https://" + server + ":8089/httpstatus", "_blank");
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+	});
 
 	document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
 

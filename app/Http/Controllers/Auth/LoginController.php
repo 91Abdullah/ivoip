@@ -55,6 +55,9 @@ class LoginController extends Controller
             case 'Blended':
                 $route = 'front.blended';
                 break;
+            case 'Supervisor':
+                $route = 'front.supervisor';
+                break;
             default:
                 abort(404);
                 break;

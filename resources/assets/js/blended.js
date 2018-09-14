@@ -197,7 +197,7 @@ $(document).ready(function() {
 			_token: token,
 			agent: agent_interface
 		}).then((response) => {
-			callId.push(response.data);
+			uniqueId.push(response.data);
 			toastr.success("Call ID retrieved from server: " + response.data);
 		}).catch((error) => {
 			toastr.error("Error in sending request to server. Please contact application administrator. message: " + error);
@@ -450,6 +450,26 @@ $(document).ready(function() {
 		});
 	}
 
+	function showOutWorkcodes()
+	{
+
+		swal({
+			type: 'question',
+			title: 'Select Workcode',
+			backdrop: false,
+			input: 'select',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			allowEnterKey: false,
+			showConfirmButton: true,
+			confirmButtonText: 'Submit',
+			inputOptions: workcodes
+		}).then((result) => {
+			let callid = uniqueId[uniqueId.length - 1];
+			submitOutWorkcode(result.value, callid);
+		});
+	}
+
 	async function submitWorkcode(workcode, uniqueid)
 	{
 		// let workcode = workcode;
@@ -460,6 +480,24 @@ $(document).ready(function() {
 		await axios.post(url_workcode, {
 			agent: agent,
 			queue: queue,
+			uniqueid: uniqueid,
+			workcode: workcode
+		}).then((response) => {
+			console.log(response);
+			toastr.success(response.data);
+		}).catch((error) => {
+			toastr.error(error);
+		});
+	}
+
+	async function submitOutWorkcode(workcode, uniqueid)
+	{
+		// let workcode = workcode;
+		// let uniqueid = uniqueid;
+		let agent = user_name;
+
+		await axios.post(url_outworkcode, {
+			agent: agent,
 			uniqueid: uniqueid,
 			workcode: workcode
 		}).then((response) => {
@@ -575,8 +613,8 @@ $(document).ready(function() {
 	function showInboundMode()
 	{
 		mode_status.innerHTML = "Inbound";
-		ready_btn.style.display = "block";
-		not_ready_btn.style.display = "block";
+		ready_btn.style.display = "flex";
+		not_ready_btn.style.display = "flex";
 		outcall_dialer.style.display = "none";
 		history_call_parent.style.display = "none";
 	}
@@ -586,8 +624,8 @@ $(document).ready(function() {
 		mode_status.innerHTML = "Outbound";
 		ready_btn.style.display = "none";
 		not_ready_btn.style.display = "none";
-		outcall_dialer.style.display = "block";
-		history_call_parent.style.display = "block";
+		outcall_dialer.style.display = "flex";
+		history_call_parent.style.display = "flex";
 	}
 
 	function checkMode(reason)
@@ -638,7 +676,7 @@ $(document).ready(function() {
 
 			let session = user_agent.invite(number.value, options);
 
-			console.log(session);
+			ringBack.play();
 
 			let remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
 
@@ -654,7 +692,7 @@ $(document).ready(function() {
 			timer.start();
 
 			document.getElementById("outcall_dialer").style.display = "none";
-			document.getElementById("incall_info").classList.remove("invisible");
+			document.getElementById("incall_info").style.display = "flex";
 
 
 			document.getElementById("call_number").innerHTML = remoteNumber;
@@ -771,38 +809,34 @@ $(document).ready(function() {
 			});
 
 			session.on("accepted", function(data) {
+				ringBack.pause();
 				callConnected = true;
 				get_callid(user_extension);
-				document.getElementById("incall_controls").classList.remove("invisible");
+				document.getElementById("incall_controls").style.display = "flex";
 			});
 
 			session.on("bye", function(data) {
-				document.getElementById("incall_info").classList.add("invisible");
-				document.getElementById("incall_controls").classList.add("invisible");
+				document.getElementById("incall_info").style.display = "none";
+				document.getElementById("incall_controls").style.display = "none";
+				showOutWorkcodes();
 			});
 
 			session.on("terminated", function(message, cause) {
 
 				timer.stop();
 
-				document.getElementById("outcall_dialer").style.display = "block";
+				document.getElementById("outcall_dialer").style.display = "flex";
 
-				if(!document.getElementById("incall_info").classList.contains("invisible")) {
-					document.getElementById("incall_info").classList.add("invisible");
-				}
-				if(!document.getElementById("incall_controls").classList.contains("invisible")) {
-					document.getElementById("incall_controls").classList.add("invisible");
-				}
+				document.getElementById("incall_info").style.display = "none";
+				document.getElementById("incall_controls").style.display = "none";
+				
 				$("#m_incoming_call").modal('hide');
 
 				resetInCallControls();
+				createHistoryElement(remoteNumber, cause);
 
-				if(callConnected) {
-					showWorkcodes();
-					createHistoryElement(remoteNumber, "ANSWERED");
-				} else {
-					console.log(message, cause);
-				}
+				if(!ringBack.paused)
+					ringBack.pause();
 
 				callConnected = false;
 			});
@@ -938,7 +972,7 @@ $(document).ready(function() {
 	});
 
 	user_agent.on("invite", function(session) {
-		console.log(session);
+		ring.play();
 
 		const remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
 
@@ -1091,6 +1125,7 @@ $(document).ready(function() {
 
 		session.on("accepted", function(data) {
 
+			ring.pause();
 			timer.start();
 
 			get_callid(user_extension);
@@ -1098,8 +1133,8 @@ $(document).ready(function() {
 
 			didCallAnswered = true;
 
-			document.getElementById("incall_info").classList.remove("invisible");
-			document.getElementById("incall_controls").classList.remove("invisible");
+			document.getElementById("incall_info").style.display = "flex";
+			document.getElementById("incall_controls").style.display = "flex";
 
 			document.getElementById("call_number").innerHTML = remoteNumber;
 			document.getElementById("incall_status_text").innerHTML = "INCALL";
@@ -1108,11 +1143,15 @@ $(document).ready(function() {
 		});
 
 		session.on("bye", function(data) {
-			document.getElementById("incall_info").classList.add("invisible");
-			document.getElementById("incall_controls").classList.add("invisible");
+			document.getElementById("incall_info").style.display = "none";
+			document.getElementById("incall_controls").style.display = "none";
+			showWorkcodes();
 		});
 
 		session.on("terminated", function(data) {
+
+			if(!ring.paused)
+				ring.pause();
 
 			timer.stop();
 
@@ -1125,7 +1164,6 @@ $(document).ready(function() {
 			$("#m_incoming_call").modal('hide');
 
 			resetInCallControls();
-			showWorkcodes();
 			outbound_number.value = '';
 		});
 
@@ -1160,7 +1198,7 @@ $(document).ready(function() {
 			confirmButtonText: 'Click Here'
 		}).then((response) => {
 			if(response.value) {
-				window.open("https://" + server + ":8089/ws", "_blank");
+				window.open("https://" + server + ":8089/httpstatus", "_blank");
 			}
 		}).catch((error) => {
 			console.log(error);

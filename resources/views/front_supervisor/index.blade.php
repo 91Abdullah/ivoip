@@ -1,6 +1,10 @@
 
 @extends('layouts.front_agent')
 
+@section('styles')
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.css"/>
+@endsection
+
 @section('content')
 
 	<div class="row">
@@ -92,6 +96,106 @@
 		</div>
 	</div>
 
+	<div class="row" style="display: none;" id="supervisor_mode">
+		<div class="col-lg-10 offset-lg-1">
+			<div class="m-portlet m-portlet--tabs m-portlet--skin-light">
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<span class="m-portlet__head-icon">
+								<i class="flaticon-statistics"></i>
+							</span>
+							<h3 class="m-portlet__head-text">
+								Supervisor Panel
+							</h3>
+						</div>			
+					</div>
+					<div class="m-portlet__head-tools">
+						<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
+							<li class="nav-item m-tabs__item">
+								<a class="nav-link m-tabs__link active show" data-toggle="tab" href="#m_portlet_tab_1_1" role="tab" aria-selected="true">
+									Calls
+								</a>
+							</li>
+							<li class="nav-item m-tabs__item">
+								<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_tab_1_2" role="tab" aria-selected="false">
+									Agents
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="m-portlet__body">
+					<div class="tab-content">
+						<div class="tab-pane active show" id="m_portlet_tab_1_1">
+							<div class="row">
+								<div class="col">
+									<button id="refresh_calls" class="btn btn-success float-right">Refresh</button>
+								</div>
+							</div>
+							<table id="table_calls" class="table m-table m-table--head-bg-primary">
+							  	<thead>
+							    	<tr>
+							      		<th>Channel</th>
+							      		<th>Chn State</th>
+							      		<th>Chn State Desc</th>
+							      		<th>Calleridnum</th>
+							      		<th>Calleridname</th>
+							      		<th>Connectedlinenum</th>
+							      		<th>Spy</th>
+							      		<th>Whisper</th>
+							      		<th>Barge</th>
+							      		<th>Connectedlinename</th>
+							      		<th>Exten</th>
+							      		<th>Application</th>
+							      		<th>Applicationdata</th>
+							      		<th>Duration</th>
+							    	</tr>
+							  	</thead>
+							  	<tbody>
+							    	<tr>
+							    		
+							    	</tr>
+							  	</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="m_portlet_tab_1_2">
+							<div class="row">
+								<div class="col">
+									<button id="refresh_agents" class="btn btn-primary float-right">Refresh</button>
+								</div>
+							</div>
+							<table id="table_queues" class="table m-table m-table--head-bg-success">
+							  	<thead>
+							    	<tr>
+							      		<th>Queue</th>
+							      		<th>Name</th>
+							      		<th>State Interface</th>
+							      		<th>Calls Taken</th>
+							      		<th>Last Call</th>
+							      		<th>Last Pause</th>
+							      		<th>In Call</th>
+							      		<th>Status</th>
+							      		<th>Paused</th>
+							      		<th>Paused Reason</th>
+							      		<th>Logout</th>
+							      		<th>Not Ready</th>
+							    	</tr>
+							  	</thead>
+							  	<tbody>
+							    	<tr>
+							    		
+							    	</tr>
+							  	</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="outcall_dialer" class="row" style="display: none;">
 		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
@@ -107,30 +211,6 @@
 					<div class="text-center">
 						<button id="outcall_dial" class="btn btn-danger">Call</button>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="row" id="history_call_parent" style="display: none;">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__head">
-					<div class="m-portlet__head-caption">
-						<div class="m-portlet__head-title">
-							<span class="m-portlet__head-icon">
-								<i class="flaticon-multimedia"></i>
-							</span>
-							<h3 class="m-portlet__head-text">
-								Call History
-							</h3>
-						</div>			
-					</div>
-				</div>
-				<div class="m-portlet__body">
-					<ul id="call_history">
-						
-					</ul>
 				</div>
 			</div>
 		</div>
@@ -159,7 +239,7 @@
 		</div>
 	</div>
 
-	<div id="incall_controls" class="row invisible">
+	<div id="incall_controls" class="row" style="display: none;">
 		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body m-portlet__body--no-padding">
@@ -201,6 +281,30 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="display: none;" class="row" id="history_call_parent">
+		<div class="col-lg-6 offset-lg-3">
+			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<span class="m-portlet__head-icon">
+								<i class="flaticon-multimedia"></i>
+							</span>
+							<h3 class="m-portlet__head-text">
+								Call History
+							</h3>
+						</div>			
+					</div>
+				</div>
+				<div class="m-portlet__body">
+					<ul id="call_history">
+						
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -273,6 +377,10 @@
 		const url_unhold = "{!! route('agent.unhold') !!}";
 
 		const url_outworkcode = "{{ route('agent.outworkcode') }}";
+
+		const url_supervisor_agents = "{!! route('supervisor.agents') !!}";
+		const url_supervisor_calls = "{!! route('supervisor.calls') !!}";
+		const url_supervisor_spy = "{!! route('supervisor.spy') !!}";
 		
 		const token = "{!! csrf_token() !!}";
 
@@ -284,5 +392,8 @@
 		let uniqueId = [];
 		let forQueue = undefined;
 	</script>
-	<script type="text/javascript" src="{{ asset('js/blended.js') }}"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.js"></script>
+	<script type="text/javascript" src="{{ asset('js/supervisor.js') }}"></script>
 @endpush

@@ -15,5 +15,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
 	.js('resources/assets/js/axios.js', 'public/js')
 	.copy('resources/assets/js/agent.js', 'public/js')
 	.copy('resources/assets/js/outbound.js', 'public/js')
-	.copy('resources/assets/js/blended.js', 'public/js');
+	.copy('resources/assets/js/blended.js', 'public/js')
+	.copy('resources/assets/js/supervisor.js', 'public/js');
    // .sass('resources/assets/sass/app.scss', 'public/css');

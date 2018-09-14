@@ -1,9 +1,10 @@
 <!-- BEGIN: Brand -->
-<div class="m-stack__item m-brand  m-brand--skin-dark ">
+<div class="m-stack__item m-brand  m-brand--skin-light">
 	<div class="m-stack m-stack--ver m-stack--general">
 		<div class="m-stack__item m-stack__item--middle m-stack__item--center m-brand__logo">
 			<div class="m-login__logo">
-				<h2 style="color: #5e5288;" class="m_login__title">IVOIP</h2>
+				<h2 style="color: #5e5288;" class="m_login__title">IVOIP<small style="font-size: 14px;">v2</small></h2>
+				<sub style="font-size: 15px; color: #5e5288;">beta</sub>
 			</div>
 		</div>
 		<div class="m-stack__item m-stack__item--middle m-brand__tools">

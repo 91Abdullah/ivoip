@@ -16,13 +16,18 @@ use PAMI\Message\Action\GetVarAction;
 use PAMI\Message\Action\StatusAction;
 use PAMI\Message\Action\CoreShowChannelsAction;
 use PAMI\Message\Action\AgentsAction;
+use PAMI\Message\Action\OriginateAction;
 use PAMI\Message\Event\EventMessage;
 use PAMI\Message\Event\AgentConnectEvent;
+use PAMI\Message\Event\QueueMemberEvent;
+use PAMI\Message\Event\CoreShowChannelEvent;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use React\EventLoop\Factory;
 use App\Events\AgentConnectedEvent;
 use Setting;
 use App\OutboundWorkcode;
+use Illuminate\Support\Collection;
+use DataTables;
 
 class AmiController extends Controller
 {
@@ -341,6 +346,69 @@ class AmiController extends Controller
             return response()->json("Caller put on unHold", 200);
         } catch (Exception $e) {
             return response()->json($e->getMessage(), 200);
+        }
+    }
+
+    public function supervisor_agents(Request $request)
+    {
+        $queue = $request->queue;
+        $action = new QueueStatusAction();
+        $manager = new ClientImpl($this->options());
+        $manager->open();
+        $response = $manager->send($action);
+        // sleep(2);
+        //$manager->close();
+        $events = collect($response->getEvents())
+        ->filter(function ($value, $key) {
+            return $value instanceof QueueMemberEvent;
+        })
+        ->map(function ($item, $key) {
+            return $item->getKeys();
+        });
+        
+        // return dd($events->all());
+        // return response()->json($events->all(), 200);
+        return DataTables::of($events->all())->toJson();
+    }
+
+    public function supervisor_calls(Request $request)
+    {
+        $action = new CoreShowChannelsAction();
+        $manager = new ClientImpl($this->options());
+        $manager->open();
+        $response = $manager->send($action);
+        // sleep(2);
+        //$manager->close();
+        $events = collect($response->getEvents())
+        ->filter(function ($value, $key) {
+            return $value instanceof CoreShowChannelEvent;
+        })
+        ->map(function ($item, $key) {
+            return $item->getKeys();
+        });
+        
+        // return dd($events->all());
+        // return response()->json($events->all(), 200);
+        return DataTables::of($events->all())->toJson();
+    }
+
+    public function supervisor_spy(Request $request)
+    {
+        try {
+            $manager = new ClientImpl($this->options());
+            $action = new OriginateAction($this->technology . "/" . $request->extension);
+            $action->setApplication("ChanSpy");
+            $action->setData($request->channel . "," . $request->options);
+            $action->setTimeout(10000);
+            $action->setCallerID("Abdullah");
+            $action->setAsync(true);
+            $manager->open();
+            $response = $manager->send($action);
+            $manager->close();
+            // return dd($response);
+            return response()->json($response, 200);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 

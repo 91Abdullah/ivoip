@@ -170,6 +170,7 @@
 
 	<audio id="remoteAudio"></audio>
     <audio id="localAudio" muted="muted"></audio>
+    <audio id="incomingRing" loop="loop" src="{{ asset("storage/home.wav") }}"></audio>
 
 
 	<!--begin::Modal-->
@@ -209,6 +210,8 @@
 		// "use strict";
 
 		// Important variables
+
+		const ring = document.getElementById("incomingRing");
 
 		const user_extension = "{!! $user->extension !!}";
 		const user_name = "{!! $user->name !!}";
