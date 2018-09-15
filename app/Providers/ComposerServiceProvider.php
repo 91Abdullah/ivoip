@@ -22,8 +22,8 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('dashboard.index', function ($view) {
-
-            $date = Carbon::parse("2018-08-15");
+            // $date = Carbon::parse("2018-08-15");
+            $date = Carbon::now();
             $totalCalls = QueueLog::whereDate("created", $date->format("Y-m-d"))
             ->whereIn("event", ["ENTERQUEUE"])
             ->get()
