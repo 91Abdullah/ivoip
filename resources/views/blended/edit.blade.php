@@ -36,14 +36,14 @@
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('password') ? 'has-danger' : '' }}">
 					{!! Form::label('password', 'Password') !!}
-					{!! Form::password('password', ['class' => 'form-control m-input', 'required' => true]) !!}
+					{!! Form::password('password', ['class' => 'form-control m-input', 'required' => false]) !!}
 					@if($errors->has('password'))
 						<div class="form-control-feedback">{{ $errors->first('password') }}</div>
 					@endif
 				</div>
 				<div class="form-group m-form__group">
 					{!! Form::label('password_confirmation', 'Confirm Password') !!}
-					{!! Form::password('password_confirmation', ['class' => 'form-control m-input', 'required' => true]) !!}
+					{!! Form::password('password_confirmation', ['class' => 'form-control m-input', 'required' => false]) !!}
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('name') ? 'has-danger' : '' }}">
 					{!! Form::label('extension', 'Agent ID') !!}

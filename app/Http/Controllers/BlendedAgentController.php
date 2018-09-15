@@ -123,7 +123,7 @@ class BlendedAgentController extends Controller
      */
     public function update(Request $request, User $blended)
     {
-        if($request->has('password')) {
+        if(!empty($request->password)) {
             $request->validate([
                 'name' => 'string|max:255',
                 'email' => 'string|email|max:255|unique:users,email',
@@ -142,8 +142,8 @@ class BlendedAgentController extends Controller
         } else {
             $request->validate([
                 'name' => 'string|max:255',
-                'email' => 'string|email|max:255|unique:users,email',
-                'extension' => 'string|unique:users,extension',
+                'email' => 'string|email|max:255|unique:users,email,' . $blended->id,
+                'extension' => 'string|unique:users,extension,' . $blended->id,
                 'secret' => 'string'
             ]);
 
