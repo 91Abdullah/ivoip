@@ -23,8 +23,12 @@ class InitialTableSeeder extends Seeder
 	        ]
 	    );
 
-	    DB::table('roles')->insert(
+	    $data = [
 	    	['name' => 'Agent'], ['name' => 'Reporter'], ['name' => 'Blended'], ['name' => 'Supervisor'], ['name' => 'Outbound']
+	    ];
+
+	    DB::table('roles')->insert(
+	    	$data
 	    );
     }
 }
