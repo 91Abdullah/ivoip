@@ -24,11 +24,18 @@ class InitialTableSeeder extends Seeder
 	    );
 
 	    $data = [
-	    	['name' => 'Agent'], ['name' => 'Reporter'], ['name' => 'Blended'], ['name' => 'Supervisor'], ['name' => 'Outbound']
+	    	['name' => 'Agent'], ['name' => 'Reporter'], ['name' => 'Supervisor'], ['name' => 'Outbound'], ['name' => 'Blended']
 	    ];
 
 	    DB::table('roles')->insert(
 	    	$data
+	    );
+
+	    DB::table('role_user')->insert(
+	    	[
+	    		'user_id' => 1,
+	    		'role_id' => 2
+	    	]
 	    );
     }
 }
