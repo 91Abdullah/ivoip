@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Setting;
 
 class InitialTableSeeder extends Seeder
 {
@@ -37,5 +38,13 @@ class InitialTableSeeder extends Seeder
 	    		'role_id' => 2
 	    	]
 	    );
+
+	    $request = ['127.0.0.1', 5038, 'manager_application', 'abdullah', 20, 100, 'app_wallboard', 'abdullah'];
+
+	    $settings = ['host', 'port', 'username', 'secret', 'connect_timeout', 'read_timeout', 'wallboard_username', 'wallboard_secret'];
+
+    	foreach ($settings as $key => $value) {
+    		Setting::set($value, $request[$value]); 
+    	}
     }
 }
