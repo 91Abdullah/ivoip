@@ -865,6 +865,9 @@ $(document).ready(function() {
 
 		session.on("accepted", function(data) {
 
+			// console.log(remoteNumber);
+			// console.log(data);
+
 			ring.pause();
 			timer.start();
 

@@ -202,6 +202,8 @@ class AmiController extends Controller
             $queue = null;
             $keys = null;
 
+            // return dd($response->getEvents());
+
             foreach ($response->getEvents() as $key => $value) {
                 // return dd(get_class($value));
                 if(get_class($value) == "PAMI\Message\Event\CoreShowChannelEvent") {
@@ -209,7 +211,7 @@ class AmiController extends Controller
                     // return $keys;
                     //preg_match('/"'.preg_quote("PJSIP/1001", "/").'"/', $keys["channel"], $match);
                     // return dd($keys["channel"]);
-                    if($keys["application"] == "Queue" && $keys["calleridnum"] == $connected) {
+                    if($keys["application"] == "Queue" && $keys["calleridnum"] == $connected || $keys["calleridname"] == $connected) {
                         $queue = $keys["applicationdata"];
                     }
                 }

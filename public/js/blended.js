@@ -974,10 +974,14 @@ $(document).ready(function() {
 	user_agent.on("invite", function(session) {
 		ring.play();
 
-		const remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
+		let remoteNumber = session.remoteIdentity.displayName == undefined ? session.remoteIdentity.friendlyName : session.remoteIdentity.displayName;
 
 		const remoteAudio = document.getElementById("remoteAudio");
 		const localAudio = document.getElementById("localAudio");
+
+		if(remoteNumber.indexOf('@') > -1) {
+			remoteNumber = remoteNumber.split("@")[0];
+		}
 
 		document.getElementById("m_incoming_call_number").innerHTML = remoteNumber;
 
@@ -1155,12 +1159,9 @@ $(document).ready(function() {
 
 			timer.stop();
 
-			if(!document.getElementById("incall_info").classList.contains("invisible")) {
-				document.getElementById("incall_info").classList.add("invisible");
-			}
-			if(!document.getElementById("incall_controls").classList.contains("invisible")) {
-				document.getElementById("incall_controls").classList.add("invisible");
-			}
+			document.getElementById("incall_info").style.display = "none";
+			document.getElementById("incall_controls").style.display = "none";
+
 			$("#m_incoming_call").modal('hide');
 
 			resetInCallControls();

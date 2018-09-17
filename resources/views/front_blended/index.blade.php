@@ -112,30 +112,6 @@
 		</div>
 	</div>
 
-	<div class="row" id="history_call_parent" style="display: none;">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__head">
-					<div class="m-portlet__head-caption">
-						<div class="m-portlet__head-title">
-							<span class="m-portlet__head-icon">
-								<i class="flaticon-multimedia"></i>
-							</span>
-							<h3 class="m-portlet__head-text">
-								Call History
-							</h3>
-						</div>			
-					</div>
-				</div>
-				<div class="m-portlet__body">
-					<ul id="call_history">
-						
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<div id="incall_info" class="row" style="display: none;">
 		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
@@ -159,7 +135,7 @@
 		</div>
 	</div>
 
-	<div id="incall_controls" class="row invisible">
+	<div id="incall_controls" class="row" style="display: none;">
 		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body m-portlet__body--no-padding">
@@ -201,6 +177,30 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" id="history_call_parent" style="display: none;">
+		<div class="col-lg-6 offset-lg-3">
+			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<span class="m-portlet__head-icon">
+								<i class="flaticon-multimedia"></i>
+							</span>
+							<h3 class="m-portlet__head-text">
+								Call History
+							</h3>
+						</div>			
+					</div>
+				</div>
+				<div class="m-portlet__body">
+					<ul id="call_history">
+						
+					</ul>
 				</div>
 			</div>
 		</div>
