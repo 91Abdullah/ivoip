@@ -35,7 +35,8 @@ class RecordingsController extends Controller
     			"end" => $value->end,
     			"duration" => $value->billsec,
     			"uniqueid" => $value->uniqueid,
-    			"link" => $value->uniqueid . ".wav"
+                "play" => $value->uniqueid . ".wav",
+                "link" => $value->uniqueid . ".wav"
     		]);
     	}
 
@@ -47,5 +48,10 @@ class RecordingsController extends Controller
     {
     	$spath = "/var/spool/asterisk/monitor/";
     	return Storage::disk('recording')->download($path);
+    }
+    
+    public function playFile($file)
+    {
+        return Storage::disk('recording')->url($file);
     }
 }

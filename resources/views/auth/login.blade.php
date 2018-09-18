@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			iVoIP Contact Center
+			{{ config('app.name') }}
 		</title>
-		<meta name="description" content="iVoIP Contact Center">
+		<meta name="description" content="config('app.name')">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<!--begin::Web font -->
@@ -36,7 +36,7 @@
 				<div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
-							<h2 style="color: #5e5288;" class="m_login__title">iVoIP Contact Center</h2>
+							<h2 style="color: #5e5288;" class="m_login__title">{{ config('app.name') }}</h2>
 						</div>
 						<div class="m-login__signin">
 							<div class="m-login__head">

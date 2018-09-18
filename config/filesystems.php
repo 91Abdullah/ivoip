@@ -57,7 +57,13 @@ return [
 
         'recording' => [
             'driver' => 'local',
-            'root' => '/var/spool/asterisk/monitor/',
+            'root' => '/var/spool/asterisk/monitor',
+            'visibility' => 'public'
+        ],
+
+        'system_recording' => [
+            'driver' => 'local',
+            'root' => '/var/lib/asterisk/sounds',
             'visibility' => 'public'
         ],
 

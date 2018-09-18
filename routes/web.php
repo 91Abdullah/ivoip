@@ -33,9 +33,10 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
 	Route::view('recordings', 'recordings.index')->name('recordings');
 	Route::get('recordingsData', 'RecordingsController@getRecordings')->name('recordings.get');
-	Route::get('downloadRecording/{$path}', 'RecordingsController@downloadFile')->name('download.file');
+	Route::get('download/{file}', 'RecordingsController@downloadFile')->name('download.file');
+	Route::get('play/{file}', 'RecordingsController@downloadFile')->name('play.file');
 	
-	Route::resource('roles', 'RoleController');
+	Route::resource('roles', 'RoleController')->except(['create', 'store', 'update', 'destroy', 'edit']);
 	Route::resource('users', 'UserController');
 	Route::resource('agents', 'AgentController');
 	Route::resource('supervisors', 'SupervisorController');
@@ -44,6 +45,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('queues', 'QueueController');
 	Route::resource('workcodes', 'WorkcodeController');
 	Route::resource('breaks', 'AgentBreakController');
+	Route::resource('system_recordings', 'SystemRecordingController');
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');

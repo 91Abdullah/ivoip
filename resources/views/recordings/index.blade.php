@@ -123,8 +123,8 @@
 		            {data: 'start', name: 'start'},
 		            {data: 'end', name: 'end'},
 		            {data: 'duration', name: 'duration'},
-		            {data: 'link', name: 'link', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-			            $(nTd).html("<a href='downloadRecording/"+sData+"'>Download</a>");
+		            {data: 'play', name: 'play', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+			            $(nTd).html("<audio controls><source src='play/" + sData + "'>Your browser does not support the audio element.</audio>");
 			        }}
 		        ]
 		    });
