@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<!--begin::Form-->
-		{!! Form::open(['action' => 'SystemRecordingController@store', 'method' => 'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
+		{!! Form::open(['action' => 'SystemRecordingController@store', 'method' => 'POST', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state', 'files' => true]) !!}
 			<div class="m-portlet__body">
 				<div class="form-group m-form__group {{ $errors->has('name') ? 'has-danger' : '' }}">
 					{!! Form::label('name', 'Name') !!}
@@ -28,7 +28,7 @@
 					@endif
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('file') ? 'has-danger' : '' }}">
-					{!! Form::file('file', old('file'), ['class' => 'form-control m-input']) !!}
+					{!! Form::file('file') !!}
 					@if($errors->has('file'))
 						<div class="form-control-feedback">{{ $errors->first('file') }}</div>
 					@endif
