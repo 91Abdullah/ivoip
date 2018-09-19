@@ -850,7 +850,7 @@ $(document).ready(function() {
 	// START UA Methods
 
 	const user_agent = new SIP.UA({
-		uri: user_extension + '@' + server,
+		uri: user_extension + '@' + server + ':5061',
 		transportOptions: {
 			wsServers: ['wss://' + server + ':8089/ws'],
 			traceSip: false

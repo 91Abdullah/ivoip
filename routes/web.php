@@ -46,6 +46,8 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('workcodes', 'WorkcodeController');
 	Route::resource('breaks', 'AgentBreakController');
 	Route::resource('system_recordings', 'SystemRecordingController');
+	Route::resource('announcements', 'AnnouncementController');
+	Route::resource('ivrs', 'IvrController');
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');
