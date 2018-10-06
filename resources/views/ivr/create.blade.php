@@ -83,6 +83,27 @@
 						<div class="form-control-feedback">{{ $errors->first('return_on_invalid') }}</div>
 					@endif
 				</div>
+				<div class="form-group m-form__group {{ $errors->has('invalid_recording') ? 'has-danger' : '' }}">
+					{!! Form::label('invalid_recording', 'Invalid Retry Recording') !!}
+					{!! Form::select('invalid_recording', array_change_key_case(array_merge(SystemRecording::pluck('name', 'name')->toArray(), ['none' => 'None', 'default' => 'Default']), CASE_LOWER), old('invalid_recording'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('invalid_recording'))
+						<div class="form-control-feedback">{{ $errors->first('invalid_recording') }}</div>
+					@endif
+				</div>
+				<div class="form-group m-form__group {{ $errors->has('invalid_destination') ? 'has-danger' : '' }}">
+					{!! Form::label('invalid_destination', 'Invalid Destination') !!}
+					{!! Form::select('invalid_destination', ['ivr' => 'IVR' , 'hangup' => 'Terminate Call', 'queue' => 'Queue', 'announcement' => 'Announcement'], old('invalid_recording'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('invalid_destination'))
+						<div class="form-control-feedback">{{ $errors->first('invalid_destination') }}</div>
+					@endif
+				</div>
+				<div class="form-group m-form__group {{ $errors->has('invalid_destination') ? 'has-danger' : '' }}">
+					{!! Form::label('invalid_destination', 'Invalid Destination') !!}
+					{!! Form::select('invalid_destination', ['disabled' => 'disabled', '0' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10'], old('invalid_recording'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('invalid_destination'))
+						<div class="form-control-feedback">{{ $errors->first('invalid_destination') }}</div>
+					@endif
+				</div>
 			</div>
 			<div class="m-portlet__foot m-portlet__foot--fit">
 				<div class="m-form__actions">

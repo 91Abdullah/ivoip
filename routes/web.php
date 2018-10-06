@@ -15,6 +15,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/pagi', 'PagiController@index');
+
 Route::view('/wallboard', 'wallboard.index');
 Route::get('/getStats', 'WallboardController@get')->name("wallboard.stats");
 
