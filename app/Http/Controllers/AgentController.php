@@ -166,7 +166,7 @@ class AgentController extends Controller
      */
     public function destroy(User $agent)
     {
-        $agent->destroy();
+        $agent->delete();
         return redirect()->action('AgentController@index');
     }
 }

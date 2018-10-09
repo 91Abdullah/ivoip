@@ -7,6 +7,7 @@ use PAMI\Message\Action\QueuesAction;
 use PAMI\Message\Action\QueueStatusAction;
 use PAMI\Message\Action\QueueSummaryAction;
 use PAMI\Client\Impl\ClientImpl;
+use PAMI\Client\Exception\ClientException;
 use Setting;
 
 class WallboardController extends Controller
@@ -32,7 +33,7 @@ class WallboardController extends Controller
     		// return dd($res1->getEvents())[0];
     		return response()->json([$res1->getEvents()[0]->getKeys(), $res2->getEvents()[0]->getKeys()], 200);
 
-    	} catch (Exception $e) {
+    	} catch (ClientException $e) {
     		return response()->json("Error fetching record from server.", 400);
     	}
     }

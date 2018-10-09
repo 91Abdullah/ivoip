@@ -162,7 +162,7 @@ class OutboundAgentController extends Controller
      */
     public function destroy(User $outbound)
     {
-        $outbound->destroy();
+        $outbound->delete();
         return redirect()->action('OutboundAgentController@index');
     }
 }

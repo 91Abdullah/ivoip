@@ -101,7 +101,7 @@
 			table = $('.table').DataTable({
 		        processing: true,
 		        serverSide: true,
-		        paging: false,
+		        paging: true,
 		        ajax: {
 		        	url: '{!! route('recordings.get') !!}',
 		        	type: 'GET',

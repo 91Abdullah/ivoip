@@ -166,7 +166,7 @@ class BlendedAgentController extends Controller
      */
     public function destroy(User $blended)
     {
-        $blended->destroy();
+        $blended->delete();
         return redirect()->action('BlendedAgentController@index');
     }
 }
