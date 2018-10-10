@@ -4,6 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Unisharp\Setting\Setting;
+use PAMI\Message\Action\QueueResetAction;
+use PAMI\Client\Impl\ClientImpl;
+use App\Queue;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,6 +30,32 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        if(Setting::get('reset_stats') == 'on') {
+            $schedule->call(function () {
+                $queues = Queue::all('name');
+                foreach ($queues as $queue) {
+                    $manager  = new ClientImpl($this->options());
+                    $manager->open();
+                    $action = new QueueResetAction($queue->name);
+                    $manager->send($action);
+                    $manager->close();
+                }
+            })->everyMinute();
+        }
+    }
+
+    private function options()
+    {
+        return $options = [
+            // 'host' => '192.168.1.109',
+            'host' => Setting::get('host'),
+            'port' => (int)Setting::get('port'),
+            'username' => Setting::get('username'),
+            'secret' => Setting::get('secret'),
+            'connect_timeout' => (int)Setting::get('connect_timeout'),
+            'read_timeout' => (int)Setting::get('read_timeout'),
+            'scheme' => 'tcp://' // try tls://
+        ];
     }
 
     /**

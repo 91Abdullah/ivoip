@@ -77,7 +77,7 @@
 					@endif
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('reset_stats') ? 'has-danger' : '' }}">
-					{!! Form::label('reset_stats', 'Reset Queue Stats', ['class' => 'col-form-label']) !!}
+					{!! Form::label('reset_stats', 'Reset Wallboard Stats', ['class' => 'col-form-label']) !!}
 					<div>
 						{!! Form::checkbox('reset_stats', Setting::get('reset_stats'), Setting::get('reset_stats') == null ? false : true, ['id' => 'reset_stats']) !!}
 						@if($errors->has('reset_stats'))
@@ -85,10 +85,9 @@
 						@endif
 					</div>
 				</div>
-                <div id="run_at_row" class="form-group m-form__group {{ $errors->has('run_at') ? 'has-danger' : '' }}" style="display: none">
-                    {!! Form::label('run_at', 'RUN', ['class' => 'col-form-label']) !!}
-                    Every {!! Form::select('run_at', ['hour', 'day', 'week', 'month', 'year'], Setting::get("run_at"),['id' => 'run_at']) !!}{!! Form::select('run_at_hours', array_map(function($value) { return sprintf('%02d', $value); }, range(00, 23, 1)), Setting::get("run_at_hours"),['id' => 'run_at_hours']) !!}{!! Form::select('run_at_minutes', array_map(function($value) { return sprintf('%02d', $value); }, range(00, 59, 1)), Setting::get("run_at_minutes"),['id' => 'run_at_minutes']) !!}
-                </div>
+				<div style="display: none;" id="run_at" class="form-group m-form__group">
+					<p>Wallboard stats will be reset at every night @ 11:59 PM</p>
+				</div>
 			</div>
 			<div class="m-portlet__foot m-portlet__foot--fit">
 				<div class="m-form__actions">
@@ -107,7 +106,7 @@
 	<script type="application/javascript">
 		$("input[type=checkbox]").bootstrapSwitch();
 		let resetStats = document.getElementById('reset_stats');
-		let run_at = document.getElementById('run_at_row');
+		let run_at = document.getElementById('run_at');
 
 		if(resetStats.checked) {
             run_at.style.display = "block";
@@ -115,11 +114,9 @@
 
 		resetStats.onchange = function (e) {
 			if(e.target.checked) {
-                reset_random_row.style.display = "block";
+                run_at.style.display = "block";
 			} else {
-
-                reset_random_row.style.display = "none";
-                run_at_row.style.display = "block";
+                run_at.style.display = "none";
 			}
         }
 	</script>

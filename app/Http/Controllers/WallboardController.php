@@ -8,7 +8,7 @@ use PAMI\Message\Action\QueueStatusAction;
 use PAMI\Message\Action\QueueSummaryAction;
 use PAMI\Client\Impl\ClientImpl;
 use PAMI\Client\Exception\ClientException;
-use Setting;
+use Unisharp\Setting\Setting;
 
 class WallboardController extends Controller
 {
