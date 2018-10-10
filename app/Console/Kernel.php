@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
                     $manager->send($action);
                     $manager->close();
                 }
-            })->everyMinute();
+            })->dailyAt('23:59');
         }
     }
 
