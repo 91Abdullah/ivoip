@@ -29,13 +29,23 @@
 		<link rel="shortcut icon" href="{{ asset('assets/demo/demo3/media/img/logo/favicon.ico') }}" />
 		<style type="text/css">
 			.m-widget1 .m-widget1__item .m-widget1__title {
-				font-size: 19px;
+				font-size: 16px;
 			}
 			.la {
 				font-size: 20px;
 			}
 			.m-widget1 .m-widget1__item .m-widget1__number {
 				font-size: 22px;
+			}
+			.clock {
+				position: relative;
+				/*top: 50%;*/
+				/*left: 50%;*/
+				/*transform: translateX(-50%) translateY(-50%);*/
+				/*color: #17D4FE;*/
+				font-size: 40px;
+				/*font-family: Orbitron;*/
+				letter-spacing: 7px;
 			}
 		</style>
 	</head>
@@ -61,7 +71,20 @@
 										<h3 class="m-portlet__head-text text-center">
 											Live Queue Stats
 										</h3>
+										<h3 style="padding-left: 10px;" class="m-portlet__head-text">
+											{{ Form::select('selectq', App\Queue::pluck('name', 'name'), App\Queue::pluck('name')->first(), ['class' => 'form-control m-input', 'id' => 'selectq']) }}
+										</h3>
 									</div>
+								</div>
+
+								<div class="m-portlet__head-tools">
+									{{--<div id="MyClockDisplay" class="clock"></div>--}}
+									<ul class="m-portlet__nav">
+
+										<li>
+											<span id="MyClockDisplay" class="clock"></span>
+										</li>
+									</ul>
 								</div>
 							</div>
 							<div class="m-portlet__body m-portlet__body--no-padding">
@@ -249,13 +272,21 @@
 			let myChart = undefined;
 			let awr = 0;
 			let chartType = "bar";
+			let queue = document.getElementById('selectq');
+			let selectedq = queue.value;
 
 			$(document).ready(function(e) {
+			    showTime();
 				setInterval(sendCall, 2000);
+				queue.onchange = changeQueue;
 			});
 
+			function changeQueue(event) {
+			    selectedq = event.target.value;
+			}
+
 			function sendCall() {
-				axios.get(url)
+				axios.get(url + "/" + selectedq)
 				.then(processResponse)
 				.then(loadChart)
 				.catch(processError);
@@ -356,6 +387,34 @@
 					myChart.update();
 				}
 			}
+
+            function showTime(){
+                var date = new Date();
+                var h = date.getHours(); // 0 - 23
+                var m = date.getMinutes(); // 0 - 59
+                var s = date.getSeconds(); // 0 - 59
+                var session = "AM";
+
+                if(h == 0){
+                    h = 12;
+                }
+
+                if(h > 12){
+                    h = h - 12;
+                    session = "PM";
+                }
+
+                h = (h < 10) ? "0" + h : h;
+                m = (m < 10) ? "0" + m : m;
+                s = (s < 10) ? "0" + s : s;
+
+                var time = h + ":" + m + ":" + s + " " + session;
+                document.getElementById("MyClockDisplay").innerText = time;
+                document.getElementById("MyClockDisplay").textContent = time;
+
+                setTimeout(showTime, 1000);
+
+            }
 
 		</script>
 		<!--end::Base Scripts -->   
