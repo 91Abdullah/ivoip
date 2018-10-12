@@ -28,10 +28,10 @@
 				<tr>
 					<td>{{ $queue->name }}</td>
 					<td>
-						<a href="{{ action('QueueController@edit', ['queue' => $queue->id]) }}" class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
+						<a href="{{ action('QueueController@edit', ['queue' => $queue->name]) }}" class="btn btn-success m-btn m-btn--icon m-btn--icon-only">
 							<i class="la la-edit"></i>
 						</a>
-						{!! Form::open(['action' => ['QueueController@destroy', $queue->id], 'method' => 'DELETE', 'style' => 'display:inline']) !!}
+						{!! Form::open(['action' => ['QueueController@destroy', $queue->name], 'method' => 'DELETE', 'style' => 'display:inline']) !!}
 							<button type="submit" class="btn btn-danger m-btn m-btn--icon m-btn--icon-only">
 								<i class="la la-trash"></i>
 							</button>

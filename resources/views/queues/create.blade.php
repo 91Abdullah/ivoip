@@ -382,7 +382,7 @@
 				</div>
 				<div class="form-group m-form__group {{ $errors->has('strategy') ? 'has-danger' : '' }}">
 					{!! Form::label('strategy', 'Queue Strategy') !!}
-					{!! Form::select('strategy', ['ringall' => 'ringall','leastrecent' => 'leastrecent','fewestcalls' => 'fewestcalls','random' => 'random','rrmemory' => 'rrmemory','linear' => 'linear','wrandom' => 'wrandom','rrordered' => 'rrordered'], 'ringall',['class' => 'form-control m-input']) !!}
+					{!! Form::select('strategy', ['ringall' => 'ringall','leastrecent' => 'leastrecent','fewestcalls' => 'fewestcalls','random' => 'random','rrmemory' => 'rrmemory','linear' => 'linear','wrandom' => 'wrandom','rrordered' => 'rrordered'], old('strategy'),['class' => 'form-control m-input']) !!}
 					<span class="m-form__help">The most important parameter specifies how calls between agents will be distributed.</span>
 					@if($errors->has('strategy'))
 						<div class="form-control-feedback">{{ $errors->first('strategy') }}</div>

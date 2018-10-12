@@ -16,7 +16,7 @@
 				<p class="m-error_description m--font-light">
 					Looks like something went wrong.
 					<br>
-					We're working on it
+					{{ $exception->getMessage() }}
 				</p>
 			</div>
 		</div>

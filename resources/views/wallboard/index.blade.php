@@ -266,7 +266,7 @@
 		<script type="text/javascript" src="{{ asset('js/axios.js') }}"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 		<script type="text/javascript">
-			const url = '{!! route('wallboard.stats') !!}'
+			const url = '{!! route('wallboard.stats') !!}';
 			let ctx = document.getElementById("chart");
 			let ctxContainer = document.getElementById("chartContainer");
 			let myChart = undefined;
@@ -322,8 +322,8 @@
 				max_wait_time.innerHTML = data0.longestholdtime;
 				loggedin.innerHTML = data0.loggedin;
 				available.innerHTML = data0.available;
-				answer_rate.innerHTML = totalCalls == 0 ? 0 + " %" : (data1.completed/totalCalls * 100).toFixed(2) + " %";
-				abandon_rate.innerHTML = totalCalls == 0 ? 0 + " %" : (data1.abandoned/totalCalls * 100).toFixed(2) + " %";
+				answer_rate.innerHTML = totalCalls === 0 ? 0 + " %" : (data1.completed/totalCalls * 100).toFixed(2) + " %";
+				abandon_rate.innerHTML = totalCalls === 0 ? 0 + " %" : (data1.abandoned/totalCalls * 100).toFixed(2) + " %";
 				awr = data1.servicelevelperf2;
 			}
 
@@ -335,7 +335,7 @@
 			function loadChart(response) {
 				// console.log(response);
 				ctxContainer.style.display = "block";
-				if(myChart == undefined) {
+				if(myChart === undefined) {
 					myChart = new Chart(ctx, {
 					    type: 'horizontalBar',
 					    data: {
@@ -395,7 +395,7 @@
                 var s = date.getSeconds(); // 0 - 59
                 var session = "AM";
 
-                if(h == 0){
+                if(h === 0){
                     h = 12;
                 }
 
@@ -403,6 +403,10 @@
                     h = h - 12;
                     session = "PM";
                 }
+
+                if(h === 12) {
+                    session = "PM";
+				}
 
                 h = (h < 10) ? "0" + h : h;
                 m = (m < 10) ? "0" + m : m;

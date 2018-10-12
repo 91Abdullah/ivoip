@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Queue;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class QueueController extends Controller
 {
@@ -118,7 +119,7 @@ class QueueController extends Controller
      */
     public function edit(Queue $queue)
     {
-        //
+        return view('queues.edit', compact('queue'));
     }
 
     /**
@@ -130,7 +131,67 @@ class QueueController extends Controller
      */
     public function update(Request $request, Queue $queue)
     {
-        //
+        $request->validate([
+            'name' => ['required', Rule::unique('queues')->ignore($queue->name, 'name')],
+            'musiconhold' => 'string',
+            'announce' => 'string|nullable',
+            'context' => 'string',
+            'timeout' => 'integer',
+            'ringinuse' => 'in:yes,no',
+            'setinterfacevar' => 'string|in:yes,no',
+            'setqueuevar' => 'string|in:yes,no',
+            'setqueueentryvar' => 'string|in:yes,no',
+            'monitor_format' => 'string|in:wav,gsm,wav49',
+            'membermacro' => 'string|nullable',
+            'membergosub' => 'string|nullable',
+            'queue_youarenext' => 'string',
+            'queue_thereare' => 'string',
+            'queue_callswaiting' => 'string',
+            'queue_quantity1' => 'string|nullable',
+            'queue_quantity2' => 'string|nullable',
+            'queue_holdtime' => 'string',
+            'queue_minutes' => 'string',
+            'queue_minute' => 'string',
+            'queue_seconds' => 'string',
+            'queue_thankyou' => 'string',
+            'queue_callerannounce' => 'string|nullable',
+            'queue_reporthold' => 'string',
+            'announce_frequency' => 'integer',
+            'announce_to_first_user' => 'string|in:yes,no',
+            'min_announce_frequency' => 'integer',
+            'announce_round_seconds' => 'integer',
+            'announce_holdtime' => 'string',
+            'announce_position' => 'string',
+            'announce_position_limit' => 'integer',
+            'periodic_announce' => 'string',
+            'periodic_announce_frequency' => 'integer',
+            'relative_periodic_announce' => 'string|in:yes,no',
+            'random_periodic_announce' => 'string|in:yes,no',
+            'retry' => 'integer',
+            'wrapuptime' => 'integer',
+            'penaltymemberslimit' => 'integer',
+            'autofill' => 'string|in:yes,no',
+            'monitor_type' => 'string|in:MixMonitor',
+            'autopause' => 'string|in:yes,no,all',
+            'autopausedelay' => 'integer',
+            'autopausebusy' => 'string|in:yes,no',
+            'autopauseunavail' => 'string|in:yes,no',
+            'maxlen' => 'integer',
+            'servicelevel' => 'integer',
+            'strategy' => 'string|in:ringall,leastrecent,fewestcalls,random,rrmemory,linear,wrandom,rrordered',
+            'joinempty' => 'string',
+            'leavewhenempty' => 'string',
+            'reportholdtime' => 'string|in:yes,no',
+            'memberdelay' => 'integer',
+            'weight' => 'integer',
+            'timeoutrestart' => 'string|in:yes,no',
+            'defaultrule' => 'string|nullable',
+            'timeoutpriority' => 'string|nullable'
+        ]);
+
+        $queue->update($request->all());
+
+        return redirect()->action('QueueController@index');
     }
 
     /**
@@ -141,6 +202,11 @@ class QueueController extends Controller
      */
     public function destroy(Queue $queue)
     {
-        //
+        try {
+            $queue->delete();
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+        return redirect()->action('QueueController@index');
     }
 }

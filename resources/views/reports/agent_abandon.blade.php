@@ -127,7 +127,7 @@
 		        ],
 		        footerCallback: loadFooter
 		    });
-		}
+		};
 
 		function loadFooter(row, data, start, end, display)
 		{

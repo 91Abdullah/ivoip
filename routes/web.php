@@ -16,7 +16,9 @@ Route::get('/', function () {
 });
 
 Route::view('/wallboard', 'wallboard.index');
+Route::view('/wallboard2', 'wallboard.new');
 Route::get('/getStats/{queue?}', 'WallboardController@get')->name("wallboard.stats");
+Route::get('/getTableData', 'WallboardController@getTableData')->name("wallboard.getTableData");
 
 Auth::routes();
 
