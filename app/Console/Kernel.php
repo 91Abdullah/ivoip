@@ -5,6 +5,9 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use PAMI\Message\Action\CommandAction;
+use PAMI\Message\Action\ModuleCheckAction;
+use PAMI\Message\Action\ModuleLoadAction;
+use PAMI\Message\Action\ModuleReloadAction;
 use Setting;
 use PAMI\Message\Action\QueueResetAction;
 use PAMI\Client\Impl\ClientImpl;
@@ -39,13 +42,40 @@ class Kernel extends ConsoleKernel
                 foreach ($queues as $queue) {
 
                     $action = new QueueResetAction($queue->name);
-                    $manager->send($action);
+                    $response = $manager->send($action);
+                    $this->info($response->getMessage());
 
                 }
 
                 $manager->close();
-            })->dailyAt('23:59');
+            })->dailyAt('23:59')
+                ->appendOutputTo(storage_path("logs/daily.log"));
         }
+
+        $schedule->call(function() {
+            $client = new ClientImpl($this->options());
+            $action = new ModuleReloadAction("res_odbc");
+            $client->open();
+            $response = $client->send($action);
+            $this->info($response);
+            $client->close();
+        })->everyMinute()
+            ->appendOutputTo(storage_path("logs/daily.log"));
+
+        $schedule->call(function() {
+            $client = new ClientImpl($this->options());
+            $action = new ModuleCheckAction("chan_sip");
+            $client->open();
+            $response = $client->send($action);
+            $this->info($response->getMessage());
+            if($response->getKey('response') == "Error") {
+                $action = new ModuleLoadAction("chan_sip");
+                $response = $client->send($action);
+                $this->error($response->getMessage());
+            }
+            $client->close();
+        })->everyMinute()
+            ->appendOutputTo(storage_path("logs/daily.log"));
     }
 
     private function options()

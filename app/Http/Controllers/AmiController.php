@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use PAMI\Client\Impl\ClientImpl;
+use PAMI\Message\Action\ModuleCheckAction;
+use PAMI\Message\Action\ModuleLoadAction;
 use PAMI\Message\Action\QueuePauseAction;
 use PAMI\Message\Action\QueueRemoveAction;
 use PAMI\Message\Action\QueueAddAction;
@@ -456,27 +458,40 @@ class AmiController extends Controller
 
     public function test_ami()
     {   
-        $retries = 3;
+//        $retries = 3;
+//        $client = new ClientImpl($this->options());
+//        $loop = Factory::create();
+//        $client->registerEventListener(function (EventMessage $event) {
+//            $response = $this->prepareResponse($event->getKeys());
+//            $response->send();
+//        }, function (EventMessage $event) {
+//            return $event instanceof AgentConnectEvent;
+//        });
+//        $client->open();
+//        $loop->addPeriodicTimer(1, function() use ($client, $retries) {
+//            try {
+//                $client->process();
+//            } catch (Exception $e) {
+//                if ($retries-- <= 0) {
+//                   throw new RuntimeException('Exit from loop', 1, $exc);
+//               }
+//               sleep(10);
+//            }
+//        });
+//        $loop->run();
+
         $client = new ClientImpl($this->options());
-        $loop = Factory::create();
-        $client->registerEventListener(function (EventMessage $event) {
-            $response = $this->prepareResponse($event->getKeys());
-            $response->send();
-        }, function (EventMessage $event) {
-            return $event instanceof AgentConnectEvent;
-        });
+        $action = new ModuleCheckAction("chan_sip");
         $client->open();
-        $loop->addPeriodicTimer(1, function() use ($client, $retries) {
-            try {
-                $client->process();
-            } catch (Exception $e) {
-                if ($retries-- <= 0) {
-                   throw new RuntimeException('Exit from loop', 1, $exc);
-               }
-               sleep(10);
-            }
-        });
-        $loop->run();
+        $response = $client->send($action);
+        if($response->getKey('response') == "Error") {
+            $action = new ModuleLoadAction("chan_sip");
+            $response = $client->send($action);
+        }
+        $client->close();
+        return dd($response);
+
+
     }
 
     public function test_events(Request $request)
