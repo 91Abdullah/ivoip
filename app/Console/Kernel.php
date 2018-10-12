@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CoreReload;
 use App\Console\Commands\ModuleCheckChanSip;
 use App\Console\Commands\ModuleCheckOdbc;
 use App\Console\Commands\ResetQueueStats;
@@ -34,6 +35,9 @@ class Kernel extends ConsoleKernel
             $schedule->command(ResetQueueStats::class)->dailyAt('23:59')
                 ->appendOutputTo(storage_path("logs/daily.log"));
         }
+
+        $schedule->command(CoreReload::class)->hourly()
+            ->appendOutputTo(storage_path("logs/daily.log"));
 
         $schedule->command(ModuleCheckOdbc::class)->hourly()
             ->appendOutputTo(storage_path("logs/daily.log"));
