@@ -6,7 +6,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Setting;
 use PAMI\Message\Action\QueueResetAction;
-use PAMI\Message\Action\CommandAction;
 use PAMI\Client\Impl\ClientImpl;
 use App\Queue;
 
@@ -33,22 +32,15 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         if(Setting::get('reset_stats') == 'on') {
             $schedule->call(function () {
-                $manager  = new ClientImpl($this->options());
-                $manager->open();
-                $action = new CommandAction("core restart now");
-                $manager->send($action);
-                $manager->close();
-                sleep(5);
-            })->everyMinute()
-            ->after(function () {
-                $manager  = new ClientImpl($this->options());
-                $manager->open();
-                $action = new CommandAction("module load chan_sip.so");
-                $action1 = new CommandAction("module reload res_odbc.so");
-                $manager->send($action);
-                $manager->send($action1);
-                $manager->close();
-            });
+                $queues = Queue::all('name');
+                foreach ($queues as $queue) {
+                    $manager  = new ClientImpl($this->options());
+                    $manager->open();
+                    $action = new QueueResetAction($queue->name);
+                    $manager->send($action);
+                    $manager->close();
+                }
+            })->dailyAt('23:59');
         }
     }
 
