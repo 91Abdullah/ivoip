@@ -42,17 +42,9 @@ class Kernel extends ConsoleKernel
                     $manager->send($action);
 
                 }
-                $action1 = new CommandAction("core reload");
-                $action2 = new CommandAction("module reload res_odbc.so");
-                $action3 = new CommandAction("module load chan_sip.so");
-
-                $manager->send($action1);
-                $manager->send($action2);
-                $manager->send($action3);
 
                 $manager->close();
-            })//->dailyAt('23:59');
-            ->everyMinute();
+            })->dailyAt('23:59');
         }
     }
 
