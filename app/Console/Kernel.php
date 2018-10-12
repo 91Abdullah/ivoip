@@ -35,10 +35,10 @@ class Kernel extends ConsoleKernel
                 ->appendOutputTo(storage_path("logs/daily.log"));
         }
 
-        $schedule->command(ModuleCheckOdbc::class)->everyMinute()
+        $schedule->command(ModuleCheckOdbc::class)->hourly()
             ->appendOutputTo(storage_path("logs/daily.log"));
 
-        $schedule->command(ModuleCheckChanSip::class)->everyMinute()
+        $schedule->command(ModuleCheckChanSip::class)->hourly()
             ->appendOutputTo(storage_path("logs/daily.log"));
     }
 

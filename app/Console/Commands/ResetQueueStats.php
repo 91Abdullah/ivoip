@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Setting;
 use PAMI\Message\Action\QueueResetAction;
@@ -48,7 +49,7 @@ class ResetQueueStats extends Command
 
             $action = new QueueResetAction($queue->name);
             $response = $manager->send($action);
-            $this->info("INFO: " . $response->getMessage());
+            $this->info("INFO: " . Carbon::now()->toDateTimeString() . " "  . $response->getMessage());
 
         }
 

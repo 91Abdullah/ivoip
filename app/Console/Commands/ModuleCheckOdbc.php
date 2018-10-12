@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use PAMI\Message\Action\ModuleReloadAction;
 use PAMI\Client\Impl\ClientImpl;
@@ -44,7 +45,7 @@ class ModuleCheckOdbc extends Command
         $action = new ModuleReloadAction("res_odbc");
         $client->open();
         $response = $client->send($action);
-        $this->info("INFO: " . $response->getMessage());
+        $this->info("INFO: " . Carbon::now()->toDateTimeString() . " " .  $response->getMessage());
         $client->close();
     }
 

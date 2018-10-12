@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use PAMI\Message\Action\CommandAction;
 use PAMI\Message\Action\ModuleCheckAction;
@@ -46,11 +47,11 @@ class ModuleCheckChanSip extends Command
         $action = new ModuleCheckAction("chan_sip");
         $client->open();
         $response = $client->send($action);
-        $this->info("INFO: " . $response->getMessage());
+        $this->info("INFO: " . Carbon::now()->toDateTimeString() . " " . $response->getMessage());
         if($response->getKey('response') == "Error") {
             $action = new ModuleLoadAction("chan_sip");
             $response = $client->send($action);
-            $this->error("ERROR: " . $response->getMessage());
+            $this->error("ERROR: " . Carbon::now()->toDateTimeString() . " " . $response->getMessage());
         }
         $client->close();
     }
