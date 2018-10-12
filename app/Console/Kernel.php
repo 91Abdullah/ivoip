@@ -7,6 +7,7 @@ use App\Console\Commands\ModuleCheckOdbc;
 use App\Console\Commands\ResetQueueStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Setting;
 
 class Kernel extends ConsoleKernel
 {

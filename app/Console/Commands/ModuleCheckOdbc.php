@@ -44,7 +44,7 @@ class ModuleCheckOdbc extends Command
         $action = new ModuleReloadAction("res_odbc");
         $client->open();
         $response = $client->send($action);
-        $this->info($response);
+        $this->info("INFO: " . $response->getMessage());
         $client->close();
     }
 

@@ -48,7 +48,7 @@ class ResetQueueStats extends Command
 
             $action = new QueueResetAction($queue->name);
             $response = $manager->send($action);
-            $this->info($response->getMessage());
+            $this->info("INFO: " . $response->getMessage());
 
         }
 

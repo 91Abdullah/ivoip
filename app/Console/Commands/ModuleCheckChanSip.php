@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use PAMI\Message\Action\CommandAction;
 use PAMI\Message\Action\ModuleCheckAction;
 use PAMI\Message\Action\ModuleLoadAction;
+use PAMI\Client\Impl\ClientImpl;
 use Setting;
 
 class ModuleCheckChanSip extends Command
@@ -45,11 +46,11 @@ class ModuleCheckChanSip extends Command
         $action = new ModuleCheckAction("chan_sip");
         $client->open();
         $response = $client->send($action);
-        $this->info($response->getMessage());
+        $this->info("INFO: " . $response->getMessage());
         if($response->getKey('response') == "Error") {
             $action = new ModuleLoadAction("chan_sip");
             $response = $client->send($action);
-            $this->error($response->getMessage());
+            $this->error("ERROR: " . $response->getMessage());
         }
         $client->close();
     }
