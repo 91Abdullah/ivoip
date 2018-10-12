@@ -37,13 +37,11 @@ class Kernel extends ConsoleKernel
                 foreach ($queues as $queue) {
                     $manager  = new ClientImpl($this->options());
                     $manager->open();
-                    $action = new CommandAction("core restart now");
-                    $action1 = new CommandAction("module load chan_sip.so");
-                    $action2 = new CommandAction("module reload res_odbc.so");
+                    $action = new QueueResetAction($queue->name);
                     $manager->send($action);
                     $manager->close();
                 }
-            })->everyMinute();
+            })->dailyAt('23:59');
         }
     }
 
