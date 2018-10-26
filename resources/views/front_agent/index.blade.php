@@ -4,7 +4,7 @@
 @section('content')
 
 	<div class="row">
-		<div class="col-lg-6 offset-lg-3">
+		<div class="col-lg-6">
 			<div class="m-portlet">
 				<div class="m-portlet__body m-portlet__body--no-padding">
 					<div class="row m-row--no-padding m-row--col-separator-xl">
@@ -39,68 +39,30 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	
-
-	<div class="row">
-		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
 				<div class="m-portlet__body text-center">
 					<div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
-					   	<button data-reason="null" id="ready_btn" type="button" class="btn btn-outline-success m-btn m-btn--icon">
+						<button data-reason="null" id="ready_btn" type="button" class="btn btn-outline-success m-btn m-btn--icon">
 					   		<span>
 								<i class="la la-check-circle"></i>
 								<span>Ready</span>
 							</span>
-					   	</button>
-					   	<button data-toggle="dropdown" type="button" class="btn btn-outline-success dropdown-toggle">
+						</button>
+						<button data-toggle="dropdown" type="button" class="btn btn-outline-success dropdown-toggle">
 					   		<span>
 								<i class="la la-close"></i>
 								<span>Not Ready</span>
 							</span>
-					   	</button>
-					   	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					   		@foreach($breaks as $break)
-					   			<button data-reason="{{ $break }}" class="dropdown-item notready_btn" data-toggle="m-tooltip" title="{{ $break }}" data-placement="right" data-skin="dark" data-container="body">{{ $break }}</button>
-					   		@endforeach
-					  	</div>
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							@foreach($breaks as $break)
+								<button data-reason="{{ $break }}" class="dropdown-item notready_btn" data-toggle="m-tooltip" title="{{ $break }}" data-placement="right" data-skin="dark" data-container="body">{{ $break }}</button>
+							@endforeach
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	
-{{-- 	<div class="row">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__body">
-					<buton data-reason="null" id="ready_btn" class="btn btn-success m-btn m-btn--icon">
-						<span>
-							<i class="la la-check-circle"></i>
-							<span>Ready</span>
-						</span>
-					</buton>
-					<button class="btn btn-danger float-right dropdown-toggle" data-toggle="dropdown">
-						<span>
-							<i class="la la-close"></i>
-							<span>Not Ready</span>
-						</span>
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				    	<button data-reason="Lunch" class="dropdown-item notready_btn" data-toggle="m-tooltip" title="Tooltip title" data-placement="right" data-skin="dark" data-container="body">Lunch</button>
-				    	<button data-reason="Tea" class="dropdown-item notready_btn">Tea</button>
-				    	<button class="dropdown-item notready_btn" data-toggle="m-tooltip" title="Tooltip title" data-reason="Others" data-placement="left">Others</button>
-				  	</div>
-				</div>
-			</div>
-		</div>
-	</div> --}}
-
-	<div id="incall_info" class="row invisible">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+			<div id="incall_info" class="m-portlet m-portlet--mobile m-portlet--body-progress invisible">
 				<div class="m-portlet__body">
 					<h4 class="text-center" id="call_number">
 						03350362957
@@ -118,12 +80,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<div id="incall_controls" class="row invisible">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+			<div id="incall_controls" class="m-portlet m-portlet--mobile m-portlet--body-progress invisible">
 				<div class="m-portlet__body m-portlet__body--no-padding">
 					<div class="row m-row--no-padding m-row--col-separator-xl">
 						<div class="col-lg-6">
@@ -165,6 +122,10 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="col-lg-6">
+
 		</div>
 	</div>
 

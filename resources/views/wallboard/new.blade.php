@@ -307,6 +307,10 @@
             .catch(processError);
     }
 
+    function getSelectQ() {
+        return selectedq;
+    }
+
     function loadTable() {
         // if($.fn.dataTable.isDataTable('.table')) {
         //     table.destroy();
@@ -326,9 +330,12 @@
             ajax: {
                 url: '{!! route('wallboard.getTableData') !!}',
                 type: 'GET',
-                data: {
-                    _token: '{!! csrf_token() !!}',
-                    queue: selectedq
+                data: function (data) {
+                    data._token = '{!! csrf_token() !!}';
+                    data.queue = getSelectQ();
+                },
+                error: function (event) {
+                    toastr.error(event.statusText);
                 }
             },
             columns: [

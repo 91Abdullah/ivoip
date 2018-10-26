@@ -71,14 +71,46 @@ class WallboardController extends Controller
                         "LastCall" => $tableDatum->getKey('lastcall') == 0 ? 0 : Carbon::createFromTimestamp($tableDatum->getKey('lastcall'))->diffForHumans(),
                         "LastPause" => $tableDatum->getKey('lastpause') == 0 ? 0 : Carbon::createFromTimestamp($tableDatum->getKey('lastpause'))->diffForHumans(),
                         "PausedReason" => $tableDatum->getKey('pausedreason'),
-                        "Status" => $tableDatum->getKey('status')
+                        "Status" => $this->mapStatus($tableDatum->getKey('status'))
                     ]);
                 }
             }
 
             return DataTables::of($processed->all())->toJson();
         } catch (\Exception $e) {
-            return DataTables::of(new Collection())->toJson();
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    private function mapStatus($code)
+    {
+        switch ($code) {
+            case "0":
+                return "DEVICE_UNKNOWN";
+                break;
+            case "1":
+                return "DEVICE_NOT_INUSE";
+                break;
+            case "2":
+                return "DEVICE_BUSY";
+                break;
+            case "3":
+                return "DEVICE_INVALID";
+                break;
+            case "4":
+                return "DEVICE_UNAVAILABLE";
+                break;
+            case "5":
+                return "DEVICE_RINGING";
+                break;
+            case "6":
+                return "DEVICE_RINGINUSE";
+                break;
+            case "7":
+                return "DEVICE_ONHOLD";
+                break;
+            default:
+                break;
         }
     }
 }

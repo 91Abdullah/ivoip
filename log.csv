@@ -1,0 +1,43 @@
+07e8fb9,Abdullah Basit,10 days ago,Commands to be executed every 15 minutes
+f98748f,Abdullah Basit,10 days ago,Commands to be run every hour added CoreReload
+c740fa0,Abdullah Basit,10 days ago,Commands to be run every hour added CoreReload
+4964779,Abdullah Basit,10 days ago,Commands to be run every hour
+a0df10e,Abdullah Basit,10 days ago,Refactored code.
+9775266,Abdullah Basit,10 days ago,Created console commands
+92d77ba,Abdullah Basit,10 days ago,Added cron commands
+91b3c75,Abdullah Basit,10 days ago,Removed other cron commands
+d3eb4f1,Abdullah Basit,10 days ago,Modified scheduler added core reload, module reload res_odbc.so and module load chan_sip.so
+37ed6fb,Abdullah Basit,10 days ago,Modified scheduler
+98de6a8,Abdullah Basit,10 days ago,Modified scheduler
+4aab5a4,Abdullah Basit,10 days ago,Revert cron job for asterisk restart
+afbcd95,Abdullah Basit,10 days ago,Restart asterisk every night @ 11:59 PM, added wallboard v2 and queue edit functionality
+63e94e1,Abdullah Basit,11 days ago,Added queue stats reset functionality
+3d316c2,Abdullah Basit,12 days ago,Added schedule queue reset
+9dc4731,Abdullah Basit,12 days ago,Fixed setting facade issue
+2e19ae9,Abdullah Basit,12 days ago,removed extra queue reset param
+15a18f3,Abdullah Basit,12 days ago,Added queue reset option
+926dcdb,Abdullah Basit,13 days ago,Added pagination in recording list
+b429686,Abdullah Basit,2 weeks ago,Removed mysqldump path
+89affb3,Abdullah Basit,5 weeks ago,Changes
+dcf8356,Abdullah Basit,5 weeks ago,Changed udp port
+bb37ed9,Abdullah Basit,5 weeks ago,Fixed system recordings
+1bf017c,Abdullah Basit,5 weeks ago,edit system recordings view
+794da0b,Abdullah Basit,5 weeks ago,Added system recordings tab
+7e8f1dc,Abdullah Basit,5 weeks ago,Fixed brand
+bc37210,Abdullah Basit,5 weeks ago,Added initial settings
+ca24a36,Abdullah Basit,5 weeks ago,Added initial settings
+752f703,Abdullah Basit,5 weeks ago,Added role_user record
+c2a5c60,Abdullah Basit,5 weeks ago,Fixed initial table seeder
+7f510fc,Abdullah Basit,5 weeks ago,Added Initial Seeds
+b5640ac,Abdullah Basit,5 weeks ago,Fixed blended agent view
+cba7aee,Abdullah Basit,5 weeks ago,Outboudn port change
+627bb8f,Abdullah Basit,5 weeks ago,Outboudn port change
+216312f,Abdullah Basit,5 weeks ago,Fixed view composer
+6e9da06,Abdullah Basit,5 weeks ago,Fixed blended edit
+093f7a3,Abdullah Basit,5 weeks ago,Final commit before deployment
+be578db,Abdullah Basit,6 weeks ago,Final commit before moving to Vargrant
+052723b,Abdullah Basit,6 weeks ago,Fixed ComposerServiceProvided
+e5dae63,Abdullah Basit,6 weeks ago,Fixed ComposerServiceProvided
+68205e9,Abdullah Basit,6 weeks ago,Deployment commit
+59c1dbd,Abdullah Basit,8 weeks ago,Add readme.md
+de20876,Abdullah Basit,8 weeks ago,Initial Commit

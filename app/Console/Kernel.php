@@ -6,6 +6,7 @@ use App\Console\Commands\CoreReload;
 use App\Console\Commands\ModuleCheckChanSip;
 use App\Console\Commands\ModuleCheckOdbc;
 use App\Console\Commands\ResetQueueStats;
+use PAMI\Message\Event\UnknownEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Setting;
