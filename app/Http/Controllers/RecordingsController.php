@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Cdr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder; // import class on controller
-use DataTables;
-use Storage;
 
 class RecordingsController extends Controller
 {
@@ -51,6 +51,11 @@ class RecordingsController extends Controller
     }
     
     public function playFile($file)
+    {
+        return Storage::disk('recording')->url($file);
+    }
+
+    public function agentPlay($file)
     {
         return Storage::disk('recording')->url($file);
     }
