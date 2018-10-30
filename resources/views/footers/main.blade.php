@@ -6,7 +6,7 @@
 				<span class="m-footer__copyright">
 					2018 &copy; iVoIP Contact Center
 					<a href="" class="m-link">
-						IPT Guys
+						{{--IPT Guys--}}
 					</a>
 				</span>
 			</div>

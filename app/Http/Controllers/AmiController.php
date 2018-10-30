@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Cdr;
+use App\QueueLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use PAMI\Client\Impl\ClientImpl;
@@ -29,7 +32,7 @@ use App\Events\AgentConnectedEvent;
 use Setting;
 use App\OutboundWorkcode;
 use Illuminate\Support\Collection;
-use DataTables;
+use Yajra\DataTables\DataTables;
 
 class AmiController extends Controller
 {
@@ -433,7 +436,7 @@ class AmiController extends Controller
                 $client->process();
             } catch (Exception $e) {
                 if ($retries-- <= 0) {
-                   throw new RuntimeException('Exit from loop', 1, $exc);
+                   throw new RuntimeException('Exit from loop', 1, $e);
                }
                sleep(10);
             }
@@ -516,7 +519,136 @@ class AmiController extends Controller
 
             return response()->json($response, 200);
         } catch (Exception $e) {
-            return response()->json($e->getMessage(), 200);
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function getQueueStats(Request $request)
+    {
+        try {
+            $queue = $request->queue;
+            $agent = $this->technology . "/" . $request->agent;
+            $manager = new ClientImpl($this->options());
+            $action = new QueueStatusAction($queue, $agent);
+            $action2 = new QueueSummaryAction($queue);
+            $manager->open();
+            $response = $manager->send($action);
+            $response2 = $manager->send($action2);
+            $manager->close();
+            
+            
+
+            $queueStats = [];
+            $agentStats = [];
+
+            $queueStats["calls"] = $response->getEvents()[0]->getKey("calls");
+            $queueStats["answered"] = $response->getEvents()[0]->getKey("completed");
+            $queueStats["talktime"] = $response->getEvents()[0]->getKey("talktime");
+            $queueStats["waittime"] = $response->getEvents()[0]->getKey("holdtime");
+            $queueStats["servicelevelperf2"] = $response->getEvents()[0]->getKey("servicelevelperf2");
+            $queueStats["abandoned"] = $response->getEvents()[0]->getKey("abandoned");
+            $queueStats["callers"] = $response2->getEvents()[0]->getKey("callers");
+            $queueStats["maxtime"] = $response2->getEvents()[0]->getKey("longestholdtime");
+
+
+            $agentStats["name"] = $response->getEvents()[1]->getKey("name");
+            $agentStats["interface"] = explode("/", $response->getEvents()[1]->getKey("stateinterface"));
+            $agentStats["callstaken"] = $response->getEvents()[1]->getKey("callstaken");
+            $agentStats["lastcall"] = $response->getEvents()[1]->getKey("lastcall") == 0 ? 0 : Carbon::createFromTimestamp($response->getEvents()[1]->getKey("lastcall"))->diffForHumans();
+            $agentStats["lastpause"] = $response->getEvents()[1]->getKey("lastpause") == 0 ? 0 : Carbon::createFromTimestamp($response->getEvents()[1]->getKey("lastpause"))->diffForHumans();
+            $agentStats["status"] = $this->mapStatus($response->getEvents()[1]->getKey("status"));
+            $agentStats["pausedreason"] = $response->getEvents()[1]->getKey("pausedreason");
+            $agentStats["incall"] = $response->getEvents()[1]->getKey("incall") == 0 ? "false" : "true";
+            $agentStats["paused"] = $response->getEvents()[1]->getKey("paused") == 0 ? "false" : "true";
+
+//            return dd($response2->getEvents(), $response->getEvents());
+            return response()->json(["agent" => $agentStats, "queue" => $queueStats], 200);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function getAgentCalls(Request $request)
+    {
+        try {
+            if($request->calls == "unanswered") {
+                $calls = QueueLog::whereDate("time", Carbon::now()->format("Y-m-d"))
+                    ->where("agent", $request->agent)
+                    ->whereIn("event", ["RINGNOANSWER", "RINGCANCELED"])
+                    ->get();
+
+                $incompleteCalls = new Collection;
+
+                foreach ($calls as $call) {
+                    $incompleteCalls->push([
+                        "time" => Carbon::parse($call->time)->toDateTimeString(),
+                        "callid" => $call->callid,
+                        "queue" => $call->queuename,
+                        "agent" => $call->agent,
+                        "ringtime" => number_format($call->data1/1000, 2)
+                    ]);
+                }
+
+                return DataTables::of($incompleteCalls)->make(true);
+
+            } elseif($request->calls == "answered") {
+                $calls = QueueLog::whereDate("time", Carbon::now()->format("Y-m-d"))
+                    ->where("agent", $request->agent)
+                    ->whereIn("event", ["COMPLETEAGENT", "COMPLETECALLER"])
+                    ->get();
+
+                $completedCalls = new Collection;;
+
+                foreach ($calls as $call) {
+                    $completedCalls->push([
+                        "time" => Carbon::parse($call->time)->toDateTimeString(),
+                        "callid" => $call->callid,
+                        "agent" => $call->agent,
+                        "queue" => $call->queuename,
+                        "holdtime" => $call->data1,
+                        "calltime" => $call->data2,
+                        "queue_pos" => $call->data3,
+                    ]);
+                }
+
+                return DataTables::of($completedCalls)->make(true);
+            } else {
+                return response()->json("Invalid request.", 400);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    private function mapStatus($code)
+    {
+        switch ($code) {
+            case "0":
+                return "DEVICE_UNKNOWN";
+                break;
+            case "1":
+                return "DEVICE_NOT_INUSE";
+                break;
+            case "2":
+                return "DEVICE_BUSY";
+                break;
+            case "3":
+                return "DEVICE_INVALID";
+                break;
+            case "4":
+                return "DEVICE_UNAVAILABLE";
+                break;
+            case "5":
+                return "DEVICE_RINGING";
+                break;
+            case "6":
+                return "DEVICE_RINGINUSE";
+                break;
+            case "7":
+                return "DEVICE_ONHOLD";
+                break;
+            default:
+                break;
         }
     }
 }

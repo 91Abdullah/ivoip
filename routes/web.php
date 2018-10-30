@@ -125,6 +125,10 @@ Route::prefix('manager')->middleware(['auth'])->group(function () {
 	Route::post('/hold', 'AmiController@agent_hold')->name('agent.hold');
 	Route::post('/unhold', 'AmiController@agent_unhold')->name('agent.unhold');
 
+	// Manager agent view stats
+    Route::post('/queueStats', 'AmiController@getQueueStats')->name('queue.stats');
+    Route::get('/callsStats', 'AmiController@getAgentCalls')->name('calls.stats');
+
 	// Route::post('/supervisor_agents', 'AmiController@supervisor_agents')->name('supervisor.agents');
 	Route::get('/supervisor_agents', 'AmiController@supervisor_agents')->name('supervisor.agents');
 	Route::get('/supervisor_calls', 'AmiController@supervisor_calls')->name('supervisor.calls');

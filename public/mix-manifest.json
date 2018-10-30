@@ -4,5 +4,6 @@
     "/js/agent.js": "/js/agent.js",
     "/js/outbound.js": "/js/outbound.js",
     "/js/blended.js": "/js/blended.js",
-    "/js/supervisor.js": "/js/supervisor.js"
+    "/js/supervisor.js": "/js/supervisor.js",
+    "/js/agent-table.js": "/js/agent-table.js"
 }

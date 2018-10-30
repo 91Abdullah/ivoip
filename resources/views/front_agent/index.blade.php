@@ -1,6 +1,10 @@
 
 @extends('layouts.front_agent')
 
+@push('styles')
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.css"/>
+@endpush
+
 @section('content')
 
 	<div class="row">
@@ -123,11 +127,9 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="col-lg-6">
-
-		</div>
+		@include('front_agent.agent-stats')
 	</div>
+
 
 	<audio id="remoteAudio"></audio>
     <audio id="localAudio" muted="muted"></audio>
@@ -166,6 +168,7 @@
 	<script type="text/javascript" src="{{ asset('js/bootstrap-switch.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/sip.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/easytimer.js') }}"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.js"></script>
 	<script type="text/javascript">
 
 		// "use strict";
@@ -194,6 +197,9 @@
 		const url_workcode = "{!! route('agent.workcode') !!}";
 		const url_hold = "{!! route('agent.hold') !!}";
 		const url_unhold = "{!! route('agent.unhold') !!}";
+
+		const url_allstats = "{!! route('queue.stats') !!}";
+		const url_callstats = "{!! route('calls.stats') !!}";
 		
 		const token = "{!! csrf_token() !!}";
 
@@ -204,6 +210,8 @@
 		let callId = [];
 		let uniqueId = [];
 		let forQueue = undefined;
+
 	</script>
 	<script type="text/javascript" src="{{ asset('js/agent.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/agent-table.js') }}"></script>
 @endpush

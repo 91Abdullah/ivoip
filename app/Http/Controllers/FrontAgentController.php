@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\AgentBreak;
 use App\Workcode;
+use PAMI\Client\Impl\ClientImpl;
+use PAMI\Message\Action\QueueStatusAction;
 use Setting;
 
 class FrontAgentController extends Controller
