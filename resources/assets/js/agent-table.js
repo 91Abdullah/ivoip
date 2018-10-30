@@ -87,7 +87,8 @@ function loadTable() {
         },
         columns: [
             {data: 'time'},
-            {data: 'callid'},
+            {data: 'callid', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                $(nTd).html("<audio controls><source src='play/" + sData + "'>Your browser does not support the audio element.</audio>");}},
             {data: 'agent'},
             {data: 'queue'},
             {data: 'holdtime'},
