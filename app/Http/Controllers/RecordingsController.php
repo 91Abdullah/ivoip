@@ -57,6 +57,6 @@ class RecordingsController extends Controller
 
     public function agentPlay($file)
     {
-        return Storage::disk('recording')->url($file);
+        return Storage::disk('recording')->download($file);
     }
 }
