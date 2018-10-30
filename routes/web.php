@@ -97,7 +97,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
 Route::prefix('agent')->middleware(['auth', 'can:is-agent'])->group(function () {
 	Route::get('/', 'FrontAgentController@index')->name('front.agent');
-	Route::get('/play', 'RecordingsController@agentPlay')->name('play.agent');
+	Route::get('/play/{file}', 'RecordingsController@agentPlay')->name('play.agent');
 });
 
 Route::prefix('outbound')->middleware(['auth', 'can:is-outbound'])->group(function () {
