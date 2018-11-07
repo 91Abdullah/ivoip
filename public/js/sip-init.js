@@ -20,6 +20,12 @@ let tForm = document.getElementById('transferForm');
 let mBtn = document.getElementById('muteBtn');
 let hBtn = document.getElementById('holdBtn');
 
+document.getElementById("agent_logout").onclick = function(e) {
+    e.preventDefault();
+    mSIP.logout(e);
+    UserInterface.logout(e);
+};
+
 transferBtn.onclick = function(e) {
     mTransfer.transfer();
 };
@@ -212,6 +218,9 @@ mSIP = {
                 }
             });
         });
+    },
+    logout: function (e) {
+        this.userAgent.stop();
     }
 };
 
@@ -271,5 +280,16 @@ UserInterface = {
     unhold: function () {
         toastr.success("Caller taken off from hold.");
         // mHold.style.display = "none";
+    },
+    logout: function (e) {
+        swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, Close it!"
+        }).then(function(e) {
+            document.getElementById('logout-form').submit();
+        });
     }
 };
