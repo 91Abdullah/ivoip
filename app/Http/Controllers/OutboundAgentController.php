@@ -79,7 +79,7 @@ class OutboundAgentController extends Controller
             'transport' => 'transport-wss',
             'aors' => $user->extension,
             'auth' => $user->extension,
-            'context' => 'default',
+            'context' => 'outbound-dial',
             'disallow' => 'all',
             'allow' => 'alaw,ulaw,opus',
             'direct_media' => 'no'
