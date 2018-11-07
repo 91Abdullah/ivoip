@@ -5,5 +5,11 @@
     "/js/outbound.js": "/js/outbound.js",
     "/js/blended.js": "/js/blended.js",
     "/js/supervisor.js": "/js/supervisor.js",
-    "/js/agent-table.js": "/js/agent-table.js"
+    "/js/agent-table.js": "/js/agent-table.js",
+    "/js/dialpad.js": "/js/dialpad.js",
+    "/js/typeahead.bundle.js": "/js/typeahead.bundle.js",
+    "/js/handlebars.js": "/js/handlebars.js",
+    "/js/sip-init.js": "/js/sip-init.js",
+    "/js/transfer.js": "/js/transfer.js",
+    "/js/outbound.history.js": "/js/outbound.history.js"
 }

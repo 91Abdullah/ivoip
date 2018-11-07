@@ -34,6 +34,13 @@
 						<div class="form-control-feedback">{{ $errors->first('port') }}</div>
 					@endif
 				</div>
+				<div class="form-group m-form__group {{ $errors->has('sip_port') ? 'has-danger' : '' }}">
+					{!! Form::label('sip_port', 'SIP Port') !!}
+					{!! Form::text('sip_port', Setting::get('sip_port'), ['class' => 'form-control m-input']) !!}
+					@if($errors->has('sip_port'))
+						<div class="form-control-feedback">{{ $errors->first('sip_port') }}</div>
+					@endif
+				</div>
 				<div class="form-group m-form__group {{ $errors->has('username') ? 'has-danger' : '' }}">
 					{!! Form::label('username', 'Username') !!}
 					{!! Form::text('username', Setting::get('username'), ['class' => 'form-control m-input']) !!}

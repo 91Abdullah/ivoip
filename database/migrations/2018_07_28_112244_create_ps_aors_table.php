@@ -20,7 +20,7 @@ class CreatePsAorsTable extends Migration {
 			$table->string('mailboxes', 80)->nullable();
 			$table->integer('max_contacts')->nullable();
 			$table->integer('minimum_expiration')->nullable();
-			$table->enum('remove_existing', array('yes','no'))->nullable();
+			$table->enum('remove_existing', array('yes','no'))->default('yes');
 			$table->integer('qualify_frequency')->nullable();
 			$table->enum('authenticate_qualify', array('yes','no'))->nullable();
 			$table->integer('maximum_expiration')->nullable();

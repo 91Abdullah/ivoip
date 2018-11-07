@@ -54,6 +54,7 @@
 														Create New
 													</span>
 												</a>
+												@yield('portlet-tools')
 											</li>
 										</ul>
 									</div>

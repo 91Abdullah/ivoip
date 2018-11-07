@@ -4,19 +4,23 @@
 @section('content')
 
 	<div class="row">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet">
-				<div class="m-portlet__body m-portlet__body--no-padding">
-					<div class="row m-row--no-padding m-row--col-separator-xl">
-						<div class="col-lg-12">
-							<div class="m-widget1">
-								<div class="m-widget1__item">
-									<div class="row m-row--no-padding align-items-center">
-										<div class="col">
-											<h3 class="m-widget1__title">Device Status</h3>
-										</div>
-										<div class="col m--align-right">
-											<span id="device_status" class="m-widget1__number m--font-danger">Offline</span>
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="m-portlet">
+						<div class="m-portlet__body m-portlet__body--no-padding">
+							<div class="row m-row--no-padding m-row--col-separator-xl">
+								<div class="col-lg-12">
+									<div class="m-widget1">
+										<div class="m-widget1__item">
+											<div class="row m-row--no-padding align-items-center">
+												<div class="col">
+													<h3 class="m-widget1__title">Device Status</h3>
+												</div>
+												<div class="col m--align-right">
+													<span id="device_status" class="m-widget1__number m--font-danger">Offline</span>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -25,88 +29,88 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div id="outcall_dialer" class="row">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__body">
-					<div class="form-group m-form__group">
-						<div class="m-input-icon m-input-icon--left">
-							<input id="outbound_number" type="text" class="form-control form-control-lg m-input" placeholder="Number">
-							<span class="m-input-icon__icon m-input-icon__icon--left">
+			<div id="outcall_dialer" class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+						<div class="m-portlet__body">
+							<div class="form-group m-form__group">
+								<div class="m-input-icon m-input-icon--left">
+									<input id="outbound_number" type="text" class="form-control form-control-lg m-input" placeholder="Number">
+									<span class="m-input-icon__icon m-input-icon__icon--left">
 								<span><i class="la la-phone"></i></span>
 							</span>
+								</div>
+							</div>
+							<div class="text-center">
+								<button id="outcall_dial" class="btn btn-danger">Call</button>
+							</div>
 						</div>
-					</div>
-					<div class="text-center">
-						<button id="outcall_dial" class="btn btn-danger">Call</button>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div id="incall_info" class="row" style="display: none;">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__body">
-					<h4 class="text-center" id="call_number">
-						03350362957
-					</h4>
-					<h5 id="timer" class="text-center">
-						00:00:00
-					</h5>
-					<div class="text-center">
+			<div id="incall_info" class="row" style="display: none;">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+						<div class="m-portlet__body">
+							<h4 class="text-center" id="call_number">
+								03350362957
+							</h4>
+							<h5 id="timer" class="text-center">
+								00:00:00
+							</h5>
+							<div class="text-center">
 						<span id="incall_status_text" style="color:green;" class="badge badge-roundless badge-important">
 							INCALL
 						</span>
-					</div>
-					<div class="text-center">
-						<button id="incall_hangup" class="btn btn-danger">Hangup</button>
+							</div>
+							<div class="text-center">
+								<button id="incall_hangup" class="btn btn-danger">Hangup</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div id="incall_controls" class="row" style="display: none;">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__body m-portlet__body--no-padding">
-					<div class="row m-row--no-padding m-row--col-separator-xl">
-						<div class="col-lg-6">
-							<div class="m-widget1">
-								<div class="m-widget1__item">
-									<div class="row m-row--no-padding align-items-center">
-										<div class="col">
-											<h3 class="m-widget1__title">Mute</h3>
-										</div>
-										<div class="col m--align-right">
+			<div id="incall_controls" class="row" style="display: none;">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+						<div class="m-portlet__body m-portlet__body--no-padding">
+							<div class="row m-row--no-padding m-row--col-separator-xl">
+								<div class="col-lg-6">
+									<div class="m-widget1">
+										<div class="m-widget1__item">
+											<div class="row m-row--no-padding align-items-center">
+												<div class="col">
+													<h3 class="m-widget1__title">Mute</h3>
+												</div>
+												<div class="col m--align-right">
 											<span class="m-widget1__number m--font-danger">
 												<span class="m-bootstrap-switch m-bootstrap-switch--pill m-bootstrap-switch--air">
 													<input id="incall_controls_mute"data-switch="true" type="checkbox" data-on-color="danger">
 												</span>
 											</span>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="m-widget1">
-								<div class="m-widget1__item">
-									<div class="row m-row--no-padding align-items-center">
-										<div class="col">
-											<h3 class="m-widget1__title">Hold</h3>
-										</div>
-										<div class="col m--align-right">
+								<div class="col-lg-6">
+									<div class="m-widget1">
+										<div class="m-widget1__item">
+											<div class="row m-row--no-padding align-items-center">
+												<div class="col">
+													<h3 class="m-widget1__title">Hold</h3>
+												</div>
+												<div class="col m--align-right">
 											<span class="m-widget1__number m--font-danger">
 												<span class="m-bootstrap-switch m-bootstrap-switch--pill m-bootstrap-switch--air">
 													<input id="incall_controls_hold"data-switch="true" type="checkbox" data-on-color="danger">
 												</span>
 											</span>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -115,33 +119,35 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-lg-6 offset-lg-3">
-			<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
-				<div class="m-portlet__head">
-					<div class="m-portlet__head-caption">
-						<div class="m-portlet__head-title">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="m-portlet m-portlet--mobile m-portlet--body-progress">
+						<div class="m-portlet__head">
+							<div class="m-portlet__head-caption">
+								<div class="m-portlet__head-title">
 							<span class="m-portlet__head-icon">
 								<i class="flaticon-multimedia"></i>
 							</span>
-							<h3 class="m-portlet__head-text">
-								Call History
-							</h3>
-						</div>			
+									<h3 class="m-portlet__head-text">
+										Call History
+									</h3>
+								</div>
+							</div>
+						</div>
+						<div class="m-portlet__body">
+							<ul id="call_history">
+
+							</ul>
+						</div>
 					</div>
-				</div>
-				<div class="m-portlet__body">
-					<ul id="call_history">
-						
-					</ul>
 				</div>
 			</div>
 		</div>
-	</div>
+		<div class="col-lg-12">
 
+		</div>
+	</div>
 	
 
 	<audio id="remoteAudio"></audio>
@@ -204,7 +210,7 @@
 		const url_unhold = "{!! route('agent.unhold') !!}";
 
 		const url_outworkcode = "{{ route('agent.outworkcode') }}";
-		
+
 		const token = "{!! csrf_token() !!}";
 
 		const workcodes = {!! $workcodes !!};

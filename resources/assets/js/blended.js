@@ -1177,12 +1177,12 @@ $(document).ready(function() {
 
 	// END Even Methods
 
-	document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
-		for (var i = queues.length - 1; i >= 0; i--) {
-			getAgentStats(queues[i]);
-		}
-
-	}
+	// document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
+	// 	for (var i = queues.length - 1; i >= 0; i--) {
+	// 		getAgentStats(queues[i]);
+	// 	}
+	//
+	// }
 
 	user_agent.transport.on("transportError", function(data) {
 		swal({

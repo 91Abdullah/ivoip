@@ -32,7 +32,6 @@ class CreateIvrsTable extends Migration
             $table->boolean('return_on_timeout')->default(false);
             $table->integer('timeout_recording')->default(0);
             $table->integer('timeout_destination')->nullable();
-            $table->json('ivr_entries')->nullable();
             $table->timestamps();
         });
     }

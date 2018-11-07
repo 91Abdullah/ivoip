@@ -19,6 +19,9 @@ Route::view('/wallboard', 'wallboard.index');
 Route::view('/wallboard2', 'wallboard.new');
 Route::get('/getStats/{queue?}', 'WallboardController@get')->name("wallboard.stats");
 Route::get('/getTableData', 'WallboardController@getTableData')->name("wallboard.getTableData");
+Route::post('/searchContacts', 'ContactController@search')->name("search.contacts");
+Route::post('/getContacts', 'HistoryController@getContacts')->name("get.outbound.contacts");
+Route::post('/getCalls', 'HistoryController@getCalls')->name("get.outbound.calls");
 
 Auth::routes();
 
@@ -50,6 +53,15 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('system_recordings', 'SystemRecordingController');
 	Route::resource('announcements', 'AnnouncementController');
 	Route::resource('ivrs', 'IvrController');
+	Route::resource('contacts', 'ContactController');
+
+	// Export routes
+
+    Route::prefix('exports')->group(function() {
+         Route::get('contacts', 'ExportController@exportContacts')->name('export.contact');
+    });
+
+    // End export routes
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');
@@ -102,6 +114,7 @@ Route::prefix('agent')->middleware(['auth', 'can:is-agent'])->group(function () 
 
 Route::prefix('outbound')->middleware(['auth', 'can:is-outbound'])->group(function () {
 	Route::get('/', 'FrontOutboundController@index')->name('front.outbound');
+	Route::get('/nOutbound', 'FrontOutboundController@nIndex')->name('front_outbound.nIndex');
 });
 
 Route::prefix('blended')->middleware(['auth', 'can:is-blended'])->group(function () {

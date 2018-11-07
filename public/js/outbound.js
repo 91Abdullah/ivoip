@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 	// End Variables
 
-	document.getElementById('m_quick_sidebar_toggle').style.display = "none";
+	// document.getElementById('m_quick_sidebar_toggle').style.display = "none";
 
 	toastr.options = {
 	  "closeButton": true,
@@ -288,7 +288,7 @@ $(document).ready(function() {
 
 	for (var i = history_calling.length - 1; i >= 0; i--) {
 		history_calling[i].onclick = function(e) {
-			number = e.target.dataset.number;
+			let number = e.target.dataset.number;
 			outbound_number.value = number;
 			outcall_dial.click();
 		}
@@ -317,7 +317,7 @@ $(document).ready(function() {
 
 			const remoteAudio = document.getElementById("remoteAudio");
 			const localAudio = document.getElementById("localAudio");
-			
+
 			if(remoteNumber.indexOf('@') > -1) {
 				remoteNumber = remoteNumber.split("@")[0];
 			}
@@ -393,7 +393,7 @@ $(document).ready(function() {
 						console.log(error);
 						toastr.error("Unable to put call on unhold. Please contact application administrator. Error: " + error);
 					}
-					
+
 					document.getElementById("incall_status_text").innerHTML = "INCALL";
 				}
 			}
@@ -485,7 +485,7 @@ $(document).ready(function() {
 				callConnected = false;
 			});
 		}
-	}
+	};
 
 	timer.addEventListener('secondsUpdated', function(e) {
 		document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
@@ -708,10 +708,6 @@ $(document).ready(function() {
 			console.log(error);
 		});
 	});
-
-	document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
-
-	}
 
 	document.getElementById("agent_logout").onclick = function(e) {
 		e.preventDefault();
