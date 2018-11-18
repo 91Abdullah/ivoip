@@ -4,7 +4,7 @@
 @section('content')
 
 	<div class="row">
-		<div class="col-lg-6">
+		<div class="col-lg-6 offset-lg-3">
 			<div class="m-portlet">
 				<div class="m-portlet__body m-portlet__body--no-padding">
 					<div class="row m-row--no-padding m-row--col-separator-xl">
@@ -122,10 +122,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="col-lg-6">
-
 		</div>
 	</div>
 
