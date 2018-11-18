@@ -157,6 +157,11 @@ var DialPad ={
             DialPad.filter();
         });
         $(document).keydown(function(e){
+            console.log(e.target.nodeName);
+            if(e.target.nodeName !== "BODY") {
+                console.log(e);
+                return;
+            }
             var key = e.which;
             var screen = $('.dial-screen').text();
 
@@ -214,8 +219,8 @@ var DialPad ={
                     break;
                 case 103:
                     DialPad.press($('.dial-key-wrap[data-key="7"]'));
-                    screen = $('.dial-screen').text(screen+'7');
                     ccHistory.search(screen+'7').draw();
+                    screen = $('.dial-screen').text(screen+'7');
                     break;
                 case 104:
                     DialPad.press($('.dial-key-wrap[data-key="8"]'));

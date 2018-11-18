@@ -84,6 +84,7 @@ mSIP = {
         this.userAgent.start();
         this.userAgent.on("registered", UserInterface.registered);
         this.userAgent.on("unregistered", UserInterface.unregistered);
+        this.userAgent.transport.on("transportError", UserInterface.transportError);
     },
     options: function() {
         return {
@@ -290,6 +291,27 @@ UserInterface = {
             confirmButtonText: "Yes, Close it!"
         }).then(function(e) {
             document.getElementById('logout-form').submit();
+        });
+    },
+    transportError: function (data) {
+        swal({
+            titleText: "Add Exception",
+            text: "Please click following link and add exception to certificate authority",
+            type: "info",
+            backdrop: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Click Here'
+        }).then((response) => {
+            if(response.value) {
+                window.open("https://" + server + ":8089/httpstatus", "_blank");
+            }
+        }).catch((error) => {
+            console.log(error);
         });
     }
 };
