@@ -10,6 +10,8 @@ use PAMI\Message\Action\QueueStatusAction;
 use PAMI\Message\Action\QueueSummaryAction;
 use PAMI\Client\Impl\ClientImpl;
 use PAMI\Client\Exception\ClientException;
+use PAMI\Message\Event\QueueMemberEvent;
+use PAMI\Message\Event\UnknownEvent;
 use Setting;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Services\DataTable;
@@ -34,8 +36,17 @@ class WallboardController extends Controller
     		$manager->open();
             $res1 = $manager->send(new QueueSummaryAction($queue));
             $res2 = $manager->send(new QueueStatusAction($queue));
-    		// return dd($res1->getEvents())[0];
-    		return response()->json([$res1->getEvents()[0]->getKeys(), $res2->getEvents()[0]->getKeys()], 200);
+
+            $events = $res2->getEvents();
+            $acwCount = 0;
+
+            foreach ($events as $key => $event) {
+                if($event instanceof QueueMemberEvent && $event->getKey('paused') && $event->getKey('pausedreason') == "Wrapup-Start") {
+                    $acwCount++;
+                }
+            }
+
+    		return response()->json([$res1->getEvents()[0]->getKeys(), $res2->getEvents()[0]->getKeys(), $acwCount], 200);
 
     	} catch (ClientException $e) {
     		return response()->json("Error fetching record from server.", 400);
@@ -63,8 +74,10 @@ class WallboardController extends Controller
             $tableData = $res2->getEvents();
             $processed = new Collection;
 
+            //return dd($tableData);
+
             foreach ($tableData as $key => $tableDatum) {
-                if($key !== 0 && $key !== count($tableData) - 1) {
+                if($tableDatum instanceof QueueMemberEvent) {
                     $processed->push([
                         "Name" => $tableDatum->getKey('name'),
                         "CallsTaken" => $tableDatum->getKey('callstaken'),

@@ -215,6 +215,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="m-widget1__item">
+                                        <div class="row m-row--no-padding align-items-center">
+                                            <div class="col">
+                                                <h3 class="m-widget1__title">ACW</h3>
+                                                <span class="m-widget1__desc">Agents on ACW</span>
+                                            </div>
+                                            <div class="col m--align-right">
+                                                <span id="acw" class="m-widget1__number m--font-danger">+80%</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--begin:: Widgets/Stats2-3 -->
                             </div>
@@ -289,7 +300,9 @@
         showTime();
         setInterval(sendCall, 2000);
         setInterval(function () {
-            table.ajax.reload();
+            if($.fn.dataTable.isDataTable('.table')) {
+                table.ajax.reload();
+            }
         }, 2000);
         queue.onchange = changeQueue;
         // sendCall();
@@ -353,6 +366,7 @@
         // console.log(response);
         data1 = response.data[1];
         data0 = response.data[0];
+        data2 = response.data[2];
 
         let calls = document.getElementById("calls");
         let answered = document.getElementById("answered");
@@ -364,6 +378,7 @@
         let max_wait_time = document.getElementById("max_wait_time");
         let loggedin = document.getElementById("loggedin");
         let available = document.getElementById("available");
+        let acw = document.getElementById("acw");
         //let answer_rate = document.getElementById("answer_rate");
         //let abandon_rate = document.getElementById("abandon_rate");
 
@@ -382,6 +397,7 @@
         //answer_rate.innerHTML = totalCalls === 0 ? 0 + " %" : (data1.completed/totalCalls * 100).toFixed(2) + " %";
         //abandon_rate.innerHTML = totalCalls === 0 ? 0 + " %" : (data1.abandoned/totalCalls * 100).toFixed(2) + " %";
         awr = data1.servicelevelperf2;
+        acw.innerHTML = data2;
     }
 
     function processError(error) {
