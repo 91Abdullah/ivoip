@@ -6,7 +6,7 @@
 <!-- BEGIN: Aside Menu -->
 <div id="m_ver_menu" class="m-aside-menu m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark m-aside-menu--dropdown" data-menu-vertical="true" m-menu-dropdown="1" m-menu-scrollable="1" m-menu-dropdown-timeout="500">
 		<ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "dashboard") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a href="{{ route('dashboard') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-line-graph"></i>
@@ -15,7 +15,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item m-menu__item--submenu" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+			<li class="m-menu__item m-menu__item--submenu {{ str_contains(\Request::path(), "reports") ? 'm-menu__item--active' : ''}}" aria-haspopup="true"  m-menu-submenu-toggle="hover">
 				<a href="javascript:;" class="m-menu__link m-menu__toggle">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-layers"></i>
@@ -147,7 +147,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+			<li class="m-menu__item  m-menu__item--submenu {{ str_contains(\Request::path(), "agents") ? 'm-menu__item--active' : ''}}" aria-haspopup="true"  m-menu-submenu-toggle="hover">
 				<a href="javascript:;" class="m-menu__link m-menu__toggle">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-users"></i>
@@ -199,7 +199,7 @@
 					</span>
 				</a>
 			</li> --}}
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "supervisors") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a href="{{ action('SupervisorController@index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-user-settings"></i>
@@ -208,7 +208,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "users") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a href="{{ action('UserController@index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-user-ok"></i>
@@ -226,7 +226,7 @@
 					{{--</span>--}}
 				{{--</a>--}}
 			{{--</li>--}}
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "workcodes") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a href="{{ action('WorkcodeController@index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-suitcase"></i>
@@ -235,7 +235,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "breaks") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a href="{{ action('AgentBreakController@index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-clock-1"></i>
@@ -244,7 +244,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ str_contains(\Request::path(), "settings") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a  href="{{ route('settings') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-settings"></i>
@@ -253,7 +253,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ \Request::is('admin/recordings') ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a  href="{{ route('recordings') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-multimedia"></i>
@@ -262,7 +262,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item" aria-haspopup="true" >
+			<li class="m-menu__item {{ \Request::is('admin/system_recordings') ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
 				<a  href="{{ route('system_recordings.index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-multimedia"></i>
