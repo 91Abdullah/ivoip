@@ -39,14 +39,20 @@ class WallboardController extends Controller
 
             $events = $res2->getEvents();
             $acwCount = 0;
+            $outboundCount = 0;
 
             foreach ($events as $key => $event) {
-                if($event instanceof QueueMemberEvent && $event->getKey('paused') && $event->getKey('pausedreason') == "Wrapup-Start") {
-                    $acwCount++;
+                if($event instanceof QueueMemberEvent && $event->getKey('paused')) {
+                    if($event->getKey('pausedreason') == "Wrapup-Start") {
+                        $acwCount++;
+                    } elseif ($event->getKey('pausedreason') == "Outbound-Start") {
+                        $outboundCount++;
+                    }
+
                 }
             }
 
-    		return response()->json([$res1->getEvents()[0]->getKeys(), $res2->getEvents()[0]->getKeys(), $acwCount], 200);
+    		return response()->json([$res1->getEvents()[0]->getKeys(), $res2->getEvents()[0]->getKeys(), $acwCount, $outboundCount], 200);
 
     	} catch (ClientException $e) {
     		return response()->json("Error fetching record from server.", 400);

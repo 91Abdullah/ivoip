@@ -197,7 +197,7 @@
                                         <div class="row m-row--no-padding align-items-center">
                                             <div class="col">
                                                 <h3 class="m-widget1__title">Agents</h3>
-                                                <span class="m-widget1__desc">Total agents logged in queue</span>
+                                                <span class="m-widget1__desc">Total agents in queue</span>
                                             </div>
                                             <div class="col m--align-right">
                                                 <span id="loggedin" class="m-widget1__number m--font-success">+15%</span>
@@ -222,7 +222,18 @@
                                                 <span class="m-widget1__desc">Agents on ACW</span>
                                             </div>
                                             <div class="col m--align-right">
-                                                <span id="acw" class="m-widget1__number m--font-danger">+80%</span>
+                                                <span id="acw" class="m-widget1__number m--font-focus">+80%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-widget1__item">
+                                        <div class="row m-row--no-padding align-items-center">
+                                            <div class="col">
+                                                <h3 class="m-widget1__title">Outbound</h3>
+                                                <span class="m-widget1__desc">Agents on Outbound</span>
+                                            </div>
+                                            <div class="col m--align-right">
+                                                <span id="outbound" class="m-widget1__number m--font-inverse-warning">+80%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -367,6 +378,7 @@
         data1 = response.data[1];
         data0 = response.data[0];
         data2 = response.data[2];
+        data3 = response.data[3];
 
         let calls = document.getElementById("calls");
         let answered = document.getElementById("answered");
@@ -379,6 +391,7 @@
         let loggedin = document.getElementById("loggedin");
         let available = document.getElementById("available");
         let acw = document.getElementById("acw");
+        let outbound = document.getElementById("outbound");
         //let answer_rate = document.getElementById("answer_rate");
         //let abandon_rate = document.getElementById("abandon_rate");
 
@@ -398,6 +411,7 @@
         //abandon_rate.innerHTML = totalCalls === 0 ? 0 + " %" : (data1.abandoned/totalCalls * 100).toFixed(2) + " %";
         awr = data1.servicelevelperf2;
         acw.innerHTML = data2;
+        outbound.innerHTML = data3;
     }
 
     function processError(error) {
