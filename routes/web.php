@@ -54,6 +54,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('announcements', 'AnnouncementController');
 	Route::resource('ivrs', 'IvrController');
 	Route::resource('contacts', 'ContactController');
+	Route::resource('conference', 'ConferenceController');
 
 	// Export routes
 
@@ -104,6 +105,9 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
 		Route::get('workcodeAnalysis', 'ReportsController@getWorkcodeAnalysis');
 		Route::get('workcodeAnalysisData', 'ReportsController@getWorkcodeAnalysisData')->name('report.workcode_analysis');
+
+        Route::get('agentBreak', 'ReportsController@getAgentBreak');
+        Route::get('agentBreakData', 'ReportsController@getAgentBreakData')->name('report.agent_break');
 	});
 });
 

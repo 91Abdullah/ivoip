@@ -14,7 +14,7 @@ class CreateQueueLogTable extends Migration {
 	{
 		Schema::create('queue_log', function(Blueprint $table)
 		{
-			$table->bigInteger('id', true)->unsigned();
+			$table->bigInteger('id', true)->unsigned()->primary();
 			$table->string('time', 26)->default('');
 			$table->string('callid', 40)->default('');
 			$table->string('queuename', 20)->default('')->index('queue');

@@ -16,7 +16,7 @@ class HistoryController extends Controller
         try {
             $user = User::findOrFail($request->userId);
             $extn = $user->extension;
-            $calls = Cdr::whereDate('start', Carbon::now()->format('Y-m-d'))->where('src', 'LIKE', "%$extn%")->orderBy('start', 'desc')->get(['src', 'dst', 'start', 'answer', 'end', 'duration', 'billsec', 'disposition', 'duration', 'billsec', 'uniqueid']);
+            $calls = Cdr::whereDate('start', Carbon::now()->format('Y-m-d'))->where('channel', 'LIKE', "%$extn%")->orderBy('start', 'desc')->get(['src', 'dst', 'start', 'answer', 'end', 'duration', 'billsec', 'disposition', 'duration', 'billsec', 'uniqueid']);
             return DataTables::of($calls)->make(true);
         } catch (\Exception $e) {
             return response()->json($e->getMessage());

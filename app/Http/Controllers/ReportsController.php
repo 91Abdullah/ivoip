@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AgentBreak;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Html\Builder; // import class on controller
 use DataTables;
@@ -1034,5 +1035,55 @@ class ReportsController extends Controller
 		}
 
 		return DataTables::of($processed)->toJson();
+    }
+
+    public function getAgentBreak()
+    {
+        $data = AgentBreak::pluck('name');
+        $nData = new Collection;
+        foreach ($data as $datum) {
+            $nData->push([
+                "title" => $datum,
+                "data" => $datum
+            ]);
+        }
+        $merge = new Collection;
+        $merge->push([
+            "title" => "agent_id",
+            "data" => "agent_id"
+        ]);
+        $merge->push([
+            "title" => "agent_name",
+            "data" => "agent_name"
+        ]);
+        $columns = collect(array_merge($merge->toArray(), $nData->toArray()))->toJson();
+        return view('reports.break', compact('columns'));
+    }
+
+    public function getAgentBreakData(Request $request)
+    {
+        $dt = Carbon::parse($request->date);
+        $breaks = AgentBreak::pluck('name');
+        $query = QueueLog::whereDate("created", $dt->format('Y-m-d'))
+            ->where("queuename", $request->queue)
+            ->whereIn("data1", $breaks)
+            ->get();
+
+        $response = new Collection;
+        $roles = Role::with('users')->whereIn("name", ["Agent", "Blended"])->get();
+        $agents = $roles->flatMap(function ($values) {
+            return $values->users;
+        });
+
+//        foreach ($agents->pluck('name') as $key => $agent) {
+//            foreach ($query as $q) {
+//                if($q->agentname == $agent) {
+//                    $timeDiff =
+//                }
+//            }
+//        }
+
+
+        return $breaks;
     }
 }

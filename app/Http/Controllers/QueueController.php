@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Queue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\Rule;
 
 class QueueController extends Controller
@@ -96,7 +97,7 @@ class QueueController extends Controller
         ]);
 
         $queue = Queue::create($request->all());
-
+        $code = Artisan::call('core:reload');
         return redirect()->route('queues.index');
     }
 
@@ -191,6 +192,8 @@ class QueueController extends Controller
 
         $queue->update($request->all());
 
+        $code = Artisan::call('core:reload');
+
         return redirect()->action('QueueController@index');
     }
 
@@ -207,6 +210,8 @@ class QueueController extends Controller
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }
+
+        $code = Artisan::call('core:reload');
         return redirect()->action('QueueController@index');
     }
 }

@@ -168,7 +168,6 @@ var DialPad ={
             switch(e.which){
                 case 8:
                     DialPad.press($('.dial-key-wrap[data-key="back"]'));
-                    ccHistory.search(screen.substring(0,screen.length - 1)).draw();
                     screen = $('.dial-screen').text(screen.substring(0,screen.length - 1));
 
                     break;
@@ -178,58 +177,48 @@ var DialPad ={
                     break;
                 case 96:
                     DialPad.press($('.dial-key-wrap[data-key="0"]'));
-                    ccHistory.search(screen+'0').draw();
                     screen = $('.dial-screen').text(screen+'0');
 
                     break;
                 case 97:
                     DialPad.press($('.dial-key-wrap[data-key="1"]'));
-                    ccHistory.search(screen+'1').draw();
                     screen = $('.dial-screen').text(screen+'1');
 
                     break;
                 case 98:
                     DialPad.press($('.dial-key-wrap[data-key="2"]'));
-                    ccHistory.search(screen+'2').draw();
                     screen = $('.dial-screen').text(screen+'2');
 
                     break;
                 case 99:
                     DialPad.press($('.dial-key-wrap[data-key="3"]'));
-                    ccHistory.search(screen+'3').draw();
                     screen = $('.dial-screen').text(screen+'3');
 
                     break;
                 case 100:
                     DialPad.press($('.dial-key-wrap[data-key="4"]'));
-                    ccHistory.search(screen+'4').draw();
                     screen = $('.dial-screen').text(screen+'4');
 
                     break;
                 case 101:
                     DialPad.press($('.dial-key-wrap[data-key="5"]'));
-                    ccHistory.search(screen+'5').draw();
                     screen = $('.dial-screen').text(screen+'5');
                     break;
                 case 102:
                     DialPad.press($('.dial-key-wrap[data-key="6"]'));
-                    ccHistory.search(screen+'6').draw();
                     screen = $('.dial-screen').text(screen+'6');
 
                     break;
                 case 103:
                     DialPad.press($('.dial-key-wrap[data-key="7"]'));
-                    ccHistory.search(screen+'7').draw();
                     screen = $('.dial-screen').text(screen+'7');
                     break;
                 case 104:
                     DialPad.press($('.dial-key-wrap[data-key="8"]'));
-                    ccHistory.search(screen+'8').draw();
                     screen = $('.dial-screen').text(screen+'8');
                     break;
                 case 105:
                     DialPad.press($('.dial-key-wrap[data-key="9"]'));
-                    ccHistory.search(screen+'9').draw();
                     screen = $('.dial-screen').text(screen+'9');
                     break;
             }

@@ -37,6 +37,7 @@ class Queue extends Model
     	'announce_to_first_user',
     	'min_announce_frequency',
     	'announce_round_seconds',
+        'annound_position_only_up',
     	'announce_holdtime',
     	'announce_position',
     	'announce_position_limit',

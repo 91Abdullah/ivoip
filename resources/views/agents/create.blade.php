@@ -8,7 +8,7 @@
 		<div class="m-portlet__head">
 			<div class="m-portlet__head-caption">
 				<div class="m-portlet__head-title">
-					<span class="m-portlet__head-icon m--hide">
+					<span class="m-portlet__h.ead-icon m--hide">
 					<i class="la la-gear"></i>
 					</span>
 					<h3 class="m-portlet__head-text">
@@ -45,14 +45,14 @@
 					{!! Form::label('password_confirmation', 'Confirm Password') !!}
 					{!! Form::password('password_confirmation', ['class' => 'form-control m-input', 'required' => true]) !!}
 				</div>
-				<div class="form-group m-form__group {{ $errors->has('name') ? 'has-danger' : '' }}">
+				<div class="form-group m-form__group {{ $errors->has('extension') ? 'has-danger' : '' }}">
 					{!! Form::label('extension', 'Agent ID') !!}
 					{!! Form::text('extension', old('extension'), ['class' => 'form-control m-input']) !!}
 					@if($errors->has('extension'))
 						<div class="form-control-feedback">{{ $errors->first('extension') }}</div>
 					@endif
 				</div>
-				<div class="form-group m-form__group {{ $errors->has('name') ? 'has-danger' : '' }}">
+				<div class="form-group m-form__group {{ $errors->has('secret') ? 'has-danger' : '' }}">
 					{!! Form::label('secret', 'Agent Password') !!}
 					{!! Form::text('secret', old('secret'), ['class' => 'form-control m-input']) !!}
 					@if($errors->has('secret'))

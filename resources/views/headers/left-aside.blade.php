@@ -147,6 +147,15 @@
 					</span>
 				</a>
 			</li>
+			<li class="m-menu__item {{ str_contains(\Request::path(), "conference") ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+				<a  href="{{ action('ConferenceController@index') }}" class="m-menu__link">
+					<span class="m-menu__item-here"></span>
+					<i class="m-menu__link-icon flaticon-map"></i>
+					<span class="m-menu__link-text">
+						Conference
+					</span>
+				</a>
+			</li>
 			<li class="m-menu__item m-menu__item--submenu {{ str_contains(\Request::path(), "agents") || str_contains(\Request::path(), "outbound") || str_contains(\Request::path(), "blended") ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  m-menu-submenu-toggle="hover">
 				<a href="javascript:;" class="m-menu__link m-menu__toggle">
 					<span class="m-menu__item-here"></span>

@@ -289,7 +289,9 @@
         showTime();
         setInterval(sendCall, 2000);
         setInterval(function () {
-            table.ajax.reload();
+            if($.fn.dataTable.isDataTable('.table')) {
+                table.ajax.reload();
+            }
         }, 2000);
         queue.onchange = changeQueue;
         // sendCall();
