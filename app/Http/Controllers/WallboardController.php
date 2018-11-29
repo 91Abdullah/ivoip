@@ -10,6 +10,7 @@ use PAMI\Message\Action\QueueStatusAction;
 use PAMI\Message\Action\QueueSummaryAction;
 use PAMI\Client\Impl\ClientImpl;
 use PAMI\Client\Exception\ClientException;
+use PAMI\Message\Event\QueueMemberEvent;
 use Setting;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Services\DataTable;
@@ -64,7 +65,7 @@ class WallboardController extends Controller
             $processed = new Collection;
 
             foreach ($tableData as $key => $tableDatum) {
-                if($key !== 0 && $key !== count($tableData) - 1) {
+                if($tableDatum instanceof QueueMemberEvent) {
                     $processed->push([
                         "Name" => $tableDatum->getKey('name'),
                         "CallsTaken" => $tableDatum->getKey('callstaken'),
