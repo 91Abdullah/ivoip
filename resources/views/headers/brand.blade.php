@@ -4,7 +4,7 @@
 		<div class="m-stack__item m-stack__item--middle m-stack__item--center m-brand__logo">
 			<div class="m-login__logo">
 				<h4 style="color: #5e5288;" class="m_login__title">{{ config('app.name') }}</h4>
-				<sub style="font-size: 15px; color: #5e5288;">beta</sub>
+				{{--<sub style="font-size: 15px; color: #5e5288;">beta</sub>--}}
 			</div>
 		</div>
 		<div class="m-stack__item m-stack__item--middle m-brand__tools">

@@ -4,6 +4,10 @@
 
 $(document).ready(function() {
 
+    $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+        toastr.error(message);
+    };
+
 	let currentMode = 'supervisor';
 	const mode_status = document.getElementById("mode_status");
 	const ready_btn = document.getElementById("ready_btn");
@@ -696,9 +700,9 @@ $(document).ready(function() {
 
 	function getAgents()
 	{
-		if($.fn.dataTable.isDataTable('#table_queues')) {
-			qTable.destroy();
-		}
+		// if($.fn.dataTable.isDataTable('#table_queues')) {
+		// 	qTable.destroy();
+		// }
 
 		qTable = $("#table_queues").DataTable({
 			ajax: url_supervisor_agents,
@@ -735,9 +739,9 @@ $(document).ready(function() {
 
 	function getChannels()
 	{
-		if($.fn.dataTable.isDataTable('#table_calls')) {
-			cTable.destroy();
-		}
+		// if($.fn.dataTable.isDataTable('#table_calls')) {
+		// 	cTable.destroy();
+		// }
 
 		cTable = $("#table_calls").DataTable({
 			ajax: url_supervisor_calls,
@@ -1196,7 +1200,7 @@ $(document).ready(function() {
 
 	for (var i = history_calling.length - 1; i >= 0; i--) {
 		history_calling[i].onclick = function(e) {
-			number = e.target.dataset.number;
+			let number = e.target.dataset.number;
 			outbound_number.value = number;
 			outcall_dial.click();
 		}
@@ -1224,8 +1228,28 @@ $(document).ready(function() {
 		user_agent.stop();
 	};
 
-	refresh_agents.onclick = getAgents;
-	refresh_calls.onclick = getChannels;
+	refresh_agents.onclick = function () {
+        if($.fn.dataTable.isDataTable('#table_queues')) {
+			qTable.ajax.reload();
+			dataTableCompleteCallback();
+		}
+    };
+
+	refresh_calls.onclick = function () {
+        if($.fn.dataTable.isDataTable('#table_calls')) {
+            cTable.ajax.reload();
+            dataTableCallsCompleteCallback();
+        }
+    };
+
+	// setInterval(function () {
+    //     if($.fn.dataTable.isDataTable('#table_calls')) {
+    //         qTable.ajax.reload();
+	// 	}
+    //     if($.fn.dataTable.isDataTable('#table_queues')) {
+    //         cTable.ajax.reload();
+    //     }
+    // }, 2000);
 
 	user_agent.on("registered", function() {
 		changeDeviceStatus("Registered");
@@ -1432,12 +1456,12 @@ $(document).ready(function() {
 
 	// END Even Methods
 
-	document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
-		for (var i = queues.length - 1; i >= 0; i--) {
-			getAgentStats(queues[i]);
-		}
-
-	}
+	// document.getElementById("m_quick_sidebar_toggle").onclick = function(e) {
+	// 	for (var i = queues.length - 1; i >= 0; i--) {
+	// 		getAgentStats(queues[i]);
+	// 	}
+	//
+	// }
 
 	user_agent.transport.on("transportError", function(data) {
 		swal({

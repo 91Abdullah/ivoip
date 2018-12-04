@@ -407,7 +407,7 @@ class AmiController extends Controller
             $action->setApplication("ChanSpy");
             $action->setData($request->channel . "," . $request->options);
             $action->setTimeout(10000);
-            $action->setCallerID("Abdullah");
+            $action->setCallerID("Spy");
             $action->setAsync(true);
             $manager->open();
             $response = $manager->send($action);

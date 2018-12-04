@@ -25,7 +25,7 @@
 		<link href="{{ asset('assets/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="{{ asset('css/logo.css') }}">
 		<!--end::Base Styles -->
-		<link rel="shortcut icon" href="{{ asset('assets/demo/default/media/img/logo/favicon.ico') }}" />
+		<link rel="shortcut icon" href="{{ asset('assets/demo/default/media/img/logo/favic.eon_tcl.ico') }}" />
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->
