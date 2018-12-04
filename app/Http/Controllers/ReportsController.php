@@ -924,7 +924,7 @@ class ReportsController extends Controller
     			$acwTime = $acwProcess->get($key)["sum"];
     			$avgAcwTime = $acwProcess->get($key)["avg"];
 
-    			$holdTime = $holdProcess->count() == 0 ? 0 : $holdProcess->groupBy("agent")->get($key)->sum("sum");
+                $holdTime = $holdProcess->count() == 0 ? 0 : $holdProcess->groupBy("agent")->get($key) == null ? 0 : $holdProcess->groupBy("agent")->get($key)->sum("sum");
     			$avgHoldTime = $holdTime/$answered;
 
     			$loginTime = $LoginProcess->get($key)["loginTime"];
