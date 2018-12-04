@@ -588,7 +588,7 @@ class ReportsController extends Controller
 			$uniqueid = $key;
 			foreach ($value as $nKey => $nValue) {
 
-				if($nValue->event == "UNHOLD") {
+				if($nValue->event == "UNHOLD" && $nKey != 0) {
 					// Calculate differenc
 					$prev = $value[$nKey - 1];
 					$date1 = Carbon::parse($nValue->created);
