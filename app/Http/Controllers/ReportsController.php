@@ -1035,4 +1035,41 @@ class ReportsController extends Controller
 
 		return DataTables::of($processed)->toJson();
     }
+
+    public function getDailyAbandon()
+    {
+        return view('reports.daily_abandon');
+    }
+
+    public function getDailyAbandonData(Request $request)
+    {
+        $dt = Carbon::parse($request->date);
+        $queue = Queue::findOrFail($request->queue);
+
+        $processed = new Collection();
+
+        $logs = QueueLog::whereDate("created", $dt->format('Y-m-d'))
+            ->where([
+                ["queuename", $queue->name],
+                ["event", "ABANDON"]
+            ])->get(["callid", "queuename", "event", "data1", "data2", "data3", "created"]);
+
+        foreach ($logs as $log)
+        {
+            $cli = QueueLog::where([
+                ["callid", $log->callid],
+                ["event", "ENTERQUEUE"]
+            ])->get(["data2"])->first()->data2;
+            $processed->push([
+                "callid" => $log->callid,
+                "cli" => $cli,
+                "position" => $log->data1,
+                "origposition" => $log->data2,
+                "waittime" => gmdate("H:i:s", $log->data3),
+                "datetime" => $log->created
+            ]);
+        }
+
+        return DataTables::of($processed)->toJson();
+    }
 }

@@ -92,6 +92,9 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
 		Route::get('workcodeAnalysis', 'ReportsController@getWorkcodeAnalysis');
 		Route::get('workcodeAnalysisData', 'ReportsController@getWorkcodeAnalysisData')->name('report.workcode_analysis');
+
+        Route::get('dailyAbandon', 'ReportsController@getDailyAbandon');
+        Route::get('dailyAbandonData', 'ReportsController@getDailyAbandonData')->name('report.daily_abandon');
 	});
 });
 
