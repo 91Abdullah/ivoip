@@ -49,7 +49,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('breaks', 'AgentBreakController');
 	Route::resource('system_recordings', 'SystemRecordingController');
 	Route::resource('announcements', 'AnnouncementController');
-	Route::resource('ivrs', 'IvrController');
+	Route::resource('voicemail', 'VoicemailController');
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');

@@ -35,7 +35,15 @@
 							<a href="{{ action('ReportsController@getTrunkUtilization') }}" class="m-menu__link">
 								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 								<span class="m-menu__link-text">
-									Trunk Utlization Report
+									Hourly Call Count Report
+								</span>
+							</a>
+						</li>
+						<li class="m-menu__item" aria-haspopup="true" >
+							<a href="{{ action('ReportsController@getTrunkUtilizationGraph') }}" class="m-menu__link">
+								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+								<span class="m-menu__link-text">
+									Hourly Call Count Graph
 								</span>
 							</a>
 						</li>
@@ -44,14 +52,6 @@
 								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 								<span class="m-menu__link-text">
 									Daily Abandon Report
-								</span>
-							</a>
-						</li>
-						<li class="m-menu__item" aria-haspopup="true" >
-							<a href="{{ action('ReportsController@getTrunkUtilizationGraph') }}" class="m-menu__link">
-								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-								<span class="m-menu__link-text">
-									Trunk Utlization Graph
 								</span>
 							</a>
 						</li>

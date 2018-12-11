@@ -73,9 +73,13 @@ class ReportsController extends Controller
     public function getTrunkUtilizationGraphData(Request $request)
     {
     	$dt = new Carbon($request->date);
-    	$records = QueueLog::where("event", "ENTERQUEUE")->whereDate("created", $dt->format("Y-m-d"))->get()->groupBy(function ($data) {
-    		return Carbon::parse($data->created)->format("H");
-    	});
+//    	$records = QueueLog::where("event", "ENTERQUEUE")->whereDate("created", $dt->format("Y-m-d"))->get()->groupBy(function ($data) {
+//    		return Carbon::parse($data->created)->format("H");
+//    	});
+
+        $records = Cdr::whereDate("start", $dt->format("Y-m-d"))->get()->groupBy(function ($data) {
+            return Carbon::parse($data->start)->format("H");
+        });
 
     	$processed = new Collection;
 

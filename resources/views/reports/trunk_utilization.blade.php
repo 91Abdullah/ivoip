@@ -1,7 +1,7 @@
 
 @extends('layouts.reports')
 
-@section('page_sub_title', 'Trunk Utilization Report')
+@section('page_sub_title', 'Hourly Call Count Report')
 
 @push('styles')
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.css"/>
@@ -15,7 +15,7 @@
 	<div class="form-group m-form__group row {{ $errors->has('report') ? 'has-danger' : '' }}">
 		{!! Form::label('report', 'Report Name', ['class' => 'col-form-label col-lg-3 col-sm-12']) !!}
 		<div class="col-lg-4 col-md-9 col-sm-12">
-			{!! Form::select('report', ['trunk_report' => 'Trunk Utilization Report'], null, ['class' => 'form-control m-input']) !!}
+			{!! Form::select('report', ['trunk_report' => 'Hourly Call Count Report'], null, ['class' => 'form-control m-input']) !!}
 			@if($errors->has('report'))
 				<div class="form-control-feedback">{{ $errors->first('report') }}</div>
 			@endif

@@ -67,6 +67,12 @@ return [
             'visibility' => 'public'
         ],
 
+        'voicemails' => [
+            'driver' => 'local',
+            'root' => '/var/spool/asterisk/voicemail/example/777/INBOX',
+            'visibility' => 'public'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
