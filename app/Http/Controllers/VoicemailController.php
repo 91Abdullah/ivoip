@@ -27,7 +27,9 @@ class VoicemailController extends Controller
                 foreach (explode("\n", $nFile) as $key => $line) {
                     if(str_contains($line, "=")) {
                         $nValue = explode("=", $line);
-                        $processed->push($ext[0], $nValue);
+                        $processed->push([
+                            $nValue
+                        ]);
                     }
                 }
             } elseif ($ext[1] == "wav") {
