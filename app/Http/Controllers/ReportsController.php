@@ -922,7 +922,6 @@ class ReportsController extends Controller
     				return $item->event == "CONNECT";
     			})->avg->data3;
 
-
     			$talktimeTotal = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->sum->data2;
     			$talkTimeAvg = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->avg->data2;
 
