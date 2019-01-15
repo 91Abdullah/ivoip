@@ -922,14 +922,15 @@ class ReportsController extends Controller
     				return $item->event == "CONNECT";
     			})->avg->data3;
 
-    			$talktimeTotal = $completedCalls->get($key)->sum->data2;
-    			$talkTimeAvg = $completedCalls->get($key)->avg->data2;
+
+    			$talktimeTotal = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->sum->data2;
+    			$talkTimeAvg = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->avg->data2;
 
     			$acwTime = $acwProcess->get($key)["sum"];
     			$avgAcwTime = $acwProcess->get($key)["avg"];
 
                 $holdTime = $holdProcess->count() == 0 ? 0 : $holdProcess->groupBy("agent")->get($key) == null ? 0 : $holdProcess->groupBy("agent")->get($key)->sum("sum");
-    			$avgHoldTime = $holdTime/$answered;
+    			$avgHoldTime = $answered == 0 ? 0 : $holdTime/$answered;
 
     			$loginTime = $LoginProcess->get($key)["loginTime"];
     			$notRdy = $pauseProcess->get($key)["pauseTime"];
@@ -1075,5 +1076,23 @@ class ReportsController extends Controller
         }
 
         return DataTables::of($processed)->toJson();
+    }
+
+    public function getLoginLogoutReport()
+    {
+        $agents = Role::where("name", "Agent")->first()->users;
+        $blends = Role::where("name", "Blended")->first()->users;
+
+        $agents = $agents->concat($blends);
+
+        $agents = $agents->map(function ($agent) {
+            return $agent->only(["name"]);
+        });
+        return view('reports.login_logout', compact('agents'));
+    }
+
+    public function getLoginLogoutReportData(Request $request)
+    {
+
     }
 }

@@ -95,6 +95,9 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
         Route::get('dailyAbandon', 'ReportsController@getDailyAbandon');
         Route::get('dailyAbandonData', 'ReportsController@getDailyAbandonData')->name('report.daily_abandon');
+
+        Route::get('loginReport', 'ReportsController@getLoginLogoutReport');
+        Route::get('loginReportData', 'ReportsController@getLoginLogoutReportData')->name('report.login_logout');
 	});
 });
 
