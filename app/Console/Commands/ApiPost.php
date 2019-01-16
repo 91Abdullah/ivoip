@@ -51,8 +51,10 @@ class ApiPost extends Command
                     'timeout' => 10
                 ]);
                 $response = $client->request('POST', 'http://192.168.0.79/Leop/api/UserProfiling/Add', [
-                    'UserId' => $agent,
-                    'PhoneNo' => $phone
+                    'form_params' => [
+                        'UserId' => $agent,
+                        'PhoneNo' => $phone
+                    ]
                 ]);
                 $this->info($response->getBody());
             }, function ($event) {
