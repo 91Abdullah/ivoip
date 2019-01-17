@@ -48,7 +48,7 @@ class ApiPost extends Command
                 $agent = explode("/", $event->getKey('Interface'))[1];
                 $phone = $event->getKey('CallerIDNum');
                 $client = new Client([
-                    'timeout' => 10
+                    'timeout' => 100
                 ]);
                 $response = $client->request('POST', 'http://192.168.0.79/Leop/api/UserProfiling/Add', [
                     'form_params' => [
