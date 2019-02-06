@@ -1154,7 +1154,7 @@ class ReportsController extends Controller
                     $rawEnd = $log["time"];
                 }*/
 
-                if($log["event"] == "ADDMEMBER" && $logs[$key+1]["event"] == "REMOVEMEMBER") {
+                if($log["event"] == "ADDMEMBER" && && array_key_exists($key+1, $logs) && $logs[$key+1]["event"] == "REMOVEMEMBER") {
                     $starttime = $log["time"];
                     $endtime = $logs[$key+1]["time"];
                     $diff = Carbon::parse($starttime)->diffInSeconds(Carbon::parse($endtime));
