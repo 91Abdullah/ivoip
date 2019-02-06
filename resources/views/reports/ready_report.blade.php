@@ -1,7 +1,7 @@
 
 @extends('layouts.reports')
 
-@section('page_sub_title', 'Login / Logout Report')
+@section('page_sub_title', 'Ready / Not Ready Report')
 
 @push('styles')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/r-2.2.2/datatables.min.css"/>
@@ -50,8 +50,9 @@
         <thead>
         <tr>
             <th>Agent</th>
-            <th>Login Time</th>
-            <th>Logout Time</th>
+            <th>Ready Time</th>
+            <th>Not Ready Time</th>
+            <th>Break Type</th>
             <th>Total Time</th>
         </tr>
         </thead>
@@ -99,7 +100,7 @@
                 serverSide: true,
                 paging: false,
                 ajax: {
-                    url: '{!! route('report.login_logout') !!}',
+                    url: '{!! route('report.ready_report') !!}',
                     type: 'GET',
                     data: {
                         _token: '{!! csrf_token() !!}',
@@ -115,6 +116,7 @@
                     {data: 'agent', name: 'agent'},
                     {data: 'starttime', name: 'starttime'},
                     {data: 'endtime', name: 'endtime'},
+                    {data: 'break', name: 'break'},
                     {data: 'diff', name: 'diff'}
                 ]
             });

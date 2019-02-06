@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AgentBreak;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Html\Builder; // import class on controller
 use DataTables;
@@ -1083,15 +1084,185 @@ class ReportsController extends Controller
         $blends = Role::where("name", "Blended")->first()->users;
 
         $agents = $agents->concat($blends);
+        $nAgents = [];
 
-        $agents = $agents->map(function ($agent) {
-            return $agent->only(["name"]);
-        });
-        return view('reports.login_logout', compact('agents'));
+        foreach ($agents as $key => $agent) {
+            $nAgents[$key] = $agent->name;
+        }
+
+
+        return view('reports.login_logout', compact('nAgents'));
     }
 
     public function getLoginLogoutReportData(Request $request)
     {
+        $nAgents = Role::where("name", "Agent")->first()->users;
+        $blends = Role::where("name", "Blended")->first()->users;
 
+        $nAgents = $nAgents->concat($blends);
+        $agents = [];
+        $times = [];
+
+        foreach ($nAgents as $key => $agent) {
+            $agents[$key] = $agent->name;
+        }
+
+        $queue = $request->queue;
+        $date = Carbon::parse($request->date);
+
+        $processed = new Collection;
+
+
+        foreach ($agents as $agent) {
+
+            $starttime = $date->format("Y-m-d") . " 00:00:00";
+            $endtime = $date->format("Y-m-d") . " 23:59:59";
+            $totaltime = 0;
+            $diff = 0;
+
+            $logs = QueueLog::whereDate("time", $date->format('Y-m-d'))
+                ->where([
+                    ["queuename", $queue],
+                    ["agent", $agent]
+                ])
+                ->whereIn("event", ["ADDMEMBER", "REMOVEMEMBER"])
+                ->get(["agent", "event", "time"])
+                ->toArray();
+
+//            $logsS = QueueLog::whereDate("time", $date->format('Y-m-d'))
+//                ->where([
+//                    ["queuename", $queue],
+//                    ["agent", $agent]
+//                ])
+//                ->whereIn("event", ["ADDMEMBER", "REMOVEMEMBER"])
+//                ->get(["agent", "event", "time"])
+//                ->toSql();
+
+//            return dd($logsS);
+
+
+            foreach ($logs as $key => $log) {
+
+                $rawStart = 0;
+                $rawEnd = 0;
+
+                /*if($log["event"] == "ADDMEMBER") {
+                    $starttime = $log["time"];
+                    $rawStart = $log["time"];
+                } elseif($log["event"] == "REMOVEMEMBER") {
+                    $endtime = $log["time"];
+                    $rawEnd = $log["time"];
+                }*/
+
+                if($log["event"] == "ADDMEMBER" && $logs[$key+1]["event"] == "REMOVEMEMBER") {
+                    $starttime = $log["time"];
+                    $endtime = $logs[$key+1]["time"];
+                    $diff = Carbon::parse($starttime)->diffInSeconds(Carbon::parse($endtime));
+
+                    /*$starttime = Carbon::parse($starttime);
+                    $endtime = Carbon::parse($endtime);*/
+                    $times[$key]["start"] = Carbon::parse($starttime);
+                    $times[$key]["end"] = Carbon::parse($endtime);
+                    $times[$key]["diff"] = $diff;
+
+                    $processed->push([
+                        "agent" => $agent,
+                        "starttime" => Carbon::parse($starttime)->format('Y-m-d H:i:s'),
+                        "endtime" => Carbon::parse($endtime)->format('Y-m-d H:i:s'),
+                        "diff" => gmdate("H:i:s", $diff)
+                    ]);
+                }
+            }
+
+        }
+
+        //return dd($processed->sortKeys());
+        return DataTables::of($processed->sortKeys())->toJson();
+    }
+
+    public function getReadyReport()
+    {
+        $breaks = AgentBreak::all('name');
+        return view('reports.ready_report', compact('breaks'));
+    }
+
+    public function getReadyReportData(Request $request)
+    {
+        $nAgents = Role::where("name", "Agent")->first()->users;
+        $blends = Role::where("name", "Blended")->first()->users;
+
+        $nAgents = $nAgents->concat($blends);
+        $agents = [];
+        $times = [];
+
+        foreach ($nAgents as $key => $agent) {
+            $agents[$key] = $agent->name;
+        }
+
+        $queue = $request->queue;
+        $date = Carbon::parse($request->date);
+
+        $processed = new Collection;
+
+        $logs = [];
+
+        foreach ($agents as $agent) {
+
+            $starttime = $date->format("Y-m-d") . " 00:00:00";
+            $endtime = $date->format("Y-m-d") . " 23:59:59";
+            $totaltime = 0;
+            $diff = 0;
+
+            $logs = QueueLog::whereDate("time", $date->format('Y-m-d'))
+                ->where([
+                    ["queuename", $queue],
+                    ["agent", $agent]
+                ])
+                ->whereIn("event", ["PAUSE", "UNPAUSE"])
+                ->whereNotIn("data1", ["Wrapup-Start", "Wrapup-End", "Outbound-Start"])
+                ->get(["agent", "event", "time", "data1"])
+                ->toArray();
+
+            /*$logsS = QueueLog::whereDate("time", $date->format('Y-m-d'))
+                ->where([
+                    ["queuename", $queue],
+                    ["agent", $agent]
+                ])
+                ->whereIn("event", ["PAUSE", "UNPAUSE"])
+                ->toSql();*/
+
+            //return dd($logs);
+
+
+            if(count($logs) !== 0) {
+                foreach ($logs as $key => $log) {
+
+                    $rawStart = 0;
+                    $rawEnd = 0;
+
+                    if($log["event"] == "PAUSE" && array_key_exists($key+1, $logs) && $logs[$key+1]["event"] == "UNPAUSE") {
+                        $starttime = $log["time"];
+                        $endtime = $logs[$key+1]["time"];
+                        $diff = Carbon::parse($starttime)->diffInSeconds(Carbon::parse($endtime));
+
+                        $times[$key]["start"] = Carbon::parse($starttime);
+                        $times[$key]["end"] = Carbon::parse($endtime);
+                        $times[$key]["diff"] = $diff;
+
+                        $processed->push([
+                            "agent" => $agent,
+                            "starttime" => Carbon::parse($starttime)->format('Y-m-d H:i:s'),
+                            "endtime" => Carbon::parse($endtime)->format('Y-m-d H:i:s'),
+                            "break" => $log["data1"],
+                            "diff" => gmdate("H:i:s", $diff)
+                        ]);
+                    }
+                }
+            }
+
+        }
+
+        //return dd($processed);
+        return DataTables::of($processed->sortKeys())->toJson();
     }
 }

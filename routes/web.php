@@ -98,6 +98,9 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 
         Route::get('loginReport', 'ReportsController@getLoginLogoutReport');
         Route::get('loginReportData', 'ReportsController@getLoginLogoutReportData')->name('report.login_logout');
+
+        Route::get('readyReport', 'ReportsController@getReadyReport');
+        Route::get('readyReportData', 'ReportsController@getReadyReportData')->name('report.ready_report');
 	});
 });
 

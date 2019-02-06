@@ -32,6 +32,22 @@
 					<span class="m-menu__arrow"></span>
 					<ul class="m-menu__subnav">
 						<li class="m-menu__item" aria-haspopup="true" >
+							<a href="{{ action('ReportsController@getLoginLogoutReport') }}" class="m-menu__link">
+								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+								<span class="m-menu__link-text">
+									Login / Logout Report
+								</span>
+							</a>
+						</li>
+						<li class="m-menu__item" aria-haspopup="true" >
+							<a href="{{ action('ReportsController@getReadyReport') }}" class="m-menu__link">
+								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+								<span class="m-menu__link-text">
+									Break Report
+								</span>
+							</a>
+						</li>
+						<li class="m-menu__item" aria-haspopup="true" >
 							<a href="{{ action('ReportsController@getTrunkUtilization') }}" class="m-menu__link">
 								<i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
 								<span class="m-menu__link-text">
