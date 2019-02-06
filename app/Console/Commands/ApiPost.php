@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Console\Command;
+use PAMI\Client\Exception\ClientException;
 use PAMI\Client\Impl\ClientImpl;
 use PAMI\Message\Event\AgentConnectEvent;
 use Setting;
@@ -63,10 +64,15 @@ class ApiPost extends Command
         } catch (RequestException $e) {
             $this->info($e->getResponse());
         }
-        $manager->open();
-        while (true) {
-            usleep(1000);
-            $manager->process();
+
+        try {
+            $manager->open();
+            while (true) {
+                usleep(1000);
+                $manager->process();
+            }
+        } catch (ClientException $e) {
+            $this->info($e->getMessage());
         }
     }
 
