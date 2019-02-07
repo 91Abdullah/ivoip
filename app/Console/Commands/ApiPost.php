@@ -62,9 +62,9 @@ class ApiPost extends Command
             }, function ($event) {
                 return $event instanceof AgentConnectEvent;
             });
-        } catch (RequestException $e) {
+        } catch (ConnectException $e) {
             $this->info($e->getResponse());
-        } catch (\Exception $e) {
+        } catch (RequestException $e) {
             $this->info($e->getMessage());
         }
 
