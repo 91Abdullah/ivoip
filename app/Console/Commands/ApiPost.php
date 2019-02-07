@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Console\Command;
 use PAMI\Client\Exception\ClientException;
@@ -63,6 +64,8 @@ class ApiPost extends Command
             });
         } catch (RequestException $e) {
             $this->info($e->getResponse());
+        } catch (\Exception $e) {
+            $this->info($e->getMessage());
         }
 
         try {
