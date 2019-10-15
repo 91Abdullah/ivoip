@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<!--begin::Form-->
-		{!! Form::model($workcode, ['action' => ['UserController@update', $workcode->id], 'method' => 'PATCH', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
+		{!! Form::model($workcode, ['action' => ['WorkcodeController@update', $workcode->id], 'method' => 'PATCH', 'class' => 'm-form m-form--fit m-form--label-align-right m-form--state']) !!}
 			<div class="m-portlet__body">
 				<div class="form-group m-form__group {{ $errors->has('name') ? 'has-danger' : '' }}">
 					{!! Form::label('name', 'Name') !!}

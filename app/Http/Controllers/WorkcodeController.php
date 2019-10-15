@@ -90,7 +90,7 @@ class WorkcodeController extends Controller
      */
     public function destroy(Workcode $workcode)
     {
-        $workcode->destroy();
-        return redirect()->route('Workcode');
+        $workcode->delete();
+        return redirect()->route('workcodes.index');
     }
 }

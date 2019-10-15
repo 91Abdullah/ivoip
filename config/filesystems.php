@@ -69,7 +69,7 @@ return [
 
         'voicemails' => [
             'driver' => 'local',
-            'root' => '/var/spool/asterisk/voicemail/example/777/INBOX',
+            'root' => '/var/spool/asterisk/voicemail/leopard/1000/INBOX',
             'visibility' => 'public'
         ],
 

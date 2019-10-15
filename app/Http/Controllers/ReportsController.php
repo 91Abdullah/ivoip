@@ -808,24 +808,26 @@ class ReportsController extends Controller
     		$diffInSeconds = 0;
     		$records = 0;
     		foreach ($value as $nKey => $nValue) {
-    			$next = $nKey + 1;
-    			$agent = $nValue->agent;
-    			if($next < $value->count()) {
-    				if($nValue->event == "HOLD" && $value[$next]->event == "UNHOLD") {
-    					$date1 = Carbon::parse($nValue->created);
-	    				$date2 = Carbon::parse($value[$next]->created);
-	    				$diffInSeconds = $diffInSeconds + $date2->diffInSeconds($date1);
-    				}
-    			} elseif ($next == $value->count()) {
-    				if($nValue->event == "HOLD") {
-    					$record = $completedCalls->get($nValue->agent)->groupBy(function ($data) {
-				    		return $data->callid;
-				    	})->get($nValue->callid)->first();
-				    	$date1 = Carbon::parse($nValue->created);
-	    				$date2 = Carbon::parse($record->created);
-	    				$diffInSeconds = $diffInSeconds + $date2->diffInSeconds($date1);
-    				}
-    			}
+    			if($nValue->callid !== "NONE") {
+					$next = $nKey + 1;
+					$agent = $nValue->agent;
+					if($next < $value->count()) {
+						if($nValue->event == "HOLD" && $value[$next]->event == "UNHOLD") {
+							$date1 = Carbon::parse($nValue->created);
+							$date2 = Carbon::parse($value[$next]->created);
+							$diffInSeconds = $diffInSeconds + $date2->diffInSeconds($date1);
+						}
+					} elseif ($next == $value->count()) {
+						if($nValue->event == "HOLD") {
+							$record = $completedCalls->get($nValue->agent)->groupBy(function ($data) {
+								return $data->callid;
+							})->get($nValue->callid)->first();
+							$date1 = Carbon::parse($nValue->created);
+							$date2 = Carbon::parse($record->created);
+							$diffInSeconds = $diffInSeconds + $date2->diffInSeconds($date1);
+						}
+					}
+				}
     		}
     		$holdProcess->put($key, [
     			"sum" => $diffInSeconds,

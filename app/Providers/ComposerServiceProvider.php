@@ -42,7 +42,7 @@ class ComposerServiceProvider extends ServiceProvider
             $avgTalkTime = QueueLog::whereDate("created", $date->format("Y-m-d"))
             ->whereIn("event", ["COMPLETECALLER", "COMPLETEAGENT"])
             ->get()
-            ->avg->data2; 
+            ->avg->data2;
 
             $answerRate = $answered == 0 ? 0 : $answered/$totalCalls * 100;
             $abandonRate = $abandoned == 0 ? 0 : $abandoned/$totalCalls * 100;

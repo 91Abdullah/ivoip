@@ -50,6 +50,9 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('system_recordings', 'SystemRecordingController');
 	Route::resource('announcements', 'AnnouncementController');
 	Route::resource('voicemail', 'VoicemailController');
+	
+	Route::get('voicemailData', 'VoicemailController@getMails')->name('mails.get');
+	Route::get('voicemail/play/{file}', 'VoicemailController@playFile');
 
 	Route::prefix('reports')->group(function () {
 		Route::get('test', 'ReportsController@index');

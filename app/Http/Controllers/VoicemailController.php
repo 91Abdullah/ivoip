@@ -6,6 +6,7 @@ use App\Voicemail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use DataTables;
 
 class VoicemailController extends Controller
 {
@@ -16,28 +17,36 @@ class VoicemailController extends Controller
      */
     public function index()
     {
-        $files = Storage::disk('voicemails')->files();
+        return view('voicemail.nindex');
+    }
+	
+	public function getMails(Request $request)
+	{
+		$files = Storage::disk('voicemails')->files();
         $processed = new Collection;
         $nArray = [];
+		
+		foreach($files as $key => $file) {
+			$ext = explode(".", $file);
+			$details = [];
+			if($ext[1] == "txt") {
+				
+			}
+			if($ext[1] == "WAV") { 
+				$processed->push([
+					"name" => $ext[0],
+					"play" => $file
+				]);
+			}
+		}
 
-        foreach ($files as $file) {
-            $ext = explode(".", $file);
-            if($ext[1] == "txt") {
-                $nFile = Storage::disk('voicemails')->get($file);
-                foreach (explode("\n", $nFile) as $key => $line) {
-                    if(str_contains($line, "=")) {
-                        $nValue = explode("=", $line);
-                        $processed->push([
-                            $nValue
-                        ]);
-                    }
-                }
-            } elseif ($ext[1] == "wav") {
-
-            }
-        }
-
-        return dd($processed);
+        //return dd(array_reverse($files));
+		return DataTables::of($processed)->toJson();
+	}
+	
+	public function playFile($file)
+    {
+        return Storage::disk('voicemails')->download($file);
     }
 
     /**

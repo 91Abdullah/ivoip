@@ -286,12 +286,12 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item {{ \Request::is('admin/system_recordings') ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
-				<a  href="{{ route('system_recordings.index') }}" class="m-menu__link ">
+			<li class="m-menu__item {{ \Request::is('admin/voicemails') ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
+				<a  href="{{ route('voicemail.index') }}" class="m-menu__link ">
 					<span class="m-menu__item-here"></span>
 					<i class="m-menu__link-icon flaticon-multimedia"></i>
 					<span class="m-menu__link-text">
-						System Recordings
+						Voicemails
 					</span>
 				</a>
 			</li>
