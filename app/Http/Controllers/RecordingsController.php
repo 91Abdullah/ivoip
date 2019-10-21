@@ -33,6 +33,7 @@ class RecordingsController extends Controller
     			"destination" => $value->dst,
     			"start" => $value->start,
     			"end" => $value->end,
+    			"agent" => str_contains($value->dstchannel, 'PJSIP') ? explode("-", explode("/", $value->dstchannel)[1])[0] : "N/A",
     			"duration" => $value->billsec,
     			"uniqueid" => $value->uniqueid,
                 "play" => $value->uniqueid . ".wav",
