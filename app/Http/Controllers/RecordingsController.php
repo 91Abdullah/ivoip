@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Cdr;
@@ -27,13 +28,25 @@ class RecordingsController extends Controller
     	$process = new Collection;
 
     	foreach ($calls as $key => $value) {
+    	    $agent = "N/A";
+    	    $name = "N/A";
+
+    	    if(str_contains($value->dstchannel, "PJSIP")) {
+    	        $agent = explode("-", explode("/", $value->dstchannel)[1])[0];
+    	        $name = User::getByExtension($agent)->name;
+            } elseif(str_contains($value->channel, "PJSIP")) {
+                $agent = explode("-", explode("/", $value->channel)[1])[0];
+                $name = User::getByExtension($agent)->name;
+            }
+
     		$process->push([
     			"id" => $value->id,
     			"source" => $value->src,
-    			"destination" => $value->dst,
+    			"destination" => $value->dst == "100" ? "Queue - " . $value->dst : $value->dst,
     			"start" => $value->start,
     			"end" => $value->end,
-    			"agent" => str_contains($value->dstchannel, 'PJSIP') ? explode("-", explode("/", $value->dstchannel)[1])[0] : "N/A",
+    			"agent" => $agent,
+    			"name" => $name,
     			"duration" => $value->billsec,
     			"uniqueid" => $value->uniqueid,
                 "play" => $value->uniqueid . ".wav",

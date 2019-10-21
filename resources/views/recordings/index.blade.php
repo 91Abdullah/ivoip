@@ -53,6 +53,7 @@
 	      		<th>UniqueId</th>
 	      		<th>Source</th>
 	      		<th>Agent</th>
+	      		<th>Name</th>
 	      		<th>Destination</th>
 	      		<th>Start</th>
 	      		<th>End</th>
@@ -120,6 +121,7 @@
 		            {data: 'id', name: 'id'},
 		            {data: 'uniqueid', name: 'uniqueid'},
 		            {data: 'source', name: 'source'},
+					{data: 'name', name: 'name'},
                     {data: 'agent', name: 'agent'},
 		            {data: 'destination', name: 'destination'},
 		            {data: 'start', name: 'start'},
