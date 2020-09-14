@@ -160,7 +160,7 @@
 
 @push('scripts')
 	<script type="text/javascript" src="{{ asset('js/bootstrap-switch.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/sip.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/sip-0.12.0.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/easytimer.js') }}"></script>
 	<script type="text/javascript">
 

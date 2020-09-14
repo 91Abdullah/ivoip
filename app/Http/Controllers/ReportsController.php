@@ -599,7 +599,7 @@ class ReportsController extends Controller
 					$date1 = Carbon::parse($nValue->created);
 					$date2 = Carbon::parse($prev->created);
 					$time = $date2->diffInSeconds($date1);
-				} elseif ($nValue->event == "HOLD" && $nKey == $value->count() - 1) {
+				} elseif ($nValue->event == "HOLD" && $nKey == $value->count() - 1 && $nValue->callid !== "NONE") {
 					$record = Cdr::where("uniqueid", $nValue->callid)->first();
 					$date1 = Carbon::parse($nValue->created);
 					$date2 = Carbon::parse($record->end);
@@ -924,7 +924,7 @@ class ReportsController extends Controller
     			$avgAnsDelay = $agentCalls->filter(function ($item, $key) {
     				return $item->event == "CONNECT";
     			})->avg->data3;
-
+			
     			$talktimeTotal = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->sum->data2;
     			$talkTimeAvg = $completedCalls->get($key) == null ? 0 : $completedCalls->get($key)->avg->data2;
 
