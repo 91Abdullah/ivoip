@@ -434,13 +434,19 @@ $(document).ready(function() {
 			allowEnterKey: false,
 			showConfirmButton: true,
 			confirmButtonText: 'Submit',
-			inputOptions: workcodes
+			inputOptions: workcodes,
+			timer: 10000,
 		}).then((result) => {
 			console.log(result);
 			console.log(uniqueId[uniqueId.length - 1], callId);
 			let uniqueID = uniqueId[uniqueId.length - 1] == undefined ? callId[callId.length - 1] : uniqueId[uniqueId.length - 1];
 			console.log(uniqueID);
-			submitWorkcode(result.value, uniqueID);
+			if(result.dismiss === "timer") {
+				submitWorkcode("Unassigned", uniqueID)
+			} else {
+				submitWorkcode(result.value, uniqueID);
+			}
+			//submitWorkcode(result.value, uniqueID);
 			// console.log(res);
 			if(currentMode == 'inbound') {
 				for (var i = queues.length - 1; i >= 0; i--) {
