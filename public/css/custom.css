@@ -1,0 +1,29 @@
+.carousel {
+    /*background: #EEE;*/
+    background: #34bfa3;
+    color: #fff;
+    margin-bottom: 40px;
+}
+
+.carousel-cell {
+    width: 66%;
+    height: auto;
+    margin-right: 70px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    /*background: #8C8;*/
+    border-radius: 5px;
+    /*counter-increment: gallery-cell;*/
+}
+
+/* cell number */
+.carousel-cell:before {
+    display: block;
+    text-align: center;
+    /*content: counter(gallery-cell);*/
+    line-height: 200px;
+    font-size: 80px;
+    color: black;
+}

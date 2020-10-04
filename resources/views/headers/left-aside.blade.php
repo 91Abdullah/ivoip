@@ -241,6 +241,15 @@
 					</span>
 				</a>
 			</li>
+			<li class="m-menu__item {{ str_contains(\Request::path(), "ticker") ? 'm-menu__item--active' : ''}}" aria-haspopup="true" >
+				<a href="{{ action('TickerController@index') }}" class="m-menu__link ">
+					<span class="m-menu__item-here"></span>
+					<i class="m-menu__link-icon flaticon-notes"></i>
+					<span class="m-menu__link-text">
+						Tickers
+					</span>
+				</a>
+			</li>
 			{{--<li class="m-menu__item" aria-haspopup="true" >--}}
 				{{--<a href="{{ action('RoleController@index') }}" class="m-menu__link ">--}}
 					{{--<span class="m-menu__item-here"></span>--}}

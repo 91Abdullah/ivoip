@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -50,6 +53,7 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::resource('system_recordings', 'SystemRecordingController');
 	Route::resource('announcements', 'AnnouncementController');
 	Route::resource('voicemail', 'VoicemailController');
+    Route::resource('ticker', 'TickerController');
 	
 	Route::get('voicemailData', 'VoicemailController@getMails')->name('mails.get');
 	Route::get('voicemail/play/{file}', 'VoicemailController@playFile');

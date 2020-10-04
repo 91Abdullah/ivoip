@@ -1,10 +1,23 @@
 
 @extends('layouts.front_agent')
 
+@push('styles')
+	<link rel="stylesheet" href="{{ asset('css/flickity.min.css') }}" media="screen">
+	<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+@endpush
+
 @section('content')
 
 	<div class="row">
 		<div class="col-lg-6 offset-lg-3">
+
+			<!-- Flickity HTML init -->
+			<div class="carousel" data-flickity='{ "autoPlay": true }'>
+				@foreach(\App\Ticker::query()->pluck('content', 'id') as $index => $ticker)
+					<div class="carousel-cell">{{ $ticker }}</div>
+				@endforeach
+			</div>
+
 			<div class="m-portlet">
 				<div class="m-portlet__body m-portlet__body--no-padding">
 					<div class="row m-row--no-padding m-row--col-separator-xl">
@@ -214,4 +227,5 @@
 		let uniqueId = [];
 	</script>
 	<script type="text/javascript" src="{{ asset('js/outbound.js') }}"></script>
+	<script src="{{ asset('js/flickity.pkgd.min.js') }}"></script>
 @endpush
