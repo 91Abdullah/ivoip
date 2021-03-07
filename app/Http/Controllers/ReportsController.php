@@ -601,9 +601,11 @@ class ReportsController extends Controller
 					$time = $date2->diffInSeconds($date1);
 				} elseif ($nValue->event == "HOLD" && $nKey == $value->count() - 1 && $nValue->callid !== "NONE") {
 					$record = Cdr::where("uniqueid", $nValue->callid)->first();
-					$date1 = Carbon::parse($nValue->created);
-					$date2 = Carbon::parse($record->end);
-					$time = $date2->diffInSeconds($date1);
+					if($record) {
+						$date1 = Carbon::parse($nValue->created);
+						$date2 = Carbon::parse($record->end);
+						$time = $date2->diffInSeconds($date1);
+					}
 					// return dd($nValue->event == "HOLD" && $nKey == $value->count());
 				}
 			}
@@ -646,12 +648,20 @@ class ReportsController extends Controller
     		$totalAFT = $totalAnsweredtotalProcessedCalls - $totalProcessedBFTCalls;
 	    	
 	    	$totalHoldTime = $tProcess->get($key) == null ? 0 : $tProcess->get($key)->sum("totalHoldTime");
-
-	    	$totalTalkTime = $connectedCalls->get($key) == null ? 0 : $connectedCalls->get($key)->sum->data2 - $totalHoldTime;
-
+		try {
+			 $connectedCalls->get($key) == NULL ? 0 : $connectedCalls->get($key)->sum->data2 - $totalHoldTime;
+		} catch (\Exception $e) {
+			return $e->getMessage();
+		}
+		$totalTalkTime = $connectedCalls->get((int)$key) == NULL ? 0 : $connectedCalls->get($key)->sum->data2 - $totalHoldTime;
 	    	$avgTalkTime = $totalAnsweredtotalProcessedCalls == 0 ? 0 : $totalTalkTime/$totalAnsweredtotalProcessedCalls;
 
-	    	$totalAnsSpeed = $totalAnsweredCalls->get($key) == null ? 0 : $totalAnsweredCalls->get($key)->sum->data1;
+	    	try {
+				$totalAnsSpeed = $totalAnsweredCalls->get($key) == null ? 0 : $totalAnsweredCalls->get($key)->sum->data1;
+			} catch (Exception $e) {
+				return dd($totalAnsweredCalls->get($key));
+			}
+			
 	    	$avgAnsSpeed = $totalAnsweredtotalProcessedCalls == 0 ? 0 : $totalAnsSpeed/$totalAnsweredtotalProcessedCalls;
 
 	    	$agents = $loginAgents->get($key) == null ? 0 : $loginAgents->get($key)->unique("agent")->count();
