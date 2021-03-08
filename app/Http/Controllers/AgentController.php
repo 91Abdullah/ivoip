@@ -155,6 +155,10 @@ class AgentController extends Controller
             ]);
         }
 
+        if($request->input('queue')) {
+            $agent->queues()->sync([$request->queue]);
+        }
+
         return redirect()->action('AgentController@index');
     }
 
