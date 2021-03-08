@@ -110,7 +110,7 @@ class BlendedAgentController extends Controller
      */
     public function edit(User $blended)
     {
-        $queues = Queue::pluck('name');
+        $queues = Queue::pluck('name', 'name');
         return view('blended.edit', compact('blended', 'queues'));
     }
 

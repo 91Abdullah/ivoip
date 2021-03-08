@@ -110,7 +110,7 @@ class AgentController extends Controller
      */
     public function edit(User $agent)
     {
-        $queues = Queue::pluck('name');
+        $queues = Queue::pluck('name', 'name');
         return view('agents.edit', compact('agent', 'queues'));
     }
 
