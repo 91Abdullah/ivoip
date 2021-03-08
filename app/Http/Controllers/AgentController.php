@@ -123,7 +123,7 @@ class AgentController extends Controller
      */
     public function update(Request $request, User $agent)
     {
-        if($request->has('password')) {
+        if($request->input('password')) {
             $request->validate([
                 'name' => 'string|max:255',
                 'email' => 'string|email|max:255|unique:users,email',
@@ -142,8 +142,8 @@ class AgentController extends Controller
         } else {
             $request->validate([
                 'name' => 'string|max:255',
-                'email' => 'string|email|max:255|unique:users,email',
-                'extension' => 'string|unique:users,extension',
+                'email' => 'string|email|max:255|unique:users,email,'.$agent->id,
+                'extension' => 'string|unique:users,extension,'.$agent->id,
                 'secret' => 'string'
             ]);
 
@@ -167,6 +167,10 @@ class AgentController extends Controller
     public function destroy(User $agent)
     {
         $agent->delete();
+        $agent->queues()->detach();
+        DB::table('ps_auths')->where('id', $agent->extension)->delete();
+        DB::table('ps_aors')->where('id', $agent->extension)->delete();
+        DB::table('ps_endpoints')->where('id', $agent->extension)->delete();
         return redirect()->action('AgentController@index');
     }
 }

@@ -163,6 +163,9 @@ class OutboundAgentController extends Controller
     public function destroy(User $outbound)
     {
         $outbound->delete();
+        DB::table('ps_auths')->where('id', $outbound->extension)->delete();
+        DB::table('ps_aors')->where('id', $outbound->extension)->delete();
+        DB::table('ps_endpoints')->where('id', $outbound->extension)->delete();
         return redirect()->action('OutboundAgentController@index');
     }
 }

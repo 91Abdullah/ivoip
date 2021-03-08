@@ -167,6 +167,10 @@ class BlendedAgentController extends Controller
     public function destroy(User $blended)
     {
         $blended->delete();
+        $blended->queues()->detach();
+        DB::table('ps_auths')->where('id', $blended->extension)->delete();
+        DB::table('ps_aors')->where('id', $blended->extension)->delete();
+        DB::table('ps_endpoints')->where('id', $blended->extension)->delete();
         return redirect()->action('BlendedAgentController@index');
     }
 }
