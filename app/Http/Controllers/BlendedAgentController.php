@@ -67,7 +67,8 @@ class BlendedAgentController extends Controller
 
         DB::table('ps_aors')->insert([
             'id' => $user->extension,
-            'max_contacts' => 1
+            'max_contacts' => 1,
+            'remove_existing' => 'yes'
         ]);
 
         DB::table('ps_auths')->insert([
