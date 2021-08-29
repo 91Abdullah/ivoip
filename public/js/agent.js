@@ -487,7 +487,7 @@ $(document).ready(function() {
 			showConfirmButton: true,
 			confirmButtonText: 'Submit',
 			inputOptions: workcodes,
-			timer: 10000,
+			timer: 1000,
 		}).then((result) => {
 			console.log(result);
 			console.log(uniqueId[uniqueId.length - 1], callId);

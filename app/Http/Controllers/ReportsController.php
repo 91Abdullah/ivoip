@@ -841,7 +841,7 @@ class ReportsController extends Controller
     		}
     		$holdProcess->put($key, [
     			"sum" => $diffInSeconds,
-    			"agent" => $agent
+    			"agent" => $agent ?? 'N/A'
     		]);
     	}
 

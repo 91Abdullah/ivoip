@@ -40,8 +40,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(CoreReload::class)->everyFifteenMinutes()
             ->appendOutputTo(storage_path("logs/daily.log"));
 
-        $schedule->command(ModuleCheckChanSip::class)->everyFifteenMinutes()
-            ->appendOutputTo(storage_path("logs/daily.log"));
+        /*$schedule->command(ModuleCheckChanSip::class)->everyFifteenMinutes()
+            ->appendOutputTo(storage_path("logs/daily.log"));*/
 
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('01:30');
