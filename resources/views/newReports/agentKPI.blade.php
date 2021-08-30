@@ -35,7 +35,11 @@
 
     <div class="m-portlet m-portlet--skin-dark m-portlet--bordered-semi">
         <div class="m-portlet__body">
-            Query date/time: {{ $query ?? '' }}
+            @isset($query)
+                <br />
+                <br />
+                Query date/time: {{ $query ?? '' }}
+            @endisset
             <br />
             <br />
             <b>Avg hold time</b> indicates average of customer's wait time in queue
