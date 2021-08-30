@@ -59,6 +59,10 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
 	Route::get('voicemail/play/{file}', 'VoicemailController@playFile');
 
 	Route::prefix('reports')->group(function () {
+
+	    Route::get('agentKPIReport', 'NewReportController@getAgentKPIReportView');
+	    Route::post('agentKPIReportData', 'NewReportController@getAgentKPIReportData');
+
 		Route::get('test', 'ReportsController@index');
 
 		Route::get('trunkUtilization', 'ReportsController@getTrunkUtilization');
