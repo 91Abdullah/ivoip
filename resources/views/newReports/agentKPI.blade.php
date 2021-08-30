@@ -41,7 +41,7 @@
             <b>Avg hold time</b> indicates average of customer's wait time in queue
             <br />
             <br />
-            If <b>Time in queue</b> of some agent shows '0' that probably means agent hasn't logged out previously due to which system failed to capture logged out time of that agent.
+            If <b>Time in queue</b> of some agent shows '0' that probably means agent hasn't logged out yet or previously due to which system failed to capture logged out time of that agent.
         </div>
     </div>
 
