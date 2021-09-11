@@ -101,7 +101,7 @@
                     <td>{{ $value['total_required_time'] ?? 480 }}</td>
                     <td>{{ $value['total_break'] ?? 0 }}</td>
                     <td>{{ $value['total_allowed_break'] ?? 40 }}</td>
-                    <td>{{ isset($value['total_break']) ? round($value['total_break'] / $value['total_time'] * 100, 2) : 0 }}%</td>
+                    <td>{{ isset($value['total_break']) && isset($value['total_time']) ? round($value['total_break'] / $value['total_time'] * 100, 2) : 0 }}%</td>
                     <td>{{ $value['total_talk_time'] ?? 0 }}</td>
                     <td>{{ $value['avg_talk_time'] ?? 0 }}</td>
                     <td>{{ $value['acw_time'] ?? 0 }}</td>
