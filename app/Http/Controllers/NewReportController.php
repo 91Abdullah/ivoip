@@ -12,6 +12,41 @@ class NewReportController extends Controller
         return view('newReports.agentKPI');
     }
 
+    public function getAgentKPIReportViewNew(Request $request)
+    {
+        return view('newReports.agentKPI2');
+    }
+
+    public function getAgentKPIReportDataNew(Request $request)
+    {
+        $request->validate([
+            'date' => ['required', 'date_format:Y-m-d']
+        ]);
+        $date = $request->date;
+        $query1 = DB::select("SELECT a.agent, a.created as login_time, b.created as logout_time, TIMESTAMPDIFF(MINUTE, a.created, b.created) as total_time, 480 as total_required_time FROM `queue_log` as a join `queue_log` as b on a.agent = b.agent where a.event = 'ADDMEMBER' and b.event = 'REMOVEMEMBER' and date(a.`created`) = ? and date(b.created) = ? group by agent", [$date, $date]);
+        $query2 = DB::select("SELECT a.agent, ROUND(TIMESTAMPDIFF(SECOND, a.created, b.created)/60, 2) as total_break, 40 as total_allowed_break FROM `queue_log` as a join queue_log as b on a.agent = b.agent and a.data1 = b.data1 where a.event = 'PAUSE' and b.event = 'UNPAUSE' and a.data1 NOT IN ('Wrapup-Start', 'Outbound-Start') and b.data1 NOT IN ('Wrapup-End', 'Outbound-End') and date(a.created) = ? and date(b.created) = ? group by agent", [$date, $date]);
+        $query3 = DB::select("SELECT agent, ROUND(SUM(data2)/60, 2) as total_talk_time, ROUND(AVG(data2)/60, 2) as avg_talk_time from queue_log where event in ('COMPLETEAGENT', 'COMPLETECALLER') and date(created) = ? group by agent", [$date]);
+        $query4 = DB::select("SELECT a.agent, ROUND(SUM(TIMESTAMPDIFF(SECOND, a.created, b.created))/60, 2) as acw_time, ROUND(AVG(TIMESTAMPDIFF(SECOND, a.created, b.created))/60, 2) as avg_acw_time from queue_log a join queue_log b on a.callid = b.callid and a.agent = b.agent and a.event in ('COMPLETEAGENT', 'COMPLETECALLER') and b.event = 'WORKCODE' where date(a.created) = ? and date(b.created) = ? group by a.agent", [$date, $date]);
+        $query1 = collect($query1)->keyBy('agent');
+        $query2 = collect($query2)->keyBy('agent');
+        $query3 = collect($query3)->keyBy('agent');
+        $query4 = collect($query4)->keyBy('agent');
+        $query1->transform(function ($value) {
+            return (array)$value;
+        });
+        $query2->transform(function ($value) {
+            return (array)$value;
+        });
+        $query3->transform(function ($value) {
+            return (array)$value;
+        });
+        $query4->transform(function ($value) {
+            return (array)$value;
+        });
+        $merged = array_merge_recursive($query1->toArray(), $query2->toArray(), $query3->toArray(), $query4->toArray());
+        return view('newReports.agentKPI2', ['data' => $merged, 'query' => $request->date]);
+    }
+
     public function getAgentKPIReportData(Request $request)
     {
         $request->validate([
