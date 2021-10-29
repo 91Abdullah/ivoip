@@ -63,7 +63,14 @@ class ReportsController extends Controller
     		$i++;
 		}	
 
-    	return DataTables::of($processed)->toJson();
+    	return DataTables::of($processed)
+            ->addColumn('action', function($row) use ($dt) {
+                $route = route('hourlyAnalysis.agent', ['date' => $dt->format('Y-m-d'), 'hour' => $row['hour']]);
+                $btn = '<a href="' . $route . '" class="edit btn btn-info btn-sm">View</a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->toJson();
     }
 
     public function getTrunkUtilizationGraph()
@@ -941,7 +948,7 @@ class ReportsController extends Controller
     			$acwTime = $acwProcess->get($key)["sum"];
     			$avgAcwTime = $acwProcess->get($key)["avg"];
 
-                $holdTime = $holdProcess->count() == 0 ? 0 : $holdProcess->groupBy("agent")->get($key) == null ? 0 : $holdProcess->groupBy("agent")->get($key)->sum("sum");
+                $holdTime = $holdProcess->count() == 0 ? 0 : ($holdProcess->groupBy("agent")->get($key) == null ? 0 : $holdProcess->groupBy("agent")->get($key)->sum("sum"));
     			$avgHoldTime = $answered == 0 ? 0 : $holdTime/$answered;
 
     			$loginTime = $LoginProcess->get($key)["loginTime"];

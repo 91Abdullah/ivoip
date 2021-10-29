@@ -66,6 +66,8 @@ Route::prefix('admin')->middleware(['auth', 'can:is-admin'])->group(function () 
         Route::get('agentKPIReportNew', 'NewReportController@getAgentKPIReportViewNew');
         Route::post('agentKPIReportDataNew', 'NewReportController@getAgentKPIReportDataNew');
 
+        Route::get('hourlyAnalysisOfAgent/{date}/{hour}', 'NewReportController@getHourlyAnalysisOfAgent')->name('hourlyAnalysis.agent');
+
 		Route::get('test', 'ReportsController@index');
 
 		Route::get('trunkUtilization', 'ReportsController@getTrunkUtilization');

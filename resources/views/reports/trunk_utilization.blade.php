@@ -51,6 +51,7 @@
 	    	<tr>
 	      		<th>Hour of Day</th>
 	      		<th>Calls Landed</th>
+				<th>Action</th>
 	    	</tr>
 	  	</thead>
 	  	<tbody>
@@ -115,7 +116,8 @@
 			    ],
 		        columns: [
 		            {data: 'hour', name: 'hour'},
-		            {data: 'count', name: 'count'}
+		            {data: 'count', name: 'count'},
+					{data: 'action', name: 'action'}
 		        ],
 		        footerCallback: loadFooter
 		    });

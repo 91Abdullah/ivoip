@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QueueLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -78,5 +79,15 @@ class NewReportController extends Controller
         $merged = array_merge_recursive($query1Array, $query2Array, $query3Array, collect($query4)->keyBy('agent')->toArray(), $finalArray);
         //return dd($query5);
         return view('newReports.agentKPI', ['data' => $merged, 'query' => $request->date]);
+    }
+
+    public function getHourlyAnalysisOfAgent(Request $request)
+    {
+        if(!$request->has('hour') && !$request->has('date')) {
+            $query = QueueLog::query()->select(['users.extension as agent_id', 'agent as agent', DB::raw('COUNT(event) as calls_taken'), DB::raw('date(created) as date'), DB::raw('HOUR(created) as hour')])->where('event', 'CONNECT')->whereDate('created', $request->date)->whereRaw("HOUR(created) = {$request->hour}")->groupBy(['agent'])->join('users', 'users.name', '=', 'agent')->get()->toArray();
+            return view('newReports.hourlyAnalysisOfAgent', ['data' => $query]);
+        } else {
+            redirect()->back()->withErrors("Invalid parameters entered.");
+        }
     }
 }
