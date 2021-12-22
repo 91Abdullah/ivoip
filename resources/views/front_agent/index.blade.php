@@ -160,7 +160,7 @@
 	      	</div>
 	      	<div class="modal-footer">
 				<button id="m_incoming_call_accept" type="button" class="btn btn-primary">Answer</button>
-				<button id="m_incoming_call_dismiss" type="button" class="btn btn-danger" data-dismiss="modal">Dismiss</button>
+				{{--<button id="m_incoming_call_dismiss" type="button" class="btn btn-danger" data-dismiss="modal">Dismiss</button>--}}
 	      	</div>
 	    </div>
 	  </div>
