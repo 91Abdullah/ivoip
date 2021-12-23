@@ -725,7 +725,7 @@ $(document).ready(function() {
 			text: remoteNumber,
 			type: 'success',
 			allowOutsideClick: false,
-			showCancelButton: true,
+			showCancelButton: false,
 			allowEscapeKey: false,
 			confirmButtonText: 'Accept',
 			cancelButtonText: 'Reject'
