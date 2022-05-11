@@ -46,7 +46,7 @@
 
 	{!! Form::close() !!}
 	
-	<table class="table table-custom">
+	<table class="table table-custom table-responsive">
 	  	<thead>
 	    	<tr>
 	      		<th>ID</th>
