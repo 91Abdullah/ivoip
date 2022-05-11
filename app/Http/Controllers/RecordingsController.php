@@ -46,8 +46,8 @@ class RecordingsController extends Controller
     			"end" => $value->end,
     			"duration" => $value->billsec,
     			"uniqueid" => $value->uniqueid,
-			    "play" => $value->recordingfile . ".wav",
-    			"link" => $value->recordingfile . ".wav"
+			    "play" => $value->recordingfile,
+    			"link" => $value->recordingfile
     		]);
     	}
 
