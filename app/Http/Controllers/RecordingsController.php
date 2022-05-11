@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Cdr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Html\Builder; // import class on controller
-use DataTables;
-use Storage;
+use Yajra\DataTables\Facades\DataTables;
 use App\User;
 
 class RecordingsController extends Controller
 {
+    /**
+     * @throws Exception
+     */
     public function getRecordings(Request $request)
     {
     	$path = "/var/spool/asterisk/monitor/";
@@ -42,8 +46,8 @@ class RecordingsController extends Controller
     			"end" => $value->end,
     			"duration" => $value->billsec,
     			"uniqueid" => $value->uniqueid,
-			    "play" => $value->uniqueid . ".wav",
-    			"link" => $value->uniqueid . ".wav"
+			    "play" => $value->recordingfile . ".wav",
+    			"link" => $value->recordingfile . ".wav"
     		]);
     	}
 
@@ -54,6 +58,9 @@ class RecordingsController extends Controller
     public function downloadFile($path)
     {
     	$spath = "/var/spool/asterisk/monitor/";
-    	return Storage::disk('recording')->download($path);
+        $date = explode("-", $path);
+        $date = Carbon::parse($date[3]);
+        $folderPath = "/{$date->format('Y')}/{$date->format('m')}/{$date->format('d')}/$path";
+    	return Storage::disk('recording')->download($folderPath);
     }
 }
